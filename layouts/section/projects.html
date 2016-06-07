@@ -1,0 +1,15 @@
+{{ partial "header.html" . }}
+
+<div class="content">
+	
+	<div class="projects">
+	{{ range .Site.Data.projects }}
+		<div class="project">
+			<div class="project-title">{{ .title }}</div>
+			<div class="project-description">{{ .description }}</div>
+		</div>
+	{{ end }}
+	</div>
+</div>
+
+{{ partial "footer.html" . }}

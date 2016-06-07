@@ -1,0 +1,27 @@
+{{ partial "header.html" . }}
+
+<div class="content">
+
+	<h2>Latest Posts</h2>
+	{{ range first 3 (where .Data.Pages "Section" "posts") }}
+		{{ .Render "li" }}
+	{{ end }}
+	
+	<h2>Social media, contact</h2>
+	<p>
+		You may contact me on one of my social media accounts:
+		[Facebook](#),
+		[Twitter](#),
+		[Github](#)
+	</p>
+	
+	<h2>Recommendations</h2>
+	<ul>
+		<li><a href="#">My lovely book one</a> is a great for beginners of C++</li>
+		<li><a href="#">My lovely book one</a> is a great for beginners of C++</li>
+		<li><a href="#">My lovely book one</a> is a great for beginners of C++</li>
+	</ul>
+	
+</div>
+
+{{ partial "footer.html" . }}

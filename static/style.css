@@ -1,0 +1,90 @@
+html {
+	font-size: 20px;
+	font-family: 'Roboto';
+}
+a {
+	color: rgb(61, 132, 203);
+	text-decoration: none;
+}
+
+/* sidebar */
+.sidebar {
+	background: rgb(42, 94, 145);
+	color: rgb(255, 255, 255);
+	text-align: center;
+}
+@media (min-width: 48em) {
+	.sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 18rem;
+		text-align: left;
+	}
+}
+.sidebar-logo {
+	font-size: 8rem;
+	font-weight: bold;
+}
+.sidebar-slogan {
+	padding: 0.4rem;
+}
+.sidebar nav {
+	background: rgb(33, 84, 135);
+	padding: 1em 0;
+}
+.sidebar a {
+	color: rgb(200, 200, 200);
+	display: block;
+	padding: 0.4rem;
+	text-decoration: none;
+}
+.sidebar a.active {
+	color: rgb(255, 255, 255);
+}
+.sidebar a:hover,
+.sidebar a:focus {
+	color: rgb(255, 255, 255);
+}
+.sidebar-copyright {
+	padding: 0.4rem;
+}
+
+/* content */
+.content {
+	line-height: 2.0rem;
+}
+@media (min-width: 48em) {
+	.content {
+		max-width: 38rem;
+		margin-left: 20rem;
+		margin-right: 2rem;
+		padding-top: 3rem;
+		padding-bottom: 3rem;
+	}
+}
+
+/* posts */
+.post {
+	margin-bottom: 1.0rem;
+}
+.post-title {
+	color: rgb(42, 94, 145);
+	font-size: 2.0rem;
+	margin: 0;
+	padding: 0;
+}
+.post-title a {
+	color: rgb(42, 94, 145);
+	text-decoration: none;
+}
+.post-title a:hover {
+	text-decoration: underline;
+}
+.post-date {
+	color: rgb(160, 160, 160);
+}
+.post-back-link {
+	margin-bottom: 1rem;
+}

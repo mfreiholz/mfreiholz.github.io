@@ -1,0 +1,16 @@
+baseurl = "/"
+languageCode = "en-us"
+title = "My New Hugo Site"
+
+[[menu.main]]
+	name = "Home"
+	url ="/"
+	weight = 10
+[[menu.main]]
+	name = "Blog"
+	url ="/posts/"
+	weight = 20
+[[menu.main]]
+	name = "Projects"
+	url ="/projects/"
+	weight = 30
