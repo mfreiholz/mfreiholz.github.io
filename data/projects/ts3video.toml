@@ -2,4 +2,5 @@ title = "TS3VIDEO"
 description = "A free and easy to use video conferencing plugin for Teamspeak 3."
 tags = ["C", "C++", "Go", "Qt", "Inno Setup"]
 url = "https://mfreiholz.de/ts3video/"
+logo = "/img/ts3video.png"
 weight = 1
