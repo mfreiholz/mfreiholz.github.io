@@ -3,10 +3,15 @@
 <div class="content">
 	
 	<div class="projects">
-	{{ range .Site.Data.projects }}
+	{{ range sort .Site.Data.projects "weight" }}
 		<div class="project">
-			<div class="project-title">{{ .title }}</div>
+			<div class="project-title"><a href="{{ .url }}">{{ .title }}</a></div>
 			<div class="project-description">{{ .description }}</div>
+			<div class="projects-tags">
+			{{ range .tags }}
+				<span class="project-tag">{{ . }}</span>
+			{{ end }}
+			</div>
 		</div>
 	{{ end }}
 	</div>

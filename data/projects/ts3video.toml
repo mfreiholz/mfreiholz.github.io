@@ -1,3 +1,5 @@
 title = "TS3VIDEO"
-description = "Video conference plugin for TeamSpeak 3."
-tags = ["C++", "Go", "Qt"]
+description = "A free and easy to use video conferencing plugin for Teamspeak 3."
+tags = ["C", "C++", "Go", "Qt", "Inno Setup"]
+url = "https://mfreiholz.de/ts3video/"
+weight = 1

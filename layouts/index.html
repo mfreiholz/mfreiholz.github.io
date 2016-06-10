@@ -2,21 +2,21 @@
 
 <div class="content">
 
-	<h2>Latest Posts</h2>
+	<h1>Latest Posts</h1>
 	{{ range first 3 (where .Data.Pages "Section" "posts") }}
 		{{ .Render "li" }}
 	{{ end }}
 	
-	<h2>Social media and contact</h2>
+	<h1>Social media and contact</h1>
 	<p>
 		You may contact me on one of my social media accounts:
 		<a href="https://www.facebook.com/manuel.freiholz">Facebook</a>,
 		<a href="https://twitter.com/mfreiholz">Twitter</a>,
 		<a href="https://github.com/mfreiholz">Github</a>
-		or just write me an e-mail to <code>info (at) mfreiholz (dot) de</code>
+		or just write me an e-mail to <span class="mail">info (at) mfreiholz (dot) de</span>
 	</p>
 
-	<h2>Top Readings</h2>
+	<h1>Recommended Readings</h1>
 	<ul>
 		<li><a href="http://en.cppreference.com/">C++ Reference</a> Good lookup resource for all standard C++ types and functions.</li>
 		<li><a href="https://isocpp.org/wiki/faq">C++ Super-FAQ</a> Some best practice advices, dos and don'ts. Read it from time to time to remember important pratices.</li>
@@ -24,7 +24,7 @@
 		<li><a href="https://woboq.com/blog/">Qt Woboq Blog</a> Those guys do know a lot about Qt and write some very good articles about it.</li>
 	</ul>
 
-	<h2>Top Books</h2>
+	<h1>Recommended Books</h1>
 	<ul>
 		<li><a href="http://www.amazon.com/Pragmatic-Programmer-Journeyman-Master/dp/020161622X">The Pragmatic Programmer</a> written by Andrew Hunt and David Thomas</li>
 	</ul>

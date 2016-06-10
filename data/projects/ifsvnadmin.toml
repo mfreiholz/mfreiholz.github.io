@@ -1,0 +1,5 @@
+title = "iF.SVNAdmin"
+description = "Web-based GUI to manage Subversion repositories and User/Group permissions (+LDAP support)."
+tags = ["PHP", "JavaScript", "LDAP", "Subversion"]
+url = "http://svnadmin.insanefactory.com/"
+weight = 3
