@@ -1,0 +1,34 @@
+{{ partial "header.html" . }}
+
+<div class="content">
+
+	<h1>Latest Posts</h1>
+	{{ range first 3 (where .Data.Pages "Section" "posts") }}
+		{{ .Render "li" }}
+	{{ end }}
+	
+	<h1>Social media and contact</h1>
+	<p>
+		In case you want to contact me, you can use one of my social accounts:
+		<a href="https://www.facebook.com/manuel.freiholz">Facebook</a>,
+		<a href="https://twitter.com/mfreiholz">Twitter</a>,
+		<a href="https://github.com/mfreiholz">Github</a>
+		or just write an e-mail to <span class="mail">info (at) mfreiholz (dot) de</span>
+	</p>
+
+	<h1>Recommended Readings</h1>
+	<ul>
+		<li><a href="http://en.cppreference.com/">C++ Reference</a> Good lookup resource for all standard C++ types and functions.</li>
+		<li><a href="https://isocpp.org/wiki/faq">C++ Super-FAQ</a> Some best practice advices, dos and don'ts. Read it from time to time to remember important pratices.</li>
+		<li><a href="http://hiltmon.com/blog/2016/03/25/dependency-limited-and-conflict-free-c-plus-plus/">C++ conflict free dependencies</a> My favorite way to manage dependencies in C++ environments.</li>
+		<li><a href="https://woboq.com/blog/">Qt Woboq Blog</a> Those guys do know a lot about Qt and write some very good articles about it.</li>
+	</ul>
+
+	<h1>Recommended Books</h1>
+	<ul>
+		<li><a href="http://www.amazon.com/Pragmatic-Programmer-Journeyman-Master/dp/020161622X">The Pragmatic Programmer</a> written by Andrew Hunt and David Thomas</li>
+	</ul>
+	
+</div>
+
+{{ partial "footer.html" . }}

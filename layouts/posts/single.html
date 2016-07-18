@@ -1,13 +1,23 @@
 {{ partial "header.html" . }}
 
-<div class="content">
-	<div class="post-back-link"><a href="/posts">&lt;&lt; Back to overview</a></div>
-	
+<div class="container">
+
+	<div class="goto-nav">
+		<a href="/">Home</a>
+		&middot;
+		<a href="/posts">Posts</a>
+	</div>
+
 	<div class="post">
 		<div class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></div>
 		<div class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</div>
 		<div class="post-content">{{ .Content }}</div>
 	</div>
+
+	<div class="post-comments"> 
+	{{ partial "disqus.html" . }}
+	</div>
+
 </div>
 
 {{ partial "footer.html" . }}
