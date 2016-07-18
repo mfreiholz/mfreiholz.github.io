@@ -10,7 +10,7 @@
 
 	<div class="post">
 		<div class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></div>
-		<div class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }}</div>
+		<div class="post-date">{{ .Date.Format "Mon, Jan 2, 2006" }} &middot; {{ .Params.author }}</div>
 		<div class="post-content">{{ .Content }}</div>
 	</div>
 

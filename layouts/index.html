@@ -15,10 +15,12 @@
 					<h2>Latest posts</h2>
 					<ul>
 					{{ range first 5 (where .Site.Pages "Section" "posts") }}
-						<li>
-							<span class="post-date">{{ .Date.Format "2006-01-01" }}</span>
-							<a href="{{ .Permalink }}">{{ .Title }}</a>
-						</li>
+						{{ if not (in .Params.tags "article") }}
+							<li>
+								<span class="post-date">{{ .Date.Format "2006-01-01" }}</span>
+								<a href="{{ .Permalink }}">{{ .Title }}</a>
+							</li>
+						{{ end }}
 					{{ end }}
 					</ul>
 					<a href="/posts">All posts</a>
@@ -28,6 +30,16 @@
 
 				<div class="col-sm-6">
 					<h2>Articles</h2>
+					<ul>
+					{{ range first 5 (where .Site.Pages "Section" "posts") }}
+						{{ if in .Params.tags "article" }}
+							<li>
+								<span class="post-date">{{ .Date.Format "2006-01-01" }}</span>
+								<a href="{{ .Permalink }}">{{ .Title }}</a>
+							</li>
+						{{ end }}
+					{{ end }}
+					</ul>
 					<p>Coming soon...</p>
 				</div>
 			</div>
@@ -94,6 +106,7 @@
 								<span class="label label-default">C++</span>
 								<span class="label label-default">Qt</span>
 								<span class="label label-default">Inno Setup</span>
+								<span class="label label-warning">Private Source</span>
 							</p>
 						</div>
 					</a>
@@ -114,6 +127,7 @@
 								<span class="label label-default">JavaScript</span>
 								<span class="label label-default">LDAP</span>
 								<span class="label label-default">Subversion</span>
+								<span class="label label-primary">Open Source</span>
 							</p>
 						</div>
 					</a>
@@ -132,6 +146,7 @@
 							<p>
 								<span class="label label-default">C++</span>
 								<span class="label label-default">Qt</span>
+								<span class="label label-primary">Open Source</span>
 							</p>
 						</div>
 					</a>
@@ -150,6 +165,7 @@
 							<p>
 								<span class="label label-default">C</span>
 								<span class="label label-default">C++</span>
+								<span class="label label-primary">Open Source</span>
 							</p>
 						</div>
 					</a>

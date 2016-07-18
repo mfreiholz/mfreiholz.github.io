@@ -8,8 +8,6 @@ title = "Impressum"
 ## Verantwortlich
 
 Manuel Freiholz \
-Proviantbachstraße 18 \
-86153 Augsburg \
 info (at) mfreiholz (dot) de
 
 ## Datenschutzerklärung
