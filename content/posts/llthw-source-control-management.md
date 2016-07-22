@@ -3,6 +3,7 @@ date = "2016-07-19T07:52:54+02:00"
 title = "LLTHW: Source Control Management (SCM)"
 author = "mfreiholz"
 tags = ["llthw", "article"]
+draft = true
 +++
 
 > **LLTHW** is the acronym for a series of posts called **Lessons learned the
