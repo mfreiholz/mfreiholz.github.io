@@ -19,8 +19,8 @@ a new project.
 As I was beginning with programming arround the age of 14 and made a lot of websites
 with PHP and MySQL for gaming clans, community websites and sometimes even small
 companies (all for free and just for fun), I unfortunetaly didn't know of any
-centralized SCM at this time.
-What is probably the main reason why I lost most of this old code.
+centralized SCM at this time -
+what is probably the main reason why I lost most of this old code.
 I surely developed ~10 forum-, ~20 clan-, ~20 blog-systems and hundreds of other
 very cool scripts, web-designs and flash animations.
 One HDD failure, no backups and everything was gone.
@@ -38,7 +38,7 @@ It's easier than ever before to host your source code on a server, even for free
 [GitHub](https://github.com/) is the most popular code and open-source hosting
 platform right now and offers a lot of additional features.
 
-It doesn't matter wheather your're using [CVS][cvs], [Subversion][svn], [Git][git]
+It doesn't matter whether your're using [CVS][cvs], [Subversion][svn], [Git][git]
 or any other available system out there. The important thing is:
 __Always use an SCM! It doesn't matter how small or big your project is!__
 
@@ -52,7 +52,7 @@ _"Tadaa.."_, you don't even need to make the backups on your own.
 
 Still need some arguments? Fine...
 
-- keep track of every change to a source file (author, code)
+- you can keep track of every change to a source file (author, code)
 - even after a long time, where a lot of developers might have changed something,
   you can lookup the author for every single line of code (blame)
 - team collaboration: work on the same file and merge the changes
