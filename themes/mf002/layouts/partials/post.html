@@ -1,8 +1,8 @@
 <div class="post">
 	<div class="post-title">{{ .Title }}</div>
-	<div class="post-content">{{ .Content }}</div>
+	<div class="post-content">{{ .Summary }}</div>
 	<div class="post-footer">
-		written on {{ .Date.Format "Mon, Jan 2, 2006" }} by {{ .Author }}
+		written on {{ .Date.Format "Mon, Jan 2, 2006" }} by {{ .Params.author }}
 	</div>
 	<div class="post-comments"></div>
 </div>
