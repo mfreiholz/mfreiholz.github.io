@@ -1,0 +1,68 @@
+html, body {
+	margin: 0;
+	padding: 0.3rem;
+}
+body {
+	background: rgb(255, 255, 255);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 18px;
+}
+
+h1, h2, h3, h4 {
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+}
+
+.top-nav {
+	background: rgb(255, 255, 255);
+	border: #ff9900;
+	border-style: solid;
+	border-width: 5px 0 0 0;
+	width: 100%;
+}
+.top-nav ul,
+.top-nav li {
+	margin: 0;
+	padding: 0;
+}
+.top-nav li {
+	float: left;
+	list-style: none;
+	padding: 0 3rem;
+}
+.top-nav li a {
+	color: rgb(30, 30, 30);
+	line-height: 3.0rem;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.top-nav li a:hover {
+	border-color: #ff9900;
+	border-style: solid;
+	border-width: 0 0 3px 0;
+}
+
+.main-content {
+	background: rgb(255, 255, 255);
+	margin: 0.6rem 0 0 0;
+	line-height: 1.5rem;
+}
+
+.sidebar .box h1 {
+	color: rgb(40, 40, 40);
+	font-size: 1.0rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.posts {
+	padding: 1.2rem;
+}
+.post {
+	margin: 0 0 1.2rem 0;
+}
+.post h1 {
+	font-size: 1.5rem;
+	padding: 0.6rem 0 0.6rem 0;
+}

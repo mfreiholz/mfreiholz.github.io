@@ -1,0 +1,11 @@
+<h1>{{ .Title }}</h1>
+<h2>Pages</h2>
+<ul>
+	{{ range .Data.Pages }}
+	<li><a href="{{ .RelPermalink  }}">{{ .Title }}</a></li>
+	{{ end }}
+</ul>
+
+	{{ range .Data.Pages }}
+	{{ partial "post" . }}
+	{{ end }}
