@@ -1,7 +1,8 @@
 +++
 date = "2016-10-16T11:25:14+02:00"
 title = "Make a class thread safe C++"
-
+author = "mfreiholz"
+tags = ["Development", "C++"]
 +++
 
 You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
@@ -70,7 +71,7 @@ int main(int argc, char** argv)
 
 Here you can see, that the `main()` implementation uses two steps to retrieve the cached value. First it checks whether it is available with `contains()` and then retrieves the value with `get()`. In an environment where the `Cache1` is only accessed by a single thread everything works just fine.
 
-There might be some missing validation checks and capacity regulations in the `Cache1` class, but that is not the topic of this article.
+*There might be some missing validation checks and capacity regulations in the `Cache1` class, but that is not the topic of this article.*
 
 ## Thread-safe, but not atomic
 
@@ -147,19 +148,21 @@ Here is the problematic piece of code again:
 ```cpp
 	if (cache.contains(1))
 	{
-	    // -> here thread #2 removes value "1"
-	    // -> this is possible because the `Cache2::_mtx` is no longer locked
-	    
-	    // now thread #1 directly accesses the no longer existing object and crashes
+		// -> here thread #2 removes value "1"
+		// -> this is possible because the `Cache2::_mtx` is no longer locked
+	
+		// now thread #1 directly accesses the no longer existing object and crashes
 		assert(cache.get(1)->size() == 1024);
 	}
 ```
 
 As you can see, because the two calls to `contains()` and `get()` are not atomic is why this `Cache2` implementation is not really thread-safe.
 
+> **Side node:** In reality the crash would already happen inside `Cache2::get()`, because [`std::map::at()`](http://www.cplusplus.com/reference/map/map/at/) method throws an exception, if the key is not available.
+
 ## Thread-safe locking, the right way
 
-Now we take a look at an implementation, which is not only thread-safe but also atomic with all of its implemented methods.
+Now we take a look at an implementation, which is not only thread-safe but also atomic with all of its methods.
 
 ```cpp
 class Cache3
@@ -191,7 +194,7 @@ public:
 };
 ```
 
-The important change here is, that the check whether a value is in cache is within the same LOCK as the method to retrieve the cached value. Not only the class changes, also the implementation of the `main()` needs to be different now.
+The important change here is, that the check whether a value is in cache, is within the same LOCK as the method to retrieve the cached value. But not only the class changes, also the implementation of the `main()` needs to be different now.
 
 ```cpp
 int main(int argc, char** argv)
@@ -220,4 +223,4 @@ int main(int argc, char** argv)
 
 Instead of calling two methods of `Cache3`, you only need to call `get()`. The return value will be valid, if it is cached or invalid if it is not in cache. You can add an `contains()` method again, of course, but never expect that `get()` returns a valid value as next statement.
 
-This is only a small example to show what can go wrong with thread-safe programming, but I hope it could help a bit.
+This was only a small example to show what can go wrong with thread-safe programming, but I hope it could help a bit.
