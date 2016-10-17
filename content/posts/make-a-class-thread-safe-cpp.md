@@ -2,7 +2,7 @@
 date = "2016-10-16T11:25:14+02:00"
 title = "Make a class thread safe C++"
 author = "mfreiholz"
-tags = ["Development", "C++"]
+tags = ["Development", "Tutorial", "C++"]
 +++
 
 You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
@@ -22,7 +22,7 @@ I will show you a use-case with a simple *Cache* class.
 
 ## Single threaded, non-(b)locking
 
-First I will show the basic implementation from where we start. A simple Cache class, which is meant to be used from one thread and does not use any Mutex- or Spin-locks.
+First I will show the basic implementation from where we start. A simple `Cache1` class, which is meant to be used from one thread and does not use any mutex- or spin-locks.
 
 ```cpp
 class Cache1
@@ -109,7 +109,7 @@ public:
 };
 ```
 
-I only added a new `std::mutex` as class member and wrapped each method implementation with `_mtx.lock()` and `_mtx.unlock()`. This does make all access on the internal `std::map` absolutely thread-safe. The `Cache2` itself is now no longer the problem. The problem comes with the way the class is being used, because it still uses the same `main()` implementation:
+I only added a new [`std::mutex`](http://www.cplusplus.com/reference/mutex/mutex/) as class member and wrapped each method implementation with `_mtx.lock()` and `_mtx.unlock()`. This does make all access on the internal [`std::map`](http://www.cplusplus.com/reference/map/map/) absolutely thread-safe. The `Cache2` itself is now no longer the problem. The problem comes with the way the class is being used, because it still uses the same `main()` implementation:
 
 ```cpp
 int main(int argc, char** argv)

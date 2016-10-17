@@ -1,0 +1,223 @@
+{{ partial "header.html" . }}
+
+	<div class="container">
+
+		<div class="contact-container">
+			<p>info (at) mfreiholz (dot) de</p>
+		</div>
+
+		<!-- News & Articles -->
+		<div class="news-container">
+			
+			<div class="row">
+
+				<div class="col-sm-6">
+					<h2>Latest posts</h2>
+					<ul>
+					{{ range first 5 (where .Site.Pages "Section" "posts") }}
+						{{ if not (in .Params.tags "article") }}
+							<li>
+								<span class="post-date">{{ .Date.Format "2006-01-01" }}</span>
+								<a href="{{ .Permalink }}">{{ .Title }}</a>
+							</li>
+						{{ end }}
+					{{ end }}
+					</ul>
+					<a href="/posts">All posts</a>
+					&middot;
+					<a href="/posts/index.xml">RSS</a>
+				</div>
+
+				<div class="col-sm-6">
+					<h2>Articles</h2>
+					<ul>
+					{{ range first 5 (where .Site.Pages "Section" "posts") }}
+						{{ if in .Params.tags "article" }}
+							<li>
+								<span class="post-date">{{ .Date.Format "2006-01-01" }}</span>
+								<a href="{{ .Permalink }}">{{ .Title }}</a>
+							</li>
+						{{ end }}
+					{{ end }}
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+
+		<!-- About & Projects -->
+		<div class="row">
+			<div class="col-sm-6">
+				<h2>Sites & Profiles</h2>
+
+				<div class="media">
+					<a href="https://github.com/mfreiholz">
+						<div class="media-left">
+							<img class="media-object" src="img/github-profile-avatar-64x64.png" alt="GitHub Profile" width="64" height="64">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">GitHub Profile</h4>
+							<p>Fork, contribute and watch my Open Source repositories on GitHub.</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="media">
+					<a href="https://www.facebook.com/manuel.freiholz">
+						<div class="media-left">
+							<img class="media-object" src="img/facebook-profile-avatar-64x64.png" alt="Facebook" width="64" height="64">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">Facebook</h4>
+							<p>Follow me on Facebook or send me a friend request for updates about some other stuff I do.</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="media">
+					<a href="https://twitter.com/mfreiholz">
+						<div class="media-left">
+							<img class="media-object" src="img/twitter-profile-avatar-64x64.png" alt="Twitter" width="64" height="64">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">Twitter</h4>
+							<p>Follow me on Twitter for quick development updates about my projects. I try to post all small changes I do to my projects
+								to keep you up-to-date.</p>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h2>Projects</h2>
+
+				<div class="media">
+					<a href="/ts3video/">
+						<div class="media-left">
+							<img class="media-object" src="img/ts3video-48x48.png" alt="TS3VIDEO" width="48" height="48">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">TS3VIDEO</h4>
+							<p>
+								A free and easy to use video conferencing plugin for TeamSpeak 3.
+							</p>
+							<p>
+								<span class="label label-default">C</span>
+								<span class="label label-default">C++</span>
+								<span class="label label-default">Qt</span>
+								<span class="label label-default">Inno Setup</span>
+								<span class="label label-warning">Private Source</span>
+							</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="media">
+					<a href="http://svnadmin.insanefactory.com/">
+						<div class="media-left">
+							<img class="media-object" src="img/ifsvnadmin-60x60.png" alt="iF.SVNAdmin" width="60" height="60">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">iF.SVNAdmin</h4>
+							<p>
+								Web-based GUI to manage Subversion repositories and User/Group permissions (+LDAP support).
+							</p>
+							<p>
+								<span class="label label-default">PHP</span>
+								<span class="label label-default">JavaScript</span>
+								<span class="label label-default">LDAP</span>
+								<span class="label label-default">Subversion</span>
+								<span class="label label-primary">Open Source</span>
+							</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="media">
+					<a href="https://github.com/mfreiholz/Qt-Advanced-Docking-System">
+						<div class="media-left">
+							<img class="media-object" src="img/github-profile-avatar-64x64.png" alt="Qt-Advanced-Docking-System" width="64" height="64">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">Qt Advanced Docking System (ADS)</h4>
+							<p>
+								Manages content widgets more like Visual Studio or similar programs.
+							</p>
+							<p>
+								<span class="label label-default">C++</span>
+								<span class="label label-default">Qt</span>
+								<span class="label label-primary">Open Source</span>
+							</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="media">
+					<a href="https://github.com/mfreiholz/humblelogging">
+						<div class="media-left">
+							<img class="media-object" src="img/humblelogging-logo-64x46.png" alt="HumbleLogging" width="64" height="46">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">HumbleLogging</h4>
+							<p>
+								HumbleLogging is a lightweight C++ logging framework. It aims to be extendible, easy to understand and as fast as possible.
+							</p>
+							<p>
+								<span class="label label-default">C</span>
+								<span class="label label-default">C++</span>
+								<span class="label label-primary">Open Source</span>
+							</p>
+						</div>
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Links -->
+		<div class="links-container">
+			<div class="row">
+
+				<div class="col-sm-6">
+					<h2>My Top Readings</h2>
+					<ul>
+						<li>
+							<a href="http://en.cppreference.com/">
+							C++ Reference</a> Good lookup resource for all standard C++ types and functions.
+						</li>
+						<li>
+							<a href="https://isocpp.org/wiki/faq">C++ Super-FAQ</a>
+							Some best practice advices, dos and don'ts.
+							Read it from time to time to remember important pratices.
+						</li>
+						<li>
+							<a href="http://hiltmon.com/blog/2016/03/25/dependency-limited-and-conflict-free-c-plus-plus/">C++ conflict free dependencies</a>
+							My favorite way to manage dependencies in C++ environments.
+						</li>
+						<li>
+							<a href="https://woboq.com/blog/">Qt Woboq Blog</a>
+							Those guys do know a lot about Qt and write some very good articles about it.
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6">
+					<h2>My Favorite Books</h2>
+					<ul>
+						<li>
+							<a href="http://www.amazon.com/Pragmatic-Programmer-Journeyman-Master/dp/020161622X">The Pragmatic Programmer</a>
+							<br> written by Andrew Hunt and David Thomas
+						</li>
+						<li>
+							<a href="https://www.amazon.de/Dynamische-Webseiten-mit-PHP-4/dp/3772378420" lang="de_de">Dynamische Webseiten mit PHP 4 (German)</a>
+							<br>written by Jochen Franke (2002)
+							<br>This was my first book, which teached me all basics about programming with easy and useful examples.
+							Even though it is no longer up-to-date, I wanted to mention it.
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+{{ partial "footer.html" . }}

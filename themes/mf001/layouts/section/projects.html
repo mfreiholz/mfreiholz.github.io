@@ -1,0 +1,23 @@
+{{ partial "header.html" . }}
+
+<div class="content">
+	
+	<div class="projects">
+	{{ range sort .Site.Data.projects "weight" }}
+		<div class="project">
+			<div class="project-logo"><img src="{{ .logo }}" alt="Logo"></div>
+			<div class="project-body">
+				<div class="project-title"><a href="{{ .url }}">{{ .title }}</a></div>
+				<div class="project-description">{{ .description }}</div>
+				<div class="projects-tags">
+				{{ range .tags }}
+					<span class="project-tag">{{ . }}</span>
+				{{ end }}
+				</div>
+			</div>
+		</div>
+	{{ end }}
+	</div>
+</div>
+
+{{ partial "footer.html" . }}
