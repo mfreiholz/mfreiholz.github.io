@@ -5,8 +5,7 @@ author = "mfreiholz"
 tags = ["Development", "Tutorial", "C++"]
 +++
 
-You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this
-<!--more-->
+You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:<!--more-->
 
 ```cpp
 void MyClass::set(T val)

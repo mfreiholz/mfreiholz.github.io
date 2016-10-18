@@ -1,17 +1,24 @@
 html, body {
 	background: #fff;
+	font-family: 'Lora', serif;
+	font-size: 20px;
 }
 
-body {
-	font-family: serif;
-	font-size: 18px;
+a, a:visited, a:active {
+	color: #AA0000;
+	text-decoration: none;
 }
+
+a:hover {
+	text-decoration: underline;
+}
+
+/****************** site header **********************************************/
 
 #site-header {
-	font-family: sans-serif;
+	font-family: 'Julius Sans One', sans-serif;
 	text-align: center;
 	padding: 2rem 0 2.5rem 0;
-	/*font-family: 'Julius Sans One', sans-serif;*/
 }
 
 #site-header .name {
@@ -23,18 +30,10 @@ body {
 	font-size: 2rem;
 }
 
-.site-separator {
-	border-color: #ccc;
-	border-style: solid;
-	border-width: 1px 0 0 0;
-	margin: 1rem auto 2rem auto;
-	display: block;
-	width: 80%;
-}
+/****************** site content *********************************************/
 
 #site-content {
-	max-width: 800px;
-	margin: 0 auto;
+	margin: 2rem auto 0 auto;
 }
 
 #site-content h1,
@@ -59,22 +58,67 @@ body {
 	font-size: 1.4rem;
 }
 
+/****************** site navigation ******************************************/
+
+#site-navigation {
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 1px 0 1px 0;
+}
+
+#site-navigation ul {
+	margin: 0 auto;
+	width: 400px;
+}
+
+#site-navigation ul,
+#site-navigation li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#site-navigation li {
+	float: left;
+}
+
+#site-navigation li a {
+	color: #000;
+	display: block;
+	padding: 1rem 3rem;
+	text-transform: uppercase;
+}
+
+#site-navigation .right {
+	float: right;
+}
+
+#site-navigation .social {
+	padding: 0.8rem 0 0 0;
+}
+
 /****************** defaults *************************************************/
 
 pre {
 	background: #f7f7f7;
 	border: 0 solid #ccc;
 	padding: 0.5rem;
-
 }
 
 /****************** posts ****************************************************/
 
 .post .post-title {
+	color: rgb(195, 133, 0);
 	font-size: 2.5rem;
 	font-weight: bold;
 }
 
 .post .post-content {
 	line-height: 1.8rem;
+}
+
+.post .post-info {
+	color: #999;
+	padding: 0.3rem 0;
+	text-align: right;
 }

@@ -5,9 +5,9 @@ author = "mfreiholz"
 tags = ["ts3video", "release"]
 +++
 
-Yesterday I _tried_ to release version 0.6, which was a disaster in my opinion.
-Unfortunately a few users had problems and that’s why I decided to rollback to
-0.5 within an hour of release before too many of you upgraded. I never felt really
+Yesterday I _tried_ to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.<!--more-->
+
+I never felt really
 good about this release because I didn’t invest enough time in testing it and I
 pushed myself too much to release the update as quickly as possible.
 That’s not what I want for my hobby projects. I love to take my time to deliver software

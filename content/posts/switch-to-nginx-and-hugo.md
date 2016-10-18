@@ -6,7 +6,7 @@ tags = ["server", "nginx", "hugo", "security"]
 +++
 
 I decided to make some changes to my current root server and websites.
-I already migrated most of my websites to be statically generated with [Hugo](https://hugo.io).
+I already migrated most of my websites to be statically generated with [Hugo](https://hugo.io).<!--more-->
 
 # Why a static site generator?
 

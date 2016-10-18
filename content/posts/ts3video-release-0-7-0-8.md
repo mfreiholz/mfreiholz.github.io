@@ -11,6 +11,7 @@ __Download here:__ <https://mfreiholz.de/ts3video/>
 
 Most changes are internal and don’t change the user experience,
 but there is one new great feature: __Streaming in a resolution of your choice (HD!)__
+<!--more-->
 
 # Troubleshooting
 
