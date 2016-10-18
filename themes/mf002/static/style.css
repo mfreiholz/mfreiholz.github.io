@@ -107,15 +107,14 @@ a:hover {
 pre {
 	background: #f7f7f7;
 	border: 0 solid #ccc;
+	line-height: 1.2rem;
 	padding: 0.5rem;
 }
 
 /****************** posts ****************************************************/
 
 .post .post-title {
-	color: rgb(195, 133, 0);
 	font-size: 2.5rem;
-	font-weight: bold;
 }
 
 .post .post-content {
@@ -126,4 +125,14 @@ pre {
 	color: #999;
 	padding: 0.3rem 0;
 	text-align: right;
+}
+
+/****************** work *****************************************************/
+
+.work-row {
+	margin-bottom: 2rem;
+}
+
+.work .work-title {
+	font-size: 2.0rem;
 }

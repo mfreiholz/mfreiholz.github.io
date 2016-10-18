@@ -1,0 +1,30 @@
+{{ partial "header.html" . }}
+
+{{ $length := len .Data.Pages }}
+{{ $lastPostIndex := sub $length 1 }}
+{{ range $i, $e := .Data.Pages }}
+
+    {{ if eq (mod $i 2) 0 }}
+    <div class="row work-row">
+    {{ end }}
+
+    <div class="col-md-6">
+
+        <div class="work">
+            <div class="work-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+            <div class="work-text">{{ .Summary }}</div>
+            <div class="work-labels">
+                {{ range .Params.labels }}
+                    {{ . }} /
+                {{ end }}
+            </div>
+        </div>
+    </div>
+
+    {{ if or (eq (mod $i 2) 1) (eq $i $lastPostIndex) }}
+    </div>
+    {{ end }}
+
+{{ end }}
+
+{{ partial "footer.html" . }}
