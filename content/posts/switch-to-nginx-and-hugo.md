@@ -2,7 +2,7 @@
 date = "2016-06-06T10:19:10+02:00"
 title = "Switch to NGINX and Hugo"
 author = "mfreiholz"
-tags = ["server", "nginx", "hugo", "security"]
+tags = ["Administration"]
 +++
 
 I decided to make some changes to my current root server and websites.

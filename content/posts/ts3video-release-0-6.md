@@ -2,7 +2,7 @@
 date = "2016-02-07T13:11:39+02:00"
 title = "TS3VIDEO release 0.6"
 author = "mfreiholz"
-tags = ["ts3video", "release"]
+tags = ["Development", "TS3VIDEO"]
 +++
 
 Yesterday I _tried_ to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.<!--more-->

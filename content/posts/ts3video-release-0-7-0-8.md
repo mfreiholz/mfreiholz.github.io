@@ -2,7 +2,7 @@
 date = "2016-05-06T13:12:18+02:00"
 title = "TS3VIDEO release 0.7, 0.8"
 author = "mfreiholz"
-tags = ["ts3video", "release"]
+tags = ["Development", "TS3VIDEO"]
 +++
 
 The new v0.6 is out and available for download.

@@ -2,3 +2,6 @@ baseurl = "/"
 languageCode = "en-us"
 title = "mfreiholz.de"
 theme = "mf002"
+
+[taxonomies]
+tag = "tags"
