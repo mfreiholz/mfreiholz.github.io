@@ -136,3 +136,8 @@ pre {
 .work .work-title {
 	font-size: 2.0rem;
 }
+
+.work .work-labels {
+	color: #999;
+	text-align: right;
+}

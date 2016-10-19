@@ -1,8 +1,9 @@
 {{ partial "header.html" . }}
 
-{{ $length := len .Data.Pages }}
+{{ $list := .Data.Pages.ByWeight.Reverse }}
+{{ $length := len $list }}
 {{ $lastPostIndex := sub $length 1 }}
-{{ range $i, $e := .Data.Pages }}
+{{ range $i, $e := $list }}
 
     {{ if eq (mod $i 2) 0 }}
     <div class="row work-row">
@@ -11,12 +12,14 @@
     <div class="col-md-6">
 
         <div class="work">
-            <div class="work-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+            <div class="work-title">{{ .Title }}</div>
+            <div class="work-homepage"><a href="{{ .Params.homepage }}">{{ .Params.homepage }}</a></div>
             <div class="work-text">{{ .Summary }}</div>
             <div class="work-labels">
                 {{ range .Params.labels }}
                     {{ . }} /
                 {{ end }}
+                Since {{ .Date.Format "2006" }}
             </div>
         </div>
     </div>
