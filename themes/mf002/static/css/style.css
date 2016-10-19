@@ -149,10 +149,13 @@ a:hover {
 /****************** defaults *************************************************/
 
 pre {
-	background: #f7f7f7;
+	/*background: #f7f7f7;
 	border: 0 solid #ccc;
 	line-height: 1.2rem;
-	padding: 0.5rem;
+	padding: 0.5rem;*/
+	line-height: 1.2rem;
+	margin: 0;
+	padding: 0;
 }
 
 /****************** posts ****************************************************/
@@ -170,9 +173,13 @@ pre {
 }
 
 .post .post-info {
-	color: #999;
 	padding: 0.3rem 0;
 	text-align: right;
+}
+
+.post .post-info,
+.post .post-info a {
+	color: #999;
 }
 
 /****************** work *****************************************************/
