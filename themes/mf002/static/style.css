@@ -31,6 +31,18 @@ a:hover {
 	font-size: 2rem;
 }
 
+@media (max-width: 500px) /* Mobile */ {
+	#site-header {
+		padding: 1rem 0.3rem;
+	}
+	#site-header .name {
+		font-size: 1rem;
+	}
+	#site-header .slogan {
+		font-size: 1.0rem;
+	}
+}
+
 /****************** site navigation ******************************************/
 
 #site-navigation {
@@ -72,6 +84,21 @@ a:hover {
 
 #site-navigation .social img {
 	margin: 0.7rem 0 0 0.7rem;
+}
+
+@media (max-width: 500px) /* Mobile */ {
+	#site-navigation li {
+		float: none;
+		text-align: center;
+	}
+	#site-navigation .right {
+		float: none;
+		text-align: center;
+	}
+	#site-navigation .social img {
+		margin: 0;
+		margin: 0 1rem 1rem 1rem;
+	}
 }
 
 /****************** site content *********************************************/
@@ -129,6 +156,10 @@ pre {
 }
 
 /****************** posts ****************************************************/
+
+.post {
+	margin: 0 0 2rem 0;
+}
 
 .post .post-title {
 	font-size: 2.5rem;
