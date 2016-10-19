@@ -224,3 +224,5 @@ int main(int argc, char** argv)
 Instead of calling two methods of `Cache3`, you only need to call `get()`. The return value will be valid, if it is cached or invalid if it is not in cache. You can add an `contains()` method again, of course, but never expect that `get()` returns a valid value as next statement.
 
 This was only a small example to show what can go wrong with thread-safe programming, but I hope it could help a bit.
+
+Sources on GitHub: <https://github.com/mfreiholz/post-threadsafeclass>
