@@ -86,25 +86,22 @@ class Cache2
 public:
 	bool contains(int key) const
 	{
-		_mtx.lock();
+		std::lock_guard<std::mutex> l(_mtx);
 		bool b = _map.find(key) != _map.end();
-		_mtx.unlock();
 		return b;
 	}
 
 	std::shared_ptr<CacheData> get(int key) const
 	{
-		_mtx.lock();
-		std::shared_ptr<CacheData> val = _map.at(key);
-		_mtx.unlock();
+		std::lock_guard<std::mutex> l(_mtx);
+		std::shared_ptr<CacheData> val = _map.at(key); // can throw an std::exception
 		return val;
 	}
 
 	void insert(int key, std::shared_ptr<CacheData> value)
 	{
-		_mtx.lock();
+		std::lock_guard<std::mutex> l(_mtx);
 		_map.insert(std::make_pair(key, value));
-		_mtx.unlock();
 	}
 };
 ```
@@ -173,24 +170,21 @@ class Cache3
 public:
 	std::shared_ptr<CacheData> get(int key) const
 	{
-		_mtx.lock();
+		std::lock_guard<std::mutex> l(_mtx);
 		std::map<int, std::shared_ptr<CacheData> >::const_iterator it;
 		if ((it = _map.find(key)) != _map.end())
 		{
 			auto val = it->second;
-			_mtx.unlock();
 			return val;
 		}
-		_mtx.unlock();
 		return std::shared_ptr<CacheData>();
-	}
+	} // auto unlock (lock_guard, RAII)
 
 	void insert(int key, std::shared_ptr<CacheData> value)
 	{
-		_mtx.lock();
+		std::lock_guard<std::mutex> l(_mtx);
 		_map.insert(std::make_pair(key, value));
-		_mtx.unlock();
-	}
+	} // auto unlock (lock_guard, RAII)
 };
 ```
 
@@ -226,3 +220,6 @@ Instead of calling two methods of `Cache3`, you only need to call `get()`. The r
 This was only a small example to show what can go wrong with thread-safe programming, but I hope it could help a bit.
 
 Sources on GitHub: <https://github.com/mfreiholz/post-threadsafeclass>
+
+# Update notes
+- Because of some feedback, I decided to use `std::lock_guard` for safe RAII based mutex locking. I didn't use it in the first place, because I thought it could be more transparent for presentation purpose to use basic `std::mutex::lock()` and `std::mutex::unlock()` calls. *Bret Kuns* made it clear to me, that a reader have to understand RAII and it's better to let the user google for it before showing it the wrong way.
