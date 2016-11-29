@@ -19,7 +19,7 @@ The *intended* way of deployment is a classic FTP/SFTP/SCP upload. You simply co
 
 ## The Solution (Requires Shell Access)
 
-Since another rule in my life is: *"Put everything into [VC](https://en.wikipedia.org/wiki/Version_control) repository"* and a few searches on the Internet results with nearly the same idea, it should be the right way to go. Most solutions on the Internet suggest to use a single repository with a *generated* branch, but I don't like the idea to have the generated website filling up my source repository with redundant data. That's why I decided to use two repositories and one Cron-Job. In addition, this gives me the possibility to keep the source- private and the *generated*-repository public.
+Since another rule in my life is: *"Put everything into [VC](https://en.wikipedia.org/wiki/Version_control) repository"* and a few searches on the Internet results with nearly the same idea, it should be the right way to go to put my website into a Git repository and directly deploy from it. Most solutions on the Internet suggest to use a single repository with a *generated* branch, but I don't like the idea to have the generated website filling up my source repository with redundant data. That's why I decided to use two repositories and one Cron-Job. In addition, this gives me the possibility to keep the source- private and the *generated*-repository public.
 
 Here a small overview with real data of this website:
 
@@ -39,9 +39,9 @@ In the next step I will show you, how to setup the environment step-by-step. You
 
 ## How To Setup
 
-I'm not going to show you, how to create the Git repositories. You should already know that and have a place to store them. I will use the above mentioned URLs.
+I'm not going to show you, how to create the Git repositories. You should already know that and have a place to store them. I will use the above mentioned URLs for this example.
 
-### Server side
+### Server Side
 
 In the first setup, we need to checkout the repository to the configured virtual-host DocumentRoot of your Apache/NGINX server.
 
@@ -59,31 +59,30 @@ Now setup cron-job for auto update every 5 minutes. Open your `/etc/crontab` and
 
 Restart cron with `service cron restart` and you're done. That's all you have to do on your server. Everything else happens on client side.
 
+### Client Side
 
------------------------------------
+I use to checkout everything flat into my main *source* directory, e.g.: `C:\Source` on Windows:
 
 ```bash
-cd %USERPROFILE%\Sources\mfreiholz.de
+cd C:\Source
+git clone https://github.com/mfreiholz/mfreiholz.de.git
+git clone https://github.com/mfreiholz/mfreiholz.de-rendered.git
 ```
 
-
-Generate website:
+As soon as you're done with your changes, validated and committed them in the first repository you can generate your website into the second repository:
 
 ```bash
-cd %USERPROFILE%\Sources\mfreiholz.de
+cd C:\Source\mfreiholz.de
 hugo --cleanDestinationDir --output ..\mfreiholz.de-rendered
 ```
 
-# NOTES
+Next you can publish your page with a simple Git `commit` and `push` command.
 
- I don't run any PHP scripts on my server, PHP is not even installed, which is very good for security. But one thing that I never liked about static sites, was the way how deployment works. I had to do too much on my own for each update: Open SCP client with RSA-Key authentication -> Copy/Overwrite everything (I didn't like to pick every single file). 
+```
+cd C:\Source\mfreiholz.de-rendered
+git add -A
+git commit -m "changes..."
+git push 
+```
 
- - At least until now. Let you show you, how I manage this page:
-
-https://github.com/mfreiholz/mfreiholz.de.git
-
-- Open SCP client (SCP, because of RSA-Key authentication)
-- Copy/overwrite all files on the remote system
-
-
-Based on some research and personal preference, using a Git repository . I've read a few articles with possible solutions, which mostly used a single repository for source and generated output. But I don't like it to blow up my source repository with redundant data. I like it to keep things very simple and that is why I use two repositories and a single cron-job.
+That's all. Your server will automatically pull the changes from the *rendered* repository and make them public. Based on the cron-job setup this may take a minute.
