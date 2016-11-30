@@ -69,7 +69,7 @@ git clone https://github.com/mfreiholz/mfreiholz.de.git
 git clone https://github.com/mfreiholz/mfreiholz.de-rendered.git
 ```
 
-As soon as you're done with your changes, validated and committed them in the first repository you can generate your website into the second repository:
+You do all your work in the first repository and as soon as you're done with your changes, validated and committed them in the first repository you can generate your website into the second repository with:
 
 ```bash
 cd C:\Source\mfreiholz.de
