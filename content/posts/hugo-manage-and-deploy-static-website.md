@@ -73,7 +73,7 @@ You do all your work in the first repository and as soon as you're done with you
 
 ```bash
 cd C:\Source\mfreiholz.de
-hugo --cleanDestinationDir --output ..\mfreiholz.de-rendered
+hugo --cleanDestinationDir --destination ..\mfreiholz.de-rendered
 ```
 
 Next you can publish your page with a simple Git `commit` and `push` command.
