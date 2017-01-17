@@ -7,7 +7,7 @@ tags = ["Administration", "Tutorial"]
 
 I currently develop and setup different software products which needs to display a map, like Google Maps or OpenStreetMaps. One very important requirement is to display the Map without an active internet connection. This quickly results in the idea to run my own [GeoServer](http://geoserver.org/) instance with local stored map data and distribute it via [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) (Web Map Service).
 
-In the first step I simply added an OpenStreetMap layer and cached a few zoom levels with the built-in "GWC Seed Form" (batched caching) mechanism. I tested it with [OpenLayers](http://openlayers.org/) and everything worked fine. Unfortunetaly one of the dozens software components I required, uses the [NASA WorldWind](https://worldwind.arc.nasa.gov/) viewer, which seems to use completely different zoom-levels (resolutions) than most other available viewers. Since I am new to this field I spend hours by searching for a solution, but couldn't find anything on the internet. Until...
+In the first step I simply added an OpenStreetMap layer and cached a few zoom levels with the built-in *GWC Seed Form* (batched caching) mechanism. I tested it with [OpenLayers](http://openlayers.org/) and everything worked just fine. Unfortunetaly one of the dozens software components I require, uses the [NASA WorldWind](https://worldwind.arc.nasa.gov/) viewer, which seems to use completely different zoom-levels (resolutions) than most other available viewers. Since I am new to this field I spend hours by searching for a solution, but couldn't find anything on the internet. Until...
 
 ## The Problem Cause
 
@@ -33,7 +33,7 @@ At some point I was able to get hands on the HTTP request URL, which the NASA Wo
 ### 1. Setup Gridset
 
 - *Tile Caching* -> *Gridsets* \
-Click *"Create a copy"* of the *EPSG:4326* Gridset
+Click *Create a copy* of the *EPSG:4326* Gridset
 - Remove all levels except the first one from the *Tile Matrix Set* and paste `0.0703125` into the *Pixel Size* column. This is the horizontal resolution, which the above HTTP Response of the WMS contains.
 - Clicking on *Add zoom level* will now automatically set the correct *Pixel* size for the next zoom level. It might be useful to add ~15-22 zoom levels.
 
