@@ -1,6 +1,6 @@
 +++
 date = "2017-01-17T19:29:32+01:00"
-title = "How to use GeoServer/GeoWebCache with NASA WorldWind"
+title = "How to use GeoServer / GeoWebCache with NASA WorldWind"
 author = "mfreiholz"
 tags = ["Administration", "Tutorial"]
 +++

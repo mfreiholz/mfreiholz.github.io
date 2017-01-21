@@ -14,6 +14,11 @@ a:hover {
 	text-decoration: underline;
 }
 
+.clear {
+	clear: both;
+	float: none;
+}
+
 /****************** site header **********************************************/
 
 #site-header {
@@ -48,12 +53,7 @@ a:hover {
 #site-navigation {
 	border-color: #ccc;
 	border-style: solid;
-	border-width: 1px 0 1px 0;
-}
-
-#site-navigation ul {
-	margin: 0 auto;
-	width: 400px;
+	border-width: 0.1rem 0 0.1rem 0;
 }
 
 #site-navigation ul,
@@ -70,7 +70,7 @@ a:hover {
 #site-navigation li a {
 	color: #000;
 	display: block;
-	padding: 1rem 3rem;
+	padding: 0.8rem 2.5rem;
 	text-transform: uppercase;
 }
 
@@ -83,7 +83,7 @@ a:hover {
 }
 
 #site-navigation .social img {
-	margin: 0.7rem 0 0 0.7rem;
+	margin: 0.5rem 0 0 0.7rem;
 }
 
 @media (max-width: 500px) /* Mobile */ {
@@ -99,6 +99,12 @@ a:hover {
 		margin: 0;
 		margin: 0 1rem 1rem 1rem;
 	}
+}
+
+#site-navigation .col-md-8,
+#site-navigation .col-md-4
+{
+	padding: 0;
 }
 
 /****************** site content *********************************************/
@@ -144,6 +150,10 @@ a:hover {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+#site-footer > div > div {
+	text-align: center;
 }
 
 /****************** defaults *************************************************/
