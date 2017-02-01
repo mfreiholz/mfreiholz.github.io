@@ -7,8 +7,19 @@ title = "Impressum"
 
 ## Verantwortlich
 
+M. Freiholz Software Development \
 Manuel Freiholz \
-info (at) mfreiholz (dot) de
+Proviantbachstraße 18 \
+86153 Augsburg
+
+E-Mail: info (at) mfreiholz (dot) de \
+Phone: 0049 (0) 176 82070576
+
+## Unternehmensinformationen
+
+Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.
+
+Steuernummer: 103/218/10271
 
 ## Datenschutzerklärung
 
