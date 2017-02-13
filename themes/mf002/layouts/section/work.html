@@ -1,33 +1,38 @@
 {{ partial "header.html" . }}
 
-{{ $list := .Data.Pages.ByWeight.Reverse }}
-{{ $length := len $list }}
-{{ $lastPostIndex := sub $length 1 }}
-{{ range $i, $e := $list }}
+<div id="site-content" class="container">
 
-    {{ if eq (mod $i 2) 0 }}
-    <div class="row work-row">
-    {{ end }}
+    {{ $list := .Data.Pages.ByWeight.Reverse }}
+    {{ $length := len $list }}
+    {{ $lastPostIndex := sub $length 1 }}
+    {{ range $i, $e := $list }}
 
-    <div class="col-md-6">
+        {{ if eq (mod $i 2) 0 }}
+        <div class="row work-row">
+        {{ end }}
 
-        <div class="work">
-            <div class="work-title">{{ .Title }}</div>
-            <div class="work-homepage"><a href="{{ .Params.homepage }}">{{ .Params.homepage }}</a></div>
-            <div class="work-text">{{ .Summary }}</div>
-            <div class="work-labels">
-                {{ range .Params.labels }}
-                    {{ . }} /
-                {{ end }}
-                Since {{ .Date.Format "2006" }}
+        <div class="col-md-6">
+
+            <div class="work">
+                <div class="work-title">{{ .Title }}</div>
+                <div class="work-homepage"><a href="{{ .Params.homepage }}">{{ .Params.homepage }}</a></div>
+                <div class="work-text">{{ .Summary }}</div>
+                <div class="work-labels">
+                    {{ range .Params.labels }}
+                        {{ . }} /
+                    {{ end }}
+                    Since {{ .Date.Format "2006" }}
+                </div>
             </div>
         </div>
-    </div>
 
-    {{ if or (eq (mod $i 2) 1) (eq $i $lastPostIndex) }}
-    </div>
+        {{ if or (eq (mod $i 2) 1) (eq $i $lastPostIndex) }}
+        </div>
+        {{ end }}
+
     {{ end }}
 
-{{ end }}
+</div>
+<!--./site-content-->
 
 {{ partial "footer.html" . }}

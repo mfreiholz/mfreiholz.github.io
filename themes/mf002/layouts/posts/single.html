@@ -1,6 +1,13 @@
 {{ partial "header.html" . }}
-{{ partial "post-full.html" . }}
-<div class="post-comments"> 
-{{ partial "disqus.html" . }}
+
+<div id="site-content" class="container md">
+
+    {{ partial "post-full.html" . }}
+
+    <div class="post-comments"> 
+        {{ partial "disqus.html" . }}
+    </div>
+
 </div>
+
 {{ partial "footer.html" . }}

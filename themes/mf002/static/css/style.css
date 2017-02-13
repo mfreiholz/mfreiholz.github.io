@@ -1,7 +1,7 @@
 html, body {
 	background: #fff;
 	font-family: 'Lora', serif;
-	font-size: 18px;
+	font-size: 16px;
 }
 
 a, a:visited, a:active {
@@ -24,15 +24,15 @@ a:hover {
 #site-header {
 	font-family: 'Julius Sans One', sans-serif;
 	text-align: center;
-	padding: 2rem 0 2.5rem 0;
+	padding: 1.0rem 0 1.0rem 0;
 }
 
-#site-header .name {
+#site-header .title {
 	font-size: 3rem;
 	font-weight: bold;
 }
 
-#site-header .slogan {
+#site-header .subtitle {
 	font-size: 2rem;
 }
 
@@ -40,11 +40,11 @@ a:hover {
 	#site-header {
 		padding: 1rem 0.3rem;
 	}
-	#site-header .name {
+	#site-header .title {
 		font-size: 1rem;
 	}
-	#site-header .slogan {
-		font-size: 1.0rem;
+	#site-header .subtitle {
+		font-size: 1rem;
 	}
 }
 
@@ -83,7 +83,7 @@ a:hover {
 }
 
 #site-navigation .social img {
-	margin: 0.5rem 0 0 0.7rem;
+	margin: 0.3rem 0 0 0.7rem;
 }
 
 @media (max-width: 500px) /* Mobile */ {
@@ -102,18 +102,17 @@ a:hover {
 }
 
 #site-navigation .col-md-8,
-#site-navigation .col-md-4
-{
+#site-navigation .col-md-4 {
 	padding: 0;
 }
 
 /****************** site content *********************************************/
 
 #site-content {
-	margin: 2rem auto 0 auto;
+	margin: 1rem auto 0 auto;
 }
 
-#site-content h1,
+/*#site-content h1,
 #site-content h2,
 #site-content h3,
 #site-content h4 {
@@ -133,7 +132,7 @@ a:hover {
 }
 #site-content h4 {
 	font-size: 1.4rem;
-}
+}*/
 
 /****************** site-footer **********************************************/
 
@@ -159,10 +158,6 @@ a:hover {
 /****************** defaults *************************************************/
 
 pre {
-	/*background: #f7f7f7;
-	border: 0 solid #ccc;
-	line-height: 1.2rem;
-	padding: 0.5rem;*/
 	line-height: 1.2rem;
 	margin: 0;
 	padding: 0;
@@ -174,13 +169,13 @@ pre {
 	margin: 0 0 2rem 0;
 }
 
-.post .post-title {
-	font-size: 2.5rem;
-}
+/*.post .post-title {
+	font-size: 2.0rem;
+}*/
 
-.post .post-content {
+/*.post .post-content {
 	line-height: 1.8rem;
-}
+}*/
 
 .post .post-info {
 	padding: 0.3rem 0;
@@ -205,4 +200,64 @@ pre {
 .work .work-labels {
 	color: #999;
 	text-align: right;
+}
+
+/****************** Site Sub Navigation **************************************/
+
+.site-sub-nav {
+	background: #e8f2f9;
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 0 0 0.1rem 0;
+}
+
+.site-sub-nav ul,
+.site-sub-nav li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.site-sub-nav li {
+	float: left;
+}
+
+.site-sub-nav li a {
+	color: #000;
+	display: block;
+	padding: 0.8rem 1.5rem;
+	/*text-transform: uppercase;*/
+}
+
+.site-sub-nav li a img {
+	padding: 0 0.4rem 0 0;
+}
+
+/****************** TS3VIDEO specific ****************************************/
+
+/* Frontpage welcome header */
+
+.welcome {
+	margin: 0 auto 0 auto;
+	padding: 0;
+	width: 100%;
+}
+
+.welcome .slogan {
+	font-size: 2.5rem;
+	letter-spacing: 0.1rem;
+	text-align: center;
+}
+
+@media (min-width: 1024px) {
+	.welcome .preview {
+		line-height: 0;
+		text-align: center;
+		background: url("/images/ts3video-welcome-image.png") no-repeat top center;
+		height: 510px;
+	}
+}
+
+.welcome-content {
+	margin-top: 0.8rem;
 }

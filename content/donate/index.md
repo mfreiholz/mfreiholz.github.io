@@ -3,7 +3,7 @@ date = "2017-01-21T15:08:00+02:00"
 title = "Support Me / Donate"
 +++
 
-# English
+## English
 
 You like my stuff and would like to support me?
 
@@ -26,7 +26,7 @@ What will I do with your support?
 
 ---
 
-# German
+## German
 
 Dir gefällt was ich mache und möchtest mich unterstützen?
 

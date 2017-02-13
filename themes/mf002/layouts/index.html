@@ -1,7 +1,11 @@
 {{ partial "header.html" . }}
 
-{{ range where .Data.Pages "Section" "posts" }}
-    {{ partial "post-summary.html" . }}
-{{ end }}
+<div id="site-content" class="container md">
+
+    {{ range where .Data.Pages "Section" "posts" }}
+        {{ partial "post-summary.html" . }}
+    {{ end }}
+
+</div>
 
 {{ partial "footer.html" . }}

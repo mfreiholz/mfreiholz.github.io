@@ -1,0 +1,99 @@
+/**
+  Basic style sheet for all markdown content.
+**/
+
+.md {
+word-break: break-word;
+}
+
+.md h1,
+.md h2,
+.md h3,
+.md h4,
+.md h5 {
+display: block;
+font-size: 1rem;
+font-weight: normal;
+/*margin: 0;*/
+/*padding: 0;*/
+}
+
+.md h1 {
+font-size: 2.2rem;
+/*line-height: 4.0rem;*/
+border-bottom: 0.1rem solid #ccc;
+}
+
+.md h2 {
+font-size: 2.0rem;
+/*line-height: 3.8rem;*/
+/*border-bottom: 0.1rem solid #ccc;*/
+}
+
+.md h3 {
+font-size: 1.5rem;
+/*line-height: 3.6rem;*/
+/*border-bottom: 0.1rem solid #ccc;*/
+}
+
+.md h4 {
+font-size: 1.3rem;
+/*line-height: 3.4rem;*/
+}
+
+.md h5 {
+font-size: 1.2rem;
+/*line-height: 3.2rem;*/
+}
+
+.md p {
+/*display: block;*/
+}
+
+.md ul {
+display: block;
+}
+
+.md li {
+display: list-item;
+list-style-type: disc;
+}
+
+.md code {
+background: #eeeeee;
+padding: 0.2rem 0.2rem;
+}
+
+.md pre {
+  padding: 0.2rem;
+  overflow: auto;
+  background: #eeeeee;
+  font-family: Consolas, Courier, monospace;
+  border-radius: 0.3rem;
+  word-break: normal;
+}
+
+.md blockquote {
+  padding: 0 0.2rem;
+  color: #777;
+  border-left: 0.4rem solid #ddd;
+  margin: 0 0 16px 0;
+}
+
+.md table {
+  width: 100%;
+  overflow: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.md table th {
+  background: #f8f8f8;
+  font-weight: bold;
+}
+
+.md table th,
+.md table td {
+  padding: 8px 8px;
+  border: 1px solid #ddd;
+}

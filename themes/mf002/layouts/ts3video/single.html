@@ -1,10 +1,9 @@
 {{ partial "header.html" . }}
+{{ partial "ts3video-nav.html" . }}
 
 <div id="site-content" class="container md">
 
-	{{ range .Data.Pages }}
-		{{ partial "post-full.html" . }}
-	{{ end }}
+    {{ .Content }}
 
 </div>
 

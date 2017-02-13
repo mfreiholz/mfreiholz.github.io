@@ -1,7 +1,11 @@
 {{ partial "header.html" . }}
 
-{{ range .Data.Pages }}
-	{{ partial "post-summary.html" . }}
-{{ end }}
+<div id="site-content" class="container md">
+
+	{{ range .Data.Pages }}
+		{{ partial "post-summary.html" . }}
+	{{ end }}
+
+</div>
 
 {{ partial "footer.html" . }}
