@@ -233,6 +233,21 @@ pre {
 	padding: 0 0.4rem 0 0;
 }
 
+@media (max-width: 500px) /* Mobile */ {
+	.site-sub-nav li {
+		float: none;
+		text-align: center;
+	}
+	.site-sub-nav .right {
+		float: none;
+		text-align: center;
+	}
+	.site-sub-nav .social img {
+		margin: 0;
+		margin: 0 1rem 1rem 1rem;
+	}
+}
+
 /****************** TS3VIDEO specific ****************************************/
 
 /* Frontpage welcome header */
