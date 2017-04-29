@@ -22,7 +22,7 @@ At some point I was able to get hands on the HTTP request URL, which the NASA Wo
 **Response**
 
 `
-400: Requested horizontal resolution: 0.0703125 , best match:
+400: Requested horizontal resolution: 0.140625 , best match:
 0.703125 exceeds 10% threshold. Perhaps the client is configured with an incorrect set of scales (resolutions), or the DPI setting is off compared to the one in GWC ?
 `
 
@@ -34,10 +34,10 @@ At some point I was able to get hands on the HTTP request URL, which the NASA Wo
 
 - *Tile Caching* -> *Gridsets* \
 Click *Create a copy* of the *EPSG:4326* Gridset
-- Remove all levels except the first one from the *Tile Matrix Set* and paste `0.0703125` into the *Pixel Size* column. This is the horizontal resolution, which the above HTTP Response of the WMS contains.
+- Remove all levels except the first one from the *Tile Matrix Set* and paste `0.140625` into the *Pixel Size* column. This is the horizontal resolution, which the above HTTP Response of the WMS contains.
 - Clicking on *Add zoom level* will now automatically set the correct *Pixel* size for the next zoom level. It might be useful to add ~15-22 zoom levels.
 
-In addition to the *Tile Matrix Set*, it is required to use set the *Tile-width and -height* to **512**. This seems to be the default tile-size requested from WorldWind (most other applications use 256x256 px).
+In addition to the *Tile Matrix Set*, it is required to set the *Tile-width and -height* to **512**. This seems to be the default tile-size requested from WorldWind (most other applications use 256x256 px).
 
 ### 2. Add Gridset To Layer
 
