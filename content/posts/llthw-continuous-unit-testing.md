@@ -9,7 +9,8 @@ tags = ["llthw", "article"]
 # Continuous Unit Testing
 
 This is the most important task and can't be mentioned often enough.
-It's not only about _"test your code"_, no it's about _"test your code automatically"_.<!--more-->
+It's not only about _"test your code"_, no it's about _"test your code automatically"_.
+<!--more-->
 
 In my job, I never got the chance to setup or even use an real development environment
 with integrated test systems. Testing was always like:

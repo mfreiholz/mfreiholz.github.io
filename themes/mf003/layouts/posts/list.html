@@ -1,0 +1,17 @@
+{{ partial "header.html" . }}
+
+
+<div class="two-column-content">
+
+    <div class="col1">
+        {{ range .Data.Pages }} {{ partial "post-sum.html" . }} {{ end }}
+    </div>
+
+    <div class="col2">
+        {{ partial "sidebar.html" . }}
+    </div>
+
+</div>
+
+
+{{ partial "footer.html" . }}

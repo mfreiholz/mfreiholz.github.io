@@ -6,6 +6,7 @@ tags = ["Administration", "Tutorial"]
 +++
 
 I currently develop and setup different software products which needs to display a map, like Google Maps or OpenStreetMaps. One very important requirement is to display the Map without an active internet connection. This quickly results in the idea to run my own [GeoServer](http://geoserver.org/) instance with local stored map data and distribute it via [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) (Web Map Service).
+<!--more-->
 
 In the first step I simply added an OpenStreetMap layer and cached a few zoom levels with the built-in *GWC Seed Form* (batched caching) mechanism. I tested it with [OpenLayers](http://openlayers.org/) and everything worked just fine. Unfortunetaly one of the dozens software components I require, uses the [NASA WorldWind](https://worldwind.arc.nasa.gov/) viewer, which seems to use completely different zoom-levels (resolutions) than most other available viewers. Since I am new to this field I spend hours by searching for a solution, but couldn't find anything on the internet. Until...
 

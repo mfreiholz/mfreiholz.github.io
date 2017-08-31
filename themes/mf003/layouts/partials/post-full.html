@@ -1,0 +1,11 @@
+<div class="post">
+    <div class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+    <div class="post-content md">{{ .Content }}</div>
+    
+    <div class="post-tags">
+        {{ range .Params.tags }}
+        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a> /
+        {{ end }}
+        {{ .Date.Format "Jan 2 2006" }}
+    </div>
+</div>

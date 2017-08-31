@@ -5,7 +5,8 @@ author = "mfreiholz"
 tags = ["Administration", "Tutorial"]
 +++
 
-I use static websites based on [Hugo](https://gohugo.io) since quite a while now. They are fast, nice to edit with the editor of my choice and can be served from any HTTP server. There are no requirements like PHP, Python or MySQL. Unfortunately I never got used to the deployment process.<!--more-->
+I use static websites based on [Hugo](https://gohugo.io) since quite a while now. They are fast, nice to edit with the editor of my choice and can be served from any HTTP server. There are no requirements like PHP, Python or MySQL. Unfortunately I never got used to the deployment process.
+<!--more-->
 
 The *intended* way of deployment is a classic FTP/SFTP/SCP upload. You simply copy and overwrite everything on the remote server with the new data from your local machine. Sounds easy and is easy. But what if...
 

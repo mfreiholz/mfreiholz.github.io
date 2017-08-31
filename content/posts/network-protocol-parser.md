@@ -6,6 +6,7 @@ tags = ["Development", "Tutorial", "C++"]
 +++
 
 I've implemented a lot of network protocols lately, for work and private projects. I'd like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
+<!--more-->
 
 ## The Protocol
 

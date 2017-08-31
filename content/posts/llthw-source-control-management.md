@@ -13,7 +13,8 @@ draft = true
 If you're a developer and never heard of _SCM_ or _Version Control_, you're either
 a beginner or doing something deadly wrong.
 SCM should always be the first thing you "initialize" as soon as you are starting
-a new project.<!--more-->
+a new project.
+<!--more-->
 
 # The Problem and my regrets
 
