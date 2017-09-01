@@ -1,31 +1,8 @@
 <div class="sidebar">
-
-    <div class="sidebar-section search-form">
-        <input type="search" placeholder="Search Site">
-    </div>
-
-    <div class="sidebar-section aboutme">
-        <header>
-            <div>About Me</div>
-        </header>
-        <section>
-            <div class="profile-picture"></div>
-            <p>I'm <b>Manuel</b>. A full stack developer who loves to work and help other developers.</p>
-            <p>I also offer my skills for custom development and support.</p>
-        </section>
-    </div>
-
-    <div class="sidebar-section followme">
-        <header>
-            <div>Follow Me</div>
-        </header>
-        <section>
-            <a href="https://github.com/mfreiholz" target="_blank">GitHub</a>
-            <a href="https://www.instagram.com/mfreiholz" target="_blank">Instagram</a>
-            <a href="https://twitter.com/mfreiholz" target="_blank">Twitter</a>
-            <a href="https://www.facebook.com/manuel.freiholz" target="_blank">Facebook</a>
-        </section>
-    </div>
+    {{ partial "sidebar/search.html" . }}
+    {{ partial "sidebar/aboutme.html" . }}
+    {{ partial "sidebar/followme.html" . }}
+    {{ partial "sidebar/newsletter.html" . }}
 
     <div class="sidebar-section">
         <header>
@@ -50,18 +27,4 @@
             <span>TAG1</span>
         </section>
     </div>
-
-    <div class="sidebar-section newsletter-form">
-        <header>
-            <div>Newsletter</div>
-        </header>
-        <section>
-            <p><input type="text" placeholder="Your Name"></p>
-            <p><input type="email" placeholder="Your E-Mail Address"></p>
-            <p><button>Sign Up</button></p>
-        </section>
-    </div>
-
-
-
 </div>
