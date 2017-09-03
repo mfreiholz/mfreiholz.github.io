@@ -1,0 +1,7 @@
+{{ partial "header.html" . }}
+LIST?
+{{ range .Data.Pages }}
+    {{ .Content }}
+{{ end }}
+
+{{ partial "footer.html" . }}

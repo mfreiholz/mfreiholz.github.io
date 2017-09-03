@@ -6,5 +6,5 @@ labels = ["Website", "HTML", "Hugo"]
 homepage = "http://vegannadine.com/"
 +++
 
-The website and blog of a german vegan bloggerin.
+The website and blog of a german vegan blogger.
 <!--more-->

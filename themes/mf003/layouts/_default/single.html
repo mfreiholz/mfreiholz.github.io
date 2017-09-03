@@ -1,0 +1,17 @@
+{{ partial "header.html" . }}
+
+
+<div class="two-column-content">
+
+    <div class="col1">
+        {{ .Content }}
+    </div>
+
+    <div class="col2">
+        {{ partial "sidebar.html" . }}
+    </div>
+
+</div>
+
+
+{{ partial "footer.html" . }}

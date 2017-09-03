@@ -1,6 +1,0 @@
-title = "HumbleLogging"
-description = "HumbleLogging is a lightweight C++ logging framework. It aims to be extendible, easy to understand and as fast as possible."
-tags = ["C", "C++"]
-url = "https://github.com/mfreiholz/humblelogging"
-logo = "/img/humblelogging.png"
-weight = 4
