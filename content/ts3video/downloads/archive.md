@@ -8,6 +8,7 @@ title = "Download Archive"
 
 File | Mirrors
 -----|--------
+Client 0.11 (Compatible with >= v0.6 and __Teamspeak 3.1__) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.11/Conference_Client-0.11_Setup.exe)
 Client 0.10 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.10/Conference_Client-0.10_Setup.exe)
 Client 0.8 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.8/Conference_Client-0.8_Setup.exe)
 Client 0.7 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.7/Conference_Client-0.7_Setup.exe)

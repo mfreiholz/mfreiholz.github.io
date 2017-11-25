@@ -10,10 +10,10 @@ title = "Downloads"
 
 File | Mirrors
 ------------|--------
-__Client 0.11__ (Compatible with >= v0.6 and __Teamspeak 3.1__) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.11/Conference_Client-0.11_Setup.exe)
+Client 0.12 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.12/Conference_Client-0.12_Setup.exe)
 Server 0.8 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.8/Conference_Server-0.8_Setup.exe)
 
-<small>_Build on Windows 10 with VC12._</small>
+<small>_Build on Windows 10 with VC14._</small>
 
 ## <img src="/images/linux-logo-32x37.png" height="18"> Linux
 

@@ -6,6 +6,10 @@ title = "Home-News"
 
 # Latest updates
 
+**2017-11-25**
+Version 0.12 has been released.
+This release is still compatible with server v0.8 and Teamspeak 3.1 (Plugin API 21).
+
 **2017-01-13**
 Version 0.11 has been released.
 This release is compatible with the new plugin API of __Teamspeak 3.1__ (Plugin API 21) and does work with all previous server versions of TS3VIDEO.
