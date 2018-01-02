@@ -10,7 +10,7 @@ title = "Downloads"
 
 File | Mirrors
 ------------|--------
-Client 0.12 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.12/Conference_Client-0.12_Setup.exe)
+Client 0.13 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.13/Conference_Client-0.13_Setup.exe)
 Server 0.8 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.8/Conference_Server-0.8_Setup.exe)
 
 <small>_Build on Windows 10 with VC14._</small>
