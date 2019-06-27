@@ -8,6 +8,7 @@ title = "Download Archive"
 
 File | Mirrors
 -----|--------
+Client 0.13 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.13/Conference_Client-0.13_Setup.exe)
 Client 0.12 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.12/Conference_Client-0.12_Setup.exe)
 Client 0.11 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.11/Conference_Client-0.11_Setup.exe)
 Client 0.10 (Compatible with >= v0.6) | [Installer](http://downloads.insanefactory.com/?file=ts3video/0.10/Conference_Client-0.10_Setup.exe)

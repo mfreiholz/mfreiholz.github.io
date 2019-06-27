@@ -6,6 +6,10 @@ title = "Home-News"
 
 # Latest updates
 
+**2019-06-27**
+Version 0.13 has been released.
+This release is still compatible with server v0.8 and Teamspeak 3.1 (Plugin API 23). Apologies for the long inactivity. Development will continue soon.
+
 **2017-11-25**
 Version 0.12 has been released.
 This release is still compatible with server v0.8 and Teamspeak 3.1 (Plugin API 21).
