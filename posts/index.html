@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords" content="programming c++ go golang php projects books">
+
+	<title>Posts | M. Freiholz Software Development</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
+</head>
+
+<body>
+
+	<div id="site-header" class="container">
+		<div class="title">M. Freiholz</div>
+		<div class="subtitle">Software Development</div>
+	</div>
+
+	<div id="site-navigation" class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/work/">Products</a></li>
+					<li><a href="/donate/">Support Me</a></li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<div class="right">
+					<div class="social">
+						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
+						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+
+	</div>
+	
+
+
+<div id="site-content" class="container md">
+
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/lenovo-thinkpad-realtek-camera-not-working/">Lenovo Thinkpad Camera Not Working</a></h2>
+	<div class="post-content"><p>I ran into a problem with Lenovo Thinkpad T470p, but it also happens on some other models. It didn&rsquo;t let me use the Integrated Webcam on Windows 10 anymore. Luckily I found the fix!
+</p>
+
+<p>Looks like it is a problem with the built-in <em>Realtek</em> camera hardware.</p>
+
+<h3 id="fix-with-registry">Fix with registry</h3>
+
+<ul>
+<li>Press <code>Windows Key + R</code>, type <code>regedit</code>, and press <code>Enter</code></li>
+<li>Navigate to <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows Media Foundation\\Platform</code></li>
+<li>Right-click on <code>Platform</code> folder and select <code>New -&gt; DWORD</code></li>
+<li>Name it <code>EnableFrameServerMode</code>, and change its value to <code>0</code></li>
+<li>Do the same with: <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows Media Foundation\\Platform</code></li>
+</ul>
+
+<p>Source: <a href="https://forums.lenovo.com/t5/ThinkPad-X-Series-Laptops/X1-Build-in-camera-freezes-and-displays-just-first-frame/m-p/4558178#M106470">Lenovo Forum</a></p>
+
+<h3 id="more">More</h3>
+
+<p>There are also some other suggestion on the Internet:</p>
+
+<ul>
+<li>Disable camera&rsquo;s privacy mode in Lenovo Vantage App.</li>
+<li>Enable camera access in Windows 10 settings (<code>Settings -&gt; Privacy -&gt; Camera</code>).</li>
+</ul></div>
+	<div class="post-info">
+		
+			<a href="/tags/troubleshooting">Troubleshooting</a> /
+		
+			<a href="/tags/"></a> /
+		
+		Dec 19
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/network-protocol-parser/">Network Protocol Parsing with C&#43;&#43;</a></h2>
+	<div class="post-content"><p>I&rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
+</p>
+
+<h2 id="the-protocol">The Protocol</h2>
+
+<p>At the beginning there is the protocol definition. For this example I will use a simple single frame/packet based protocol to exchanges data between two endpoints (e.g.: client and server).</p>
+
+<h3 id="the-packet">The Packet</h3>
+
+<pre><code class="language-cpp">// packet.h
+#pragma once
+#include &lt;stdint.h&gt;
+#include &lt;vector&gt;
+
+#ifdef _WIN32
+#include &lt;WinSock2.h&gt;
+#else
+#include &lt;arpa/inet.h&gt;
+#endif
+
+class Packet
+{
+public:
+    Packet();
+    ~Packet();
+
+    /*
+        Serializes the packet for network transport.
+        Fields are written to `buf` in network byte order (big-endian).
+    */
+    void serialize(std::vector&lt;uint8_t&gt;&amp; buf);
+
+public:
+    uint8_t header = 0xAF; // Marks the begin of `Packet`
+    uint8_t flags = 0x00; // Custom bitmask flags.
+    uint16_t type = 0x0000; // Identifies the packet's type - what is it used for.
+    uint32_t size = 0x00000000; // Size of `data`.
+    std::vector&lt;uint8_t&gt; data; // Custom data.
+    uint8_t checksum = 0x00; // XOR checksum.
+};
+</code></pre>
+
+<p>As you can see the <code>Packet</code> is very basic. It doesn&rsquo;t distinguish between request or response, but it does have different sized data types to show the correct handling of them.</p>
+
+<p>It does have a <code>serialization()</code> method, which writes the bytes of the object into a buffer. You could write them directly to network instead, of course. The important part of the method is the conversion of fields to network-byte-order (big-endian). You should always do this whether you are developing platform independent or not. It is a convention to always send data types in big-edian byte order over network.</p>
+
+<pre><code class="language-cpp">//packet.cpp
+#include &quot;packet.h&quot;
+
+Packet::Packet()
+{}
+
+Packet::~Packet()
+{}
+
+void
+Packet::serialize(std::vector&lt;uint8_t&gt;&amp; buf)
+{
+    buf.push_back(header);
+    buf.push_back(flags);
+    buf.push_back(htons(type) &gt;&gt; 8);
+    buf.push_back(htons(type) &gt;&gt; 0);
+    buf.push_back(htonl(size) &gt;&gt; 24);
+    buf.push_back(htonl(size) &gt;&gt; 16);
+    buf.push_back(htonl(size) &gt;&gt; 8);
+    buf.push_back(htonl(size) &gt;&gt; 0);
+    for (auto b : data)
+        buf.push_back(b);
+    buf.push_back(checksum);
+}
+</code></pre>
+
+<h3 id="the-parser">The Parser</h3>
+
+<p>The <code>Parser</code> is also very simple and only needs a single method to work.</p>
+
+<pre><code class="language-cpp">// parser.h
+#pragma once
+#include &quot;packet.h&quot;
+
+class Parser
+{
+public:
+    /*
+        \param data
+            The buffer of data which the function parses.
+        \param len
+            The len of `data` buffer.
+        \param[in,out] bytesRead
+            Will contain the number of bytes read by `parse()`.
+            Note: It may be possible that the function returns
+            before all bytes of `data` have been parsed, because
+            the `packet` is complete.
+        \param[in,out] packet
+            Instance of `Packet` which will be filled from `data` by this  function.
+    */
+    bool parse(uint8_t* data, size_t len, size_t&amp; bytesRead, Packet&amp; packet);
+
+private:
+    int _step = 0;
+};
+</code></pre>
+
+<p>It is implemented as a single byte by byte parser.</p>
+
+<pre><code class="language-cpp">// parser.cpp
+#include &quot;parser.h&quot;
+
+#ifdef _WIN32
+#include &lt;WinSock2.h&gt;
+#else
+#include &lt;arpa/inet.h&gt;
+#endif
+
+bool
+Parser::parse(uint8_t* data, size_t len, size_t&amp; bytesRead, Packet&amp; packet)
+{
+    bytesRead = 0;
+    for (size_t i = 0; i &lt; len; ++i)
+    {
+        const auto b = data[i];
+        bytesRead++;
+
+        switch (_step)
+        {
+            // Header.
+            case 0:
+                if (b != 0xAF)
+                {
+                    _step = 0;
+                    continue;
+                }
+                packet.header = b;
+                _step++;
+                break;
+
+            // Flags.
+            case 1:
+                packet.flags = b;
+                _step++;
+                break;
+
+            // Type (2 bytes!).
+            case 2:
+                packet.type = uint16_t(b) &lt;&lt; 8;
+                _step++;
+                break;
+
+            case 3:
+                packet.type |= uint16_t(b) &lt;&lt; 0;
+                packet.type = ntohs(packet.type);
+                _step++;
+                break;
+
+            // Size (4 bytes!).
+            case 4:
+                packet.size = uint32_t(b) &lt;&lt; 24;
+                _step++;
+                break;
+
+            case 5:
+                packet.size |= uint32_t(b) &lt;&lt; 16;
+                _step++;
+                break;
+
+            case 6:
+                packet.size |= uint32_t(b) &lt;&lt; 8;
+                _step++;
+                break;
+
+            case 7:
+                packet.size |= uint32_t(b) &lt;&lt; 0;
+                packet.size = ntohl(packet.size);
+                _step++;
+
+                packet.data.clear();
+                if (packet.size &gt; 0)
+                {
+                    packet.data.reserve(packet.size);
+                }
+                else
+                {
+                    _step++; // Skip data step.
+                }
+                break;
+
+            // Data.
+            case 8:
+                packet.data.push_back(b);
+
+                if (packet.data.size() == packet.size)
+                    _step++;
+                break;
+
+            // Checksum.
+            case 9:
+                packet.checksum = b;
+                _step = 0;
+                return true;
+
+        }
+    }
+    return false;
+}
+</code></pre>
+
+<p>The parser works based on steps/positions. As soon as the first byte matches the fixed header value of <code>0xAF</code> (<code>step=0</code>), it continues to parse packet attributes step by step and <em>byte for byte.</em> Remember this, it is important when it comes to handling multi-byte data types.</p>
+
+<p><code>flags</code> (<code>step=1</code>) is a single-byte attribute, which can be assigned as it is.
+Single-byte types doesn&rsquo;t require any kind of bit/byte order conversion.</p>
+
+<p><code>type</code> (<code>step=2-3</code>) is a multi-byte data type and requires two bytes and an byte-order conversion to be complete. The Parser left-shifts the next two upcoming bytes into the <code>packet.type</code> attribute. After it is completely filled the Parser needs to convert the byte-order into the host-byte-order with <code>ntohs()</code>.</p>
+
+<p><code>size</code> (step=<code>4-7</code>) is a multi-byte data type and requires four bytes and an byte-order conversion with <code>htohl()</code> to be complete. With step <code>7</code> it is complete and the <code>packet.data</code> attribute can be prepared by clearing all previous bytes and reserving enough space for the new data bytes.</p>
+
+<p><code>data</code> (<code>step=8</code>) will be filled up until it contains <code>packet.size</code> number of bytes. It may required special handling of internal fields, based on the packet&rsquo;s type.</p>
+
+<p><code>checksum</code> (<code>step=9</code>) is a single-byte data type. In best case scenario a checksum calculation and validation would run here. I skip it for this example.</p>
+
+<p>Thats it. Based on your own packet format there would be more or less steps but the core functionality is always the same.</p>
+
+<h3 id="using-it-testing">Using it, Testing</h3>
+
+<p>Here is a small example. It serializes two packets into a buffer, which would be the network stack and parses it with <code>Parser</code>. Read the inline code comments for details.</p>
+
+<pre><code class="language-cpp">// main.cpp
+#include &quot;packet.h&quot;
+#include &quot;parser.h&quot;
+
+int main(int argc, char** argv)
+{
+    // Network buffer.
+    std::vector&lt;uint8_t&gt; buf;
+
+    // CLIENT SIDE
+    // Serialize and send packets.
+    // Instead of sending we simply write them to a buffer `buf`.
+
+    // 1st packet.
+    Packet pkt1;
+    pkt1.header = 0xAF;
+    pkt1.flags = 0x00;
+    pkt1.type = 0x0001;
+    pkt1.size = 3;
+    pkt1.data = { 0x11, 0x22, 0x33 };
+    pkt1.checksum = 0xFF;
+    pkt1.serialize(buf);
+
+    // Add some random invalid bytes to network buffer.
+    buf.push_back(0x87);
+    buf.push_back(0x09);
+    buf.push_back(0x43);
+
+    // 2nd packet.
+    Packet pkt2;
+    pkt2.header = 0xAF;
+    pkt2.flags = 0x80;
+    pkt2.type = 0x0002;
+    pkt2.size = 1;
+    pkt2.data = { 0x88 };
+    pkt2.checksum = 0xEE;
+    pkt2.serialize(buf);
+
+    // Add some random invalid bytes to network buffer.
+    buf.push_back(0x11);
+    buf.push_back(0x22);
+    buf.push_back(0x33);
+
+    // SERVER SIDE
+    // Parse packets from network/buffer `buf`.
+
+    // Parsing.
+    Parser parser;
+    Packet packet;
+    uint8_t* p = buf.data();
+    size_t plen = buf.size();
+    while (plen &gt; 0)
+    {
+        size_t bytesRead = 0;
+        if (parser.parse(p, plen, bytesRead, packet))
+        {
+            // At this point the `packet` is complete.
+            printf(&quot;INFO new packet! type=%d; size=%d\n&quot;, packet.type, packet.size);
+        }
+        p += bytesRead;
+        plen -= bytesRead;
+    }
+    return 0;
+}
+</code></pre>
+
+<p>You may want to read and debug the <code>main()</code> implementation very careful to fully understand how it works.</p>
+
+<p>The sources are available on GitHub: <a href="https://github.com/mfreiholz/blog-article-sources/tree/master/network-protocol-parsing">https://github.com/mfreiholz/blog-article-sources/tree/master/network-protocol-parsing</a></p></div>
+	<div class="post-info">
+		
+			<a href="/tags/development">Development</a> /
+		
+			<a href="/tags/tutorial">Tutorial</a> /
+		
+			<a href="/tags/c&#43;&#43;">C&#43;&#43;</a> /
+		
+		Aug 31
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/worldwind-with-geoserver-and-geowebcache/">How to use GeoServer / GeoWebCache with NASA WorldWind</a></h2>
+	<div class="post-content"><p>I currently develop and setup different software products which needs to display a map, like Google Maps or OpenStreetMaps. One very important requirement is to display the Map without an active internet connection. This quickly results in the idea to run my own <a href="http://geoserver.org/">GeoServer</a> instance with local stored map data and distribute it via <a href="https://en.wikipedia.org/wiki/Web_Map_Service">WMS</a> (Web Map Service).
+</p>
+
+<p>In the first step I simply added an OpenStreetMap layer and cached a few zoom levels with the built-in <em>GWC Seed Form</em> (batched caching) mechanism. I tested it with <a href="http://openlayers.org/">OpenLayers</a> and everything worked just fine. Unfortunetaly one of the dozens software components I require, uses the <a href="https://worldwind.arc.nasa.gov/">NASA WorldWind</a> viewer, which seems to use completely different zoom-levels (resolutions) than most other available viewers. Since I am new to this field I spend hours by searching for a solution, but couldn&rsquo;t find anything on the internet. Until&hellip;</p>
+
+<h2 id="the-problem-cause">The Problem Cause</h2>
+
+<p>At some point I was able to get hands on the HTTP request URL, which the NASA WorldWind viewer sends to the server in the state where it was completely zoomed out. Pasting the URL into my browser&rsquo;s address bar lead to the following response from the <em>offline</em> GeoWebCache server:</p>
+
+<p><strong>Request URL</strong></p>
+
+<pre><code>/geoserver/gwc/service/wms?service=WMS&amp;request=GetMap&amp;version=1.1.1&amp;srs=EPSG:4326&amp;layers=grob_osm_wsm:all&amp;styles=&amp;width=512&amp;height=512&amp;format=image/png&amp;transparent=TRUE&amp;bgcolor=0x000000&amp;bbox=54.0,36.0,72.0,54.0&amp;
+</code></pre>
+
+<p><strong>Response</strong></p>
+
+<p><code>
+400: Requested horizontal resolution: 0.140625 , best match:
+0.703125 exceeds 10% threshold. Perhaps the client is configured with an incorrect set of scales (resolutions), or the DPI setting is off compared to the one in GWC ?
+</code></p>
+
+<h2 id="the-solution">The Solution</h2>
+
+<p><strong>TL;DR</strong> It is required to create a new custom <em>Caching Gridset,</em> assign it to the layer which should be available and start the caching task with the <em>GWC Seed Form.</em></p>
+
+<h3 id="1-setup-gridset">1. Setup Gridset</h3>
+
+<ul>
+<li><em>Tile Caching</em> -&gt; <em>Gridsets</em> <br />
+Click <em>Create a copy</em> of the <em>EPSG:4326</em> Gridset</li>
+<li>Remove all levels except the first one from the <em>Tile Matrix Set</em> and paste <code>0.140625</code> into the <em>Pixel Size</em> column. This is the horizontal resolution, which the above HTTP Response of the WMS contains.</li>
+<li>Clicking on <em>Add zoom level</em> will now automatically set the correct <em>Pixel</em> size for the next zoom level. It might be useful to add ~15-22 zoom levels.</li>
+</ul>
+
+<p>In addition to the <em>Tile Matrix Set</em>, it is required to set the <em>Tile-width and -height</em> to <strong>512</strong>. This seems to be the default tile-size requested from WorldWind (most other applications use 256x256 px).</p>
+
+<h3 id="2-add-gridset-to-layer">2. Add Gridset To Layer</h3>
+
+<ul>
+<li><em>Tile Caching</em> -&gt; <em>Tile Layers</em> -&gt; <em>YOUR-LAYER</em> -&gt; Tab: <em>Tile Caching</em> <br />
+At the bottom is a table with Gridsets, which should be cached. Add the new Gridset here with MIN/MAX selected for published and cached zoom levels.</li>
+</ul>
+
+<h3 id="3-fill-geowebcache-seed">3. Fill GeoWebCache (Seed)</h3>
+
+<ul>
+<li><em>Tile Caching</em> -&gt; <em>Tile Layers</em> -&gt; <em>YOUR-LAYER</em> -&gt; <em>Seed/Truncate</em> <br />
+Make your perfered settings with the new Gridset and start the caching tasks.</li>
+</ul>
+
+<h2 id="final-words">Final words</h2>
+
+<p>Always make sure that the request of your map-viewer matches exactly the settings of the cached gridset settings (resolution, tile-width, tile-height, format).</p>
+
+<p>After all, this <em>small</em> problem costs me a lot of time and I hope this article helps somebody who faces the same problem.</p></div>
+	<div class="post-info">
+		
+			<a href="/tags/administration">Administration</a> /
+		
+			<a href="/tags/tutorial">Tutorial</a> /
+		
+		Jan 17
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/hugo-manage-and-deploy-static-website/">Manage And Deploy Static Websites (Hugo)</a></h2>
+	<div class="post-content"><p>I use static websites based on <a href="https://gohugo.io">Hugo</a> since quite a while now. They are fast, nice to edit with the editor of my choice and can be served from any HTTP server. There are no requirements like PHP, Python or MySQL. Unfortunately I never got used to the deployment process.
+</p>
+
+<p>The <em>intended</em> way of deployment is a classic FTP/SFTP/SCP upload. You simply copy and overwrite everything on the remote server with the new data from your local machine. Sounds easy and is easy. But what if&hellip;</p>
+
+<ul>
+<li>the website does have a few big resources (pictures, files, &hellip;), which may take some time? <br />
+You might pick only the new files by yourself, what I consider as very annoying. <br />
+Same for big structural changes. You can&rsquo;t pick in this case, you need to delete everything on the server and upload everything completely new.</li>
+<li>you&rsquo;re behind a firewall/proxy which blocks all non HTTP/HTTPS traffic? <br />
+This might happen within your work-placke or public WiFi spots.</li>
+<li>you don&rsquo;t have your RSA key for server authentication with you and don&rsquo;t have a simple FTP server running, which is insecure anyway? <br />
+It is possible to run an SFTP server with username/password authentication, but that&rsquo;s too much of a security concern in my oppition.</li>
+</ul>
+
+<h2 id="the-solution-requires-shell-access">The Solution (Requires Shell Access)</h2>
+
+<p>Since another rule in my life is: <em>&ldquo;Put everything into <a href="https://en.wikipedia.org/wiki/Version_control">VC</a> repository&rdquo;</em> and a few searches on the Internet results with nearly the same idea, it should be the right way to go to put my website into a Git repository and directly deploy from it. Most solutions on the Internet suggest to use a single repository with a <em>generated</em> branch, but I don&rsquo;t like the idea to have the generated website filling up my source repository with redundant data. That&rsquo;s why I decided to use two repositories and one Cron-Job. In addition, this gives me the possibility to keep the source- private and the <em>generated</em>-repository public.</p>
+
+<p>Here a small overview with real data of this website:</p>
+
+<ul>
+<li><strong>Source Repository</strong>: <a href="https://github.com/mfreiholz/mfreiholz.de.git">https://github.com/mfreiholz/mfreiholz.de.git</a> <br />
+This is the primary source repository. All work happens in this repository.</li>
+<li><strong>Output Repository</strong>: <a href="https://github.com/mfreiholz/mfreiholz.de-rendered.git">https://github.com/mfreiholz/mfreiholz.de-rendered.git</a> <br />
+This repository contains the latest generated version of the website.
+After editing and validating the contents of the website, I generate everything into this repository and push them to the remote server.</li>
+<li><strong>Cron-Job</strong> (<em>/etc/crontab</em>): <br />
+<code>*/5 * * * * root cd /var/www/mfreiholz.de &amp;&amp; git pull</code> <br />
+This job pulls the newest version of the <em>generated</em> repository every 5 minutes.</li>
+</ul>
+
+<p><strong>Note:</strong> You can host your repositories on your on server and don&rsquo;t have to use GitHub, of course.</p>
+
+<p>In the next step I will show you, how to setup the environment step-by-step. You might stop reading now, if you already know how to setup the above scenario.</p>
+
+<h2 id="how-to-setup">How To Setup</h2>
+
+<p>I&rsquo;m not going to show you, how to create the Git repositories. You should already know that and have a place to store them. I will use the above mentioned URLs for this example.</p>
+
+<h3 id="server-side">Server Side</h3>
+
+<p>In the first setup, we need to checkout the repository to the configured virtual-host DocumentRoot of your Apache/NGINX server.</p>
+
+<pre><code class="language-bash">mkdir /var/www/mfreiholz.de
+cd /var/www/mfreiholz.de
+git clone https://github.com/mfreiholz/mfreiholz.de.git
+</code></pre>
+
+<p>Now setup cron-job for auto update every 5 minutes. Open your <code>/etc/crontab</code> and add the following line:</p>
+
+<pre><code class="language-bash">*/5 * * * * root cd /var/www/mfreiholz.de &amp;&amp; git pull
+</code></pre>
+
+<p>Restart cron with <code>service cron restart</code> and you&rsquo;re done. That&rsquo;s all you have to do on your server. Everything else happens on client side.</p>
+
+<h3 id="client-side">Client Side</h3>
+
+<p>I use to checkout everything flat into my main <em>source</em> directory, e.g.: <code>C:\Source</code> on Windows:</p>
+
+<pre><code class="language-bash">cd C:\Source
+git clone https://github.com/mfreiholz/mfreiholz.de.git
+git clone https://github.com/mfreiholz/mfreiholz.de-rendered.git
+</code></pre>
+
+<p>You do all your work in the first repository and as soon as you&rsquo;re done with your changes, validated and committed them in the first repository you can generate your website into the second repository with:</p>
+
+<pre><code class="language-bash">cd C:\Source\mfreiholz.de
+hugo --cleanDestinationDir --destination ..\mfreiholz.de-rendered
+</code></pre>
+
+<p>Next you can publish your page with a simple Git <code>commit</code> and <code>push</code> command.</p>
+
+<pre><code>cd C:\Source\mfreiholz.de-rendered
+git add -A
+git commit -m &quot;changes...&quot;
+git push 
+</code></pre>
+
+<p>That&rsquo;s all. Your server will automatically pull the changes from the <em>rendered</em> repository and make them public. Based on the cron-job setup this may take a minute.</p></div>
+	<div class="post-info">
+		
+			<a href="/tags/administration">Administration</a> /
+		
+			<a href="/tags/tutorial">Tutorial</a> /
+		
+		Nov 24
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/make-a-class-thread-safe-cpp/">Make a class thread safe C&#43;&#43;</a></h2>
+	<div class="post-content"><p>You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
+</p>
+
+<pre><code class="language-cpp">void MyClass::set(T val)
+{
+    mutex.lock();
+    _val = val;
+    mutex.unlock();
+}
+</code></pre>
+
+<p>In a lot of cases this will work well and you don’t have to worry about parallel access on class members. But there are some scenarios, where this simple approach does not help, instead it might critically crash your program.</p>
+
+<p>I will show you a use-case with a simple <em>Cache</em> class.</p>
+
+<h2 id="single-threaded-non-b-locking">Single threaded, non-(b)locking</h2>
+
+<p>First I will show the basic implementation from where we start. A simple <code>Cache1</code> class, which is meant to be used from one thread and does not use any mutex- or spin-locks.</p>
+
+<pre><code class="language-cpp">class Cache1
+{
+    std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt; _map;
+
+public:
+    bool contains(int key) const
+    {
+        return _map.find(key) != _map.end();
+    }
+
+    std::shared_ptr&lt;CacheData&gt; get(int key) const
+    {
+        return _map.at(key);
+    }
+
+    void insert(int key, std::shared_ptr&lt;CacheData&gt; value)
+    {
+        _map.insert(std::make_pair(key, value));
+    }
+};
+</code></pre>
+
+<p>In addition to the class here is a small code sample, which shows the way the cache is beeing used.</p>
+
+<pre><code class="language-cpp">int main(int argc, char** argv)
+{
+    // fill cache
+    Cache1 cache;
+    cache.insert(1, std::make_shared&lt;CacheData&gt;(1024));
+    cache.insert(2, std::make_shared&lt;CacheData&gt;(2048));
+
+    // get objects from cache and access methods of them
+    if (cache.contains(1))
+    {
+        assert(cache.get(1)-&gt;size() == 1024);
+    }
+    if (cache.contains(2))
+    {
+        assert(cache.get(2)-&gt;size() == 2048);
+    }
+}
+</code></pre>
+
+<p>Here you can see, that the <code>main()</code> implementation uses two steps to retrieve the cached value. First it checks whether it is available with <code>contains()</code> and then retrieves the value with <code>get()</code>. In an environment where the <code>Cache1</code> is only accessed by a single thread everything works just fine.</p>
+
+<p><em>There might be some missing validation checks and capacity regulations in the <code>Cache1</code> class, but that is not the topic of this article.</em></p>
+
+<h2 id="thread-safe-but-not-atomic">Thread-safe, but not atomic</h2>
+
+<p>Lets see how it looks, when we apply the above mentioned simple way to make the class thread-safe.</p>
+
+<pre><code class="language-cpp">class Cache2
+{
+    mutable std::mutex _mtx;
+    std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt; _map;
+
+public:
+    bool contains(int key) const
+    {
+        std::lock_guard&lt;std::mutex&gt; l(_mtx);
+        bool b = _map.find(key) != _map.end();
+        return b;
+    }
+
+    std::shared_ptr&lt;CacheData&gt; get(int key) const
+    {
+        std::lock_guard&lt;std::mutex&gt; l(_mtx);
+        std::shared_ptr&lt;CacheData&gt; val = _map.at(key); // can throw an std::exception
+        return val;
+    }
+
+    void insert(int key, std::shared_ptr&lt;CacheData&gt; value)
+    {
+        std::lock_guard&lt;std::mutex&gt; l(_mtx);
+        _map.insert(std::make_pair(key, value));
+    }
+};
+</code></pre>
+
+<p>I only added a new <a href="http://www.cplusplus.com/reference/mutex/mutex/"><code>std::mutex</code></a> as class member and wrapped each method implementation with <code>_mtx.lock()</code> and <code>_mtx.unlock()</code>. This does make all access on the internal <a href="http://www.cplusplus.com/reference/map/map/"><code>std::map</code></a> absolutely thread-safe. The <code>Cache2</code> itself is now no longer the problem. The problem comes with the way the class is being used, because it still uses the same <code>main()</code> implementation:</p>
+
+<pre><code class="language-cpp">int main(int argc, char** argv)
+{
+    // fill cache
+    Cache2 cache;
+    cache.insert(1, std::make_shared&lt;CacheData&gt;(1024));
+    cache.insert(2, std::make_shared&lt;CacheData&gt;(2048));
+
+    // get objects from cache and access methods of them
+    if (cache.contains(1))
+    {
+        assert(cache.get(1)-&gt;size() == 1024);
+    }
+    if (cache.contains(2))
+    {
+        assert(cache.get(2)-&gt;size() == 2048);
+    }
+}
+</code></pre>
+
+<p>You might wonder, what could go wrong, even if two classes access the <code>Cache2</code> at the same time, the class is thread-safe though.</p>
+
+<p>Even this is right, but looking closer in consideration of the <code>main()</code> implementation the code unveils some nasty behavior, which will crash the program under certain conditions. So whats the deal?</p>
+
+<p>Lets imaging you have two threads: One inserts and reads (<code>get()</code>) values and the second thread removes values from cache. Now the following order may happen:</p>
+
+<ul>
+<li>Thread #1: Insert &ldquo;1&rdquo;</li>
+<li>Thread #1: Insert &ldquo;2&rdquo;</li>
+<li>Thread #1: Checks with <code>contains(1)</code> and returns <code>true</code></li>
+<li>Thread #2: Removes &ldquo;1&rdquo;</li>
+<li>Thread #1: Gets object &ldquo;1&rdquo; from cache and calls a method on tries to access an attribute; <strong>Crash!!!</strong></li>
+</ul>
+
+<p>Here is the problematic piece of code again:</p>
+
+<pre><code class="language-cpp">    if (cache.contains(1))
+    {
+        // -&gt; here thread #2 removes value &quot;1&quot;
+        // -&gt; this is possible because the `Cache2::_mtx` is no longer locked
+    
+        // now thread #1 directly accesses the no longer existing object and crashes
+        assert(cache.get(1)-&gt;size() == 1024);
+    }
+</code></pre>
+
+<p>As you can see, because the two calls to <code>contains()</code> and <code>get()</code> are not atomic is why this <code>Cache2</code> implementation is not really thread-safe.</p>
+
+<blockquote>
+<p><strong>Side node:</strong> In reality the crash would already happen inside <code>Cache2::get()</code>, because <a href="http://www.cplusplus.com/reference/map/map/at/"><code>std::map::at()</code></a> method throws an exception, if the key is not available.</p>
+</blockquote>
+
+<h2 id="thread-safe-locking-the-right-way">Thread-safe locking, the right way</h2>
+
+<p>Now we take a look at an implementation, which is not only thread-safe but also atomic with all of its methods.</p>
+
+<pre><code class="language-cpp">class Cache3
+{
+    mutable std::mutex _mtx;
+    std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt; _map;
+
+public:
+    std::shared_ptr&lt;CacheData&gt; get(int key) const
+    {
+        std::lock_guard&lt;std::mutex&gt; l(_mtx);
+        std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt;::const_iterator it;
+        if ((it = _map.find(key)) != _map.end())
+        {
+            auto val = it-&gt;second;
+            return val;
+        }
+        return std::shared_ptr&lt;CacheData&gt;();
+    } // auto unlock (lock_guard, RAII)
+
+    void insert(int key, std::shared_ptr&lt;CacheData&gt; value)
+    {
+        std::lock_guard&lt;std::mutex&gt; l(_mtx);
+        _map.insert(std::make_pair(key, value));
+    } // auto unlock (lock_guard, RAII)
+};
+</code></pre>
+
+<p>The important change here is, that the check whether a value is in cache, is within the same LOCK as the method to retrieve the cached value. But not only the class changes, also the implementation of the <code>main()</code> needs to be different now.</p>
+
+<pre><code class="language-cpp">int main(int argc, char** argv)
+{
+    // fill cache
+    Cache3 cache;
+    cache.insert(1, std::make_shared&lt;CacheData&gt;(1024));
+    cache.insert(2, std::make_shared&lt;CacheData&gt;(2048));
+
+    // get objects from cache and access methods of them
+    std::shared_ptr&lt;CacheData&gt; val;
+
+    val = cache.get(1);
+    if (val)
+    {
+        assert(val-&gt;size() == 1024);
+    }
+
+    val = cache.get(2);
+    if (val)
+    {
+        assert(val-&gt;size() == 2048);
+    }
+}
+</code></pre>
+
+<p>Instead of calling two methods of <code>Cache3</code>, you only need to call <code>get()</code>. The return value will be valid, if it is cached or invalid if it is not in cache. You can add an <code>contains()</code> method again, of course, but never expect that <code>get()</code> returns a valid value as next statement.</p>
+
+<p>This was only a small example to show what can go wrong with thread-safe programming, but I hope it could help a bit.</p>
+
+<p>Sources on GitHub: <a href="https://github.com/mfreiholz/post-threadsafeclass">https://github.com/mfreiholz/post-threadsafeclass</a></p>
+
+<h1 id="update-notes">Update notes</h1>
+
+<ul>
+<li>Because of some feedback, I decided to use <code>std::lock_guard</code> for safe RAII based mutex locking. I didn&rsquo;t use it in the first place, because I thought it could be more transparent for presentation purpose to use basic <code>std::mutex::lock()</code> and <code>std::mutex::unlock()</code> calls. <em>Bret Kuns</em> made it clear to me, that a reader have to understand RAII and it&rsquo;s better to let the user google for it before showing it the wrong way.</li>
+</ul></div>
+	<div class="post-info">
+		
+			<a href="/tags/development">Development</a> /
+		
+			<a href="/tags/tutorial">Tutorial</a> /
+		
+			<a href="/tags/c&#43;&#43;">C&#43;&#43;</a> /
+		
+		Oct 16
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/development-break-2016/">Development Break Summer 2016</a></h2>
+	<div class="post-content"><p>Some people may wonder why there aren&rsquo;t any updates on my projects during the last few weeks. Well, a few things changed in my life and that&rsquo;s why I don&rsquo;t have a lot of time or motivation. So I decided to make a complete break for this summer until September.</p>
+
+<p>I will monitor and maintain all running services (public servers, &hellip;), of course.</p>
+
+<p>See you later :P</p>
+</div>
+	<div class="post-info">
+		
+			<a href="/tags/life">Life</a> /
+		
+		Jul 24
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/switch-to-nginx-and-hugo/">Switch to NGINX and Hugo</a></h2>
+	<div class="post-content"><p>I decided to make some changes to my current root server and websites.
+I already migrated most of my websites to be statically generated with <a href="https://hugo.io">Hugo</a>.
+</p>
+
+<h1 id="why-a-static-site-generator">Why a static site generator?</h1>
+
+<ul>
+<li>My page doesn&rsquo;t change very often, especially not dynamically.
+I create new content every 6 month, if at all.</li>
+<li>Get rid of PHP and third-party scripts for security reason (Wordpress,
+phpMyAdmin, custom scripts, &hellip;). I use them too rarely.</li>
+<li>It&rsquo;s easier to backup. Since all my websites are static, managed via Git and
+hosted on GitHub, I don&rsquo;t have to worry about backups at all!</li>
+</ul>
+
+<h2 id="but-why-hugo">&hellip;but why Hugo</h2>
+
+<p>The first tool I tried a few month ago was Jekyll to host websites on GitHub-Pages
+for free. I immediately hated the setup of Jekyll. I had to install Ruby and some
+other frameworks I can&rsquo;t remember. Since I am still using Windows as primary OS
+it was a pain in the a** (sorry) to find and install the correct versions.</p>
+
+<p>At some point Hugo came out of nowhere for me and I loved it straightaway.
+One binary, no dependencies and uses Go features (templates) - <em>Love it!</em></p>
+
+<h1 id="switch-to-nginx">Switch to NGINX</h1>
+
+<p>Now that there is no more PHP or other server-side scripting involved for any
+website, I&rsquo;d like to try another HTTP server. I used Apache since the beginning
+and only used NGINX for some rare use cases, but now where I only need a server
+to deliver static contents and proxy HTTP requests to other background processes
+written in C/C++/Go/Node, it might be better to go with NGINX. This is exactly
+what it has been made for. Oh, and NGINX requires less resources.</p>
+
+<p>NGINX now serves all my websites and proxies (+load balancing) HTTP requests for
+TS3VIDEO conference- and version-check-lookups to a REST Server API written in
+Go (<a href="http://api.mfreiholz.de">http://api.mfreiholz.de</a>).</p>
+
+<h1 id="references">References</h1>
+
+<ul>
+<li><a href="http://gohugo.io/">Hugo</a></li>
+<li><a href="https://jekyllrb.com/">Jekyll</a></li>
+<li><a href="https://nginx.org/">NGINX</a></li>
+<li><a href="http://httpd.apache.org/">Apache HTTP Server</a></li>
+</ul></div>
+	<div class="post-info">
+		
+			<a href="/tags/administration">Administration</a> /
+		
+		Jun 6
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/ts3video-release-0-7-0-8/">TS3VIDEO release 0.7, 0.8</a></h2>
+	<div class="post-content"><p>The new v0.6 is out and available for download.</p>
+
+<p><strong>Download here:</strong> <a href="https://mfreiholz.de/ts3video/">https://mfreiholz.de/ts3video/</a></p>
+
+<p>Most changes are internal and don’t change the user experience,
+but there is one new great feature: <strong>Streaming in a resolution of your choice (HD!)</strong>
+</p>
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<p>Some users might have problems with a <em>missing DLL.</em> Well, that’s my fault.
+I forgot to put <em>vc_redist.x64.exe</em> into the Installer’s package.
+You can download it from the <a href="https://www.microsoft.com/en-US/download/details.aspx?id=48145">Microsoft Download Center</a>
+or wait for v0.7, which I will release this evening.</p>
+
+<h2 id="update-2016-05-06">Update 2016-05-06</h2>
+
+<p>I’ve created a new Client Installer v0.7, which includes the missing
+<em>vc_redist.x64.exe</em> and installs required system DLLs.</p></div>
+	<div class="post-info">
+		
+			<a href="/tags/development">Development</a> /
+		
+			<a href="/tags/ts3video">TS3VIDEO</a> /
+		
+		May 6
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+		<div class="post">
+	<h2 class="post-title"><a href="/posts/ts3video-release-0-6/">TS3VIDEO release 0.6</a></h2>
+	<div class="post-content"><p>Yesterday I <em>tried</em> to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.
+</p>
+
+<p>I never felt really
+good about this release because I didn’t invest enough time in testing it and I
+pushed myself too much to release the update as quickly as possible.
+That’s not what I want for my hobby projects. I love to take my time to deliver software
+which is easy to use and has <em>no bugs.</em> Well, at least for the main
+functionality because, lets face it, there is no bug-free software.</p>
+
+<p>As a result I will no longer say anything about estimated release dates, except for:
+<em>“It’s done, when it’s done.”</em></p>
+
+<h1 id="already-upgraded">Already upgraded?</h1>
+
+<p>In case you did install version 0.6 during the short time it was available,
+you can simply install version 0.5 again and everything will work as before.
+The website will provide you with downloads and all public servers are running
+version 0.5 again.</p>
+
+<p>Thanks for your patience and sorry for the inconvenience.</p></div>
+	<div class="post-info">
+		
+			<a href="/tags/development">Development</a> /
+		
+			<a href="/tags/ts3video">TS3VIDEO</a> /
+		
+		Feb 7
+	</div>
+	<div class="post-comments"></div>
+</div>
+	
+
+</div>
+
+
+<div class="container">
+	<div id="site-footer">
+
+		<div class="row">
+			<div class="col-md-4">
+				<ul class="links">
+					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
+					<li>info (at) mfreiholz (dot) de</li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				Made with &#9825; mfreiholz.de
+			</div>
+			<div class="col-md-4">
+				Support Me<br>
+				<a href="/donate">Donate / Spenden</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/markdown.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+	(function (i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date(); a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-67699481-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+
+</html>

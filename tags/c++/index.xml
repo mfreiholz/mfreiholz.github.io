@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43; on mfreiholz.de</title>
+    <link>https://mfreiholz.de/tags/c&#43;&#43;/</link>
+    <description>Recent content in C&#43;&#43; on mfreiholz.de</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Aug 2017 18:03:14 +0200</lastBuildDate>
+    
+	<atom:link href="https://mfreiholz.de/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Network Protocol Parsing with C&#43;&#43;</title>
+      <link>https://mfreiholz.de/posts/network-protocol-parser/</link>
+      <pubDate>Thu, 31 Aug 2017 18:03:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/network-protocol-parser/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&amp;rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Make a class thread safe C&#43;&#43;</title>
+      <link>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</link>
+      <pubDate>Sun, 16 Oct 2016 11:25:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</guid>
+      <description>&lt;p&gt;You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
+&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

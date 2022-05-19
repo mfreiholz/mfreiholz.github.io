@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on mfreiholz.de</title>
+    <link>https://mfreiholz.de/posts/</link>
+    <description>Recent content in Posts on mfreiholz.de</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Dec 2019 08:35:14 +0200</lastBuildDate>
+    
+	<atom:link href="https://mfreiholz.de/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lenovo Thinkpad Camera Not Working</title>
+      <link>https://mfreiholz.de/posts/lenovo-thinkpad-realtek-camera-not-working/</link>
+      <pubDate>Thu, 19 Dec 2019 08:35:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/lenovo-thinkpad-realtek-camera-not-working/</guid>
+      <description>&lt;p&gt;I ran into a problem with Lenovo Thinkpad T470p, but it also happens on some other models. It didn&amp;rsquo;t let me use the Integrated Webcam on Windows 10 anymore. Luckily I found the fix!
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Network Protocol Parsing with C&#43;&#43;</title>
+      <link>https://mfreiholz.de/posts/network-protocol-parser/</link>
+      <pubDate>Thu, 31 Aug 2017 18:03:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/network-protocol-parser/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&amp;rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to use GeoServer / GeoWebCache with NASA WorldWind</title>
+      <link>https://mfreiholz.de/posts/worldwind-with-geoserver-and-geowebcache/</link>
+      <pubDate>Tue, 17 Jan 2017 19:29:32 +0100</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/worldwind-with-geoserver-and-geowebcache/</guid>
+      <description>&lt;p&gt;I currently develop and setup different software products which needs to display a map, like Google Maps or OpenStreetMaps. One very important requirement is to display the Map without an active internet connection. This quickly results in the idea to run my own &lt;a href=&#34;http://geoserver.org/&#34;&gt;GeoServer&lt;/a&gt; instance with local stored map data and distribute it via &lt;a href=&#34;https://en.wikipedia.org/wiki/Web_Map_Service&#34;&gt;WMS&lt;/a&gt; (Web Map Service).
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Manage And Deploy Static Websites (Hugo)</title>
+      <link>https://mfreiholz.de/posts/hugo-manage-and-deploy-static-website/</link>
+      <pubDate>Thu, 24 Nov 2016 11:18:41 +0100</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/hugo-manage-and-deploy-static-website/</guid>
+      <description>&lt;p&gt;I use static websites based on &lt;a href=&#34;https://gohugo.io&#34;&gt;Hugo&lt;/a&gt; since quite a while now. They are fast, nice to edit with the editor of my choice and can be served from any HTTP server. There are no requirements like PHP, Python or MySQL. Unfortunately I never got used to the deployment process.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Make a class thread safe C&#43;&#43;</title>
+      <link>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</link>
+      <pubDate>Sun, 16 Oct 2016 11:25:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</guid>
+      <description>&lt;p&gt;You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Development Break Summer 2016</title>
+      <link>https://mfreiholz.de/posts/development-break-2016/</link>
+      <pubDate>Sun, 24 Jul 2016 20:40:02 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/development-break-2016/</guid>
+      <description>Some people may wonder why there aren&amp;rsquo;t any updates on my projects during the last few weeks. Well, a few things changed in my life and that&amp;rsquo;s why I don&amp;rsquo;t have a lot of time or motivation. So I decided to make a complete break for this summer until September.
+I will monitor and maintain all running services (public servers, &amp;hellip;), of course.
+See you later :P</description>
+    </item>
+    
+    <item>
+      <title>Switch to NGINX and Hugo</title>
+      <link>https://mfreiholz.de/posts/switch-to-nginx-and-hugo/</link>
+      <pubDate>Mon, 06 Jun 2016 10:19:10 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/switch-to-nginx-and-hugo/</guid>
+      <description>&lt;p&gt;I decided to make some changes to my current root server and websites.
+I already migrated most of my websites to be statically generated with &lt;a href=&#34;https://hugo.io&#34;&gt;Hugo&lt;/a&gt;.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>TS3VIDEO release 0.7, 0.8</title>
+      <link>https://mfreiholz.de/posts/ts3video-release-0-7-0-8/</link>
+      <pubDate>Fri, 06 May 2016 13:12:18 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/ts3video-release-0-7-0-8/</guid>
+      <description>&lt;p&gt;The new v0.6 is out and available for download.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Download here:&lt;/strong&gt; &lt;a href=&#34;https://mfreiholz.de/ts3video/&#34;&gt;https://mfreiholz.de/ts3video/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Most changes are internal and don’t change the user experience,
+but there is one new great feature: &lt;strong&gt;Streaming in a resolution of your choice (HD!)&lt;/strong&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>TS3VIDEO release 0.6</title>
+      <link>https://mfreiholz.de/posts/ts3video-release-0-6/</link>
+      <pubDate>Sun, 07 Feb 2016 13:11:39 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/ts3video-release-0-6/</guid>
+      <description>&lt;p&gt;Yesterday I &lt;em&gt;tried&lt;/em&gt; to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.
+&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords" content="programming c++ go golang php projects books">
+
+	<title>Server status web-app documentation | M. Freiholz Software Development</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
+</head>
+
+<body>
+
+	<div id="site-header" class="container">
+		<div class="title">M. Freiholz</div>
+		<div class="subtitle">Software Development</div>
+	</div>
+
+	<div id="site-navigation" class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/work/">Products</a></li>
+					<li><a href="/donate/">Support Me</a></li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<div class="right">
+					<div class="social">
+						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
+						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+
+	</div>
+	
+
+<div class="site-sub-nav container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul>
+                <li><a href="/ts3video/"><img src="/images/ts3video-logo-20x20.png"><strong>TS3VIDEO:</strong></a></li>
+                <li><a href="/ts3video/docs/">Documentation</a></li>
+                <li><a href="/ts3video/downloads/" class="downloads-link">Downloads</a></li>
+            </ul>
+        </div>
+    </div>
+    
+
+</div>
+
+
+<div id="site-content" class="container md">
+
+    
+
+<p>Available since: 0.2</p>
+
+<p>The server comes with a web-app to monitor basic status
+information about the running server. It is located in the
+<em>server-status</em> directory of the downloaded server package.</p>
+
+<p>This documentation asumes that your server is installed in the
+<code>/opt/ts3video</code> directory. Windows can use the same instructions in a
+slightly modified way.</p>
+
+<h1 id="configure-the-status-web-app">Configure the status web-app</h1>
+
+<p>The web-app uses a <a href="https://www.websocket.org/">WebSocket</a> connection to retrieve
+real-time information from the VideoServer.
+Basic options can be changed in the web-app&rsquo;s <code>config.json</code> file.
+Here is a list of the available options and what they include:</p>
+
+<p><strong>server.statussocket.address</strong></p>
+
+<blockquote>
+<p>The host address to which the web-app&rsquo;s WebSocket will connect.
+Set to <code>null</code> to let the application use the host from the address bar
+in your browser (recommended).</p>
+</blockquote>
+
+<p><strong>server.statussocket.port</strong></p>
+
+<blockquote>
+<p>The port to which the web-app&rsquo;s WebSocket will connect.</p>
+</blockquote>
+
+<p><strong>server.statussocket.path</strong></p>
+
+<blockquote>
+<p>The web-app&rsquo;s WebSocket will use this path in it&rsquo;s HTTP request.
+It can be used to proxy-forward the WebSocket with your web-server
+(e.g.: Apache&rsquo;s <code>ProxyPass</code>, <code>ProxyPassReverse</code>).</p>
+</blockquote>
+
+<p><strong>ui.updateinterval</strong></p>
+
+<blockquote>
+<p>The polling interval which is used to update visible information.</p>
+</blockquote>
+
+<h1 id="setup-the-quick-and-dirty-way">Setup the quick and dirty way</h1>
+
+<p>Copy or link the <code>server-status</code> folder into the public reachable
+web-server&rsquo;s <em>www</em> folder.</p>
+
+<pre><code class="language-bash">cp -rf /opt/ts3video/server-status /var/www/videoserver-status
+</code></pre>
+
+<p>Before the web-app can fetch any data from the VideoServer you need to
+update the VideoServer&rsquo;s configuration file <code>/opt/ts3data/default.ini</code>
+and set the following values (restart required):</p>
+
+<pre><code class="language-ini">[default]
+wsstatus-address=any
+wsstatus-port=13375
+</code></pre>
+
+<p>The VideoServer will now accept WebSocket connections from anywhere.
+In case that you only want to access the web-app from localhost, you can
+keep the VideoServer&rsquo;s default configuration values
+(<code>wsstatus-address=127.0.0.1</code>).</p>
+
+<p>Finally you need to restart the VideoServer</p>
+
+<pre><code class="language-bash">/etc/init.d/ts3video stop
+/etc/init.d/ts3video start
+</code></pre>
+
+<p>and open the web-app in your browser,
+e.g.: <a href="http://localhost/videoserver-status">http://localhost/videoserver-status</a></p>
+
+<div class="hint hint-info">
+Some firewalls and proxy servers may block connections to port 13375,
+they usually only allow port 80 and 443.
+</div>
+
+<h1 id="setup-apache2-virtualhost-and-password-protection">Setup Apache2 VirtualHost and password protection</h1>
+
+<p><strong>Requirements:</strong>
+Apache &gt;=2.4.5 with <em>mod_proxy</em> and <em>mod_proxy_wstunnel</em> enabled.</p>
+
+<div class="hint hint-warning">
+  I encountered a few problems using ProxyPass with WebSockets.
+  It either took very long to establish the WebSocket connection or didn't
+  work at all. You might fall back to the <em>Quick &amp; Dirty way</em>
+  with localhost acccess only, if you encounter any problems.
+</div>
+
+<p>First you need to create a new <code>VirtualHost</code> configuration.</p>
+
+<pre><code class="language-bash">cd /etc/apache2/sites-available
+vi videoserver-status
+</code></pre>
+
+<p>Your configuration should look like this:</p>
+
+<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+  ServerName videoserver-status.yourhost.com
+  DocumentRoot /opt/ts3video/server-status
+
+  # Password protection (optional)
+  &lt;Location /&gt;
+    AuthType Basic
+    AuthName &quot;Video Server Status&quot;
+    AuthUserFile /opt/users.passwd
+    require valid-user
+  &lt;/Location&gt;
+
+  # Forward incoming WebSocket connections to the running VideoServer on port 13375.
+  # Note: ProxyPass for WebSockets is available since Apache 2.4.5
+  #       You need to have the Apache modules proxy_http and proxy_wstunnel enabled.
+  &lt;Location /ws&gt;
+    ProxyPass ws://127.0.0.1:13375
+    ProxyPassReverse ws://127.0.0.1:13375
+  &lt;/Location&gt;
+
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>Users can be managed with Apache&rsquo;s <a href="http://httpd.apache.org/docs/2.4/programs/htpasswd.html">htpasswd</a> tool.</p>
+
+<p>Now you need to update the web-app&rsquo;s configuration file to match your
+VirtualHost: <br />
+<code>/opt/ts3video/server-status/config.json</code></p>
+
+<pre><code class="language-json">{
+  &quot;server.statussocket.address&quot;: null,
+  &quot;server.statussocket.port&quot;: 80,
+  &quot;server.statussocket.path&quot;: &quot;/ws&quot;,
+  &quot;ui.updateinterval&quot;: 5000
+}
+</code></pre>
+
+<p>After a restart of the Apache web-server you can access the web-app:
+<a href="http://videoserver-status.yourhost.com">http://videoserver-status.yourhost.com</a></p>
+
+
+</div>
+
+
+<div class="container">
+	<div id="site-footer">
+
+		<div class="row">
+			<div class="col-md-4">
+				<ul class="links">
+					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
+					<li>info (at) mfreiholz (dot) de</li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				Made with &#9825; mfreiholz.de
+			</div>
+			<div class="col-md-4">
+				Support Me<br>
+				<a href="/donate">Donate / Spenden</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/markdown.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+	(function (i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date(); a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-67699481-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+
+</html>

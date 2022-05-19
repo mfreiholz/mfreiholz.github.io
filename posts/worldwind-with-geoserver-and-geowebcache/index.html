@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords" content="programming c++ go golang php projects books">
+
+	<title>How to use GeoServer / GeoWebCache with NASA WorldWind | M. Freiholz Software Development</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
+</head>
+
+<body>
+
+	<div id="site-header" class="container">
+		<div class="title">M. Freiholz</div>
+		<div class="subtitle">Software Development</div>
+	</div>
+
+	<div id="site-navigation" class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/work/">Products</a></li>
+					<li><a href="/donate/">Support Me</a></li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<div class="right">
+					<div class="social">
+						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
+						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+
+	</div>
+	
+
+
+<div id="site-content" class="container md">
+
+    <div class="post">
+	<h2 class="post-title"><a href="/posts/worldwind-with-geoserver-and-geowebcache/">How to use GeoServer / GeoWebCache with NASA WorldWind</a></h2>
+	<div class="post-content"><p>I currently develop and setup different software products which needs to display a map, like Google Maps or OpenStreetMaps. One very important requirement is to display the Map without an active internet connection. This quickly results in the idea to run my own <a href="http://geoserver.org/">GeoServer</a> instance with local stored map data and distribute it via <a href="https://en.wikipedia.org/wiki/Web_Map_Service">WMS</a> (Web Map Service).
+</p>
+
+<p>In the first step I simply added an OpenStreetMap layer and cached a few zoom levels with the built-in <em>GWC Seed Form</em> (batched caching) mechanism. I tested it with <a href="http://openlayers.org/">OpenLayers</a> and everything worked just fine. Unfortunetaly one of the dozens software components I require, uses the <a href="https://worldwind.arc.nasa.gov/">NASA WorldWind</a> viewer, which seems to use completely different zoom-levels (resolutions) than most other available viewers. Since I am new to this field I spend hours by searching for a solution, but couldn&rsquo;t find anything on the internet. Until&hellip;</p>
+
+<h2 id="the-problem-cause">The Problem Cause</h2>
+
+<p>At some point I was able to get hands on the HTTP request URL, which the NASA WorldWind viewer sends to the server in the state where it was completely zoomed out. Pasting the URL into my browser&rsquo;s address bar lead to the following response from the <em>offline</em> GeoWebCache server:</p>
+
+<p><strong>Request URL</strong></p>
+
+<pre><code>/geoserver/gwc/service/wms?service=WMS&amp;request=GetMap&amp;version=1.1.1&amp;srs=EPSG:4326&amp;layers=grob_osm_wsm:all&amp;styles=&amp;width=512&amp;height=512&amp;format=image/png&amp;transparent=TRUE&amp;bgcolor=0x000000&amp;bbox=54.0,36.0,72.0,54.0&amp;
+</code></pre>
+
+<p><strong>Response</strong></p>
+
+<p><code>
+400: Requested horizontal resolution: 0.140625 , best match:
+0.703125 exceeds 10% threshold. Perhaps the client is configured with an incorrect set of scales (resolutions), or the DPI setting is off compared to the one in GWC ?
+</code></p>
+
+<h2 id="the-solution">The Solution</h2>
+
+<p><strong>TL;DR</strong> It is required to create a new custom <em>Caching Gridset,</em> assign it to the layer which should be available and start the caching task with the <em>GWC Seed Form.</em></p>
+
+<h3 id="1-setup-gridset">1. Setup Gridset</h3>
+
+<ul>
+<li><em>Tile Caching</em> -&gt; <em>Gridsets</em> <br />
+Click <em>Create a copy</em> of the <em>EPSG:4326</em> Gridset</li>
+<li>Remove all levels except the first one from the <em>Tile Matrix Set</em> and paste <code>0.140625</code> into the <em>Pixel Size</em> column. This is the horizontal resolution, which the above HTTP Response of the WMS contains.</li>
+<li>Clicking on <em>Add zoom level</em> will now automatically set the correct <em>Pixel</em> size for the next zoom level. It might be useful to add ~15-22 zoom levels.</li>
+</ul>
+
+<p>In addition to the <em>Tile Matrix Set</em>, it is required to set the <em>Tile-width and -height</em> to <strong>512</strong>. This seems to be the default tile-size requested from WorldWind (most other applications use 256x256 px).</p>
+
+<h3 id="2-add-gridset-to-layer">2. Add Gridset To Layer</h3>
+
+<ul>
+<li><em>Tile Caching</em> -&gt; <em>Tile Layers</em> -&gt; <em>YOUR-LAYER</em> -&gt; Tab: <em>Tile Caching</em> <br />
+At the bottom is a table with Gridsets, which should be cached. Add the new Gridset here with MIN/MAX selected for published and cached zoom levels.</li>
+</ul>
+
+<h3 id="3-fill-geowebcache-seed">3. Fill GeoWebCache (Seed)</h3>
+
+<ul>
+<li><em>Tile Caching</em> -&gt; <em>Tile Layers</em> -&gt; <em>YOUR-LAYER</em> -&gt; <em>Seed/Truncate</em> <br />
+Make your perfered settings with the new Gridset and start the caching tasks.</li>
+</ul>
+
+<h2 id="final-words">Final words</h2>
+
+<p>Always make sure that the request of your map-viewer matches exactly the settings of the cached gridset settings (resolution, tile-width, tile-height, format).</p>
+
+<p>After all, this <em>small</em> problem costs me a lot of time and I hope this article helps somebody who faces the same problem.</p></div>
+	<div class="post-info">
+		
+			<a href="/tags/administration">Administration</a> /
+		
+			<a href="/tags/tutorial">Tutorial</a> /
+		
+		Jan 17
+	</div>
+	<div class="post-comments"></div>
+</div>
+
+    <div class="post-comments"> 
+        <div id="disqus_thread"></div>
+<script>
+	
+
+
+	
+
+	
+
+	(function() {  
+		if (window.location.hostname == "localhost" ||
+			window.location.hostname == "127.0.0.1")
+			return;
+
+		var d = document, s = d.createElement('script');
+		s.src = '//mfreiholz.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div>
+
+</div>
+
+
+<div class="container">
+	<div id="site-footer">
+
+		<div class="row">
+			<div class="col-md-4">
+				<ul class="links">
+					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
+					<li>info (at) mfreiholz (dot) de</li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				Made with &#9825; mfreiholz.de
+			</div>
+			<div class="col-md-4">
+				Support Me<br>
+				<a href="/donate">Donate / Spenden</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/markdown.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+	(function (i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date(); a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-67699481-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+
+</html>

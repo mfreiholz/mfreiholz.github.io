@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tutorial on mfreiholz.de</title>
+    <link>https://mfreiholz.de/tags/tutorial/</link>
+    <description>Recent content in Tutorial on mfreiholz.de</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Aug 2017 18:03:14 +0200</lastBuildDate>
+    
+	<atom:link href="https://mfreiholz.de/tags/tutorial/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Network Protocol Parsing with C&#43;&#43;</title>
+      <link>https://mfreiholz.de/posts/network-protocol-parser/</link>
+      <pubDate>Thu, 31 Aug 2017 18:03:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/network-protocol-parser/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&amp;rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to use GeoServer / GeoWebCache with NASA WorldWind</title>
+      <link>https://mfreiholz.de/posts/worldwind-with-geoserver-and-geowebcache/</link>
+      <pubDate>Tue, 17 Jan 2017 19:29:32 +0100</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/worldwind-with-geoserver-and-geowebcache/</guid>
+      <description>&lt;p&gt;I currently develop and setup different software products which needs to display a map, like Google Maps or OpenStreetMaps. One very important requirement is to display the Map without an active internet connection. This quickly results in the idea to run my own &lt;a href=&#34;http://geoserver.org/&#34;&gt;GeoServer&lt;/a&gt; instance with local stored map data and distribute it via &lt;a href=&#34;https://en.wikipedia.org/wiki/Web_Map_Service&#34;&gt;WMS&lt;/a&gt; (Web Map Service).
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Manage And Deploy Static Websites (Hugo)</title>
+      <link>https://mfreiholz.de/posts/hugo-manage-and-deploy-static-website/</link>
+      <pubDate>Thu, 24 Nov 2016 11:18:41 +0100</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/hugo-manage-and-deploy-static-website/</guid>
+      <description>&lt;p&gt;I use static websites based on &lt;a href=&#34;https://gohugo.io&#34;&gt;Hugo&lt;/a&gt; since quite a while now. They are fast, nice to edit with the editor of my choice and can be served from any HTTP server. There are no requirements like PHP, Python or MySQL. Unfortunately I never got used to the deployment process.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Make a class thread safe C&#43;&#43;</title>
+      <link>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</link>
+      <pubDate>Sun, 16 Oct 2016 11:25:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</guid>
+      <description>&lt;p&gt;You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
+&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

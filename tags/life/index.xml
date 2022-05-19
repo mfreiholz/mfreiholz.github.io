@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Life on mfreiholz.de</title>
+    <link>https://mfreiholz.de/tags/life/</link>
+    <description>Recent content in Life on mfreiholz.de</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 Jul 2016 20:40:02 +0200</lastBuildDate>
+    
+	<atom:link href="https://mfreiholz.de/tags/life/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Development Break Summer 2016</title>
+      <link>https://mfreiholz.de/posts/development-break-2016/</link>
+      <pubDate>Sun, 24 Jul 2016 20:40:02 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/posts/development-break-2016/</guid>
+      <description>Some people may wonder why there aren&amp;rsquo;t any updates on my projects during the last few weeks. Well, a few things changed in my life and that&amp;rsquo;s why I don&amp;rsquo;t have a lot of time or motivation. So I decided to make a complete break for this summer until September.
+I will monitor and maintain all running services (public servers, &amp;hellip;), of course.
+See you later :P</description>
+    </item>
+    
+  </channel>
+</rss>

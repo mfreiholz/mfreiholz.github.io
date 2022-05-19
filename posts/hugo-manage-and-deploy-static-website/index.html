@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords" content="programming c++ go golang php projects books">
+
+	<title>Manage And Deploy Static Websites (Hugo) | M. Freiholz Software Development</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
+</head>
+
+<body>
+
+	<div id="site-header" class="container">
+		<div class="title">M. Freiholz</div>
+		<div class="subtitle">Software Development</div>
+	</div>
+
+	<div id="site-navigation" class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/work/">Products</a></li>
+					<li><a href="/donate/">Support Me</a></li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<div class="right">
+					<div class="social">
+						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
+						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+
+	</div>
+	
+
+
+<div id="site-content" class="container md">
+
+    <div class="post">
+	<h2 class="post-title"><a href="/posts/hugo-manage-and-deploy-static-website/">Manage And Deploy Static Websites (Hugo)</a></h2>
+	<div class="post-content"><p>I use static websites based on <a href="https://gohugo.io">Hugo</a> since quite a while now. They are fast, nice to edit with the editor of my choice and can be served from any HTTP server. There are no requirements like PHP, Python or MySQL. Unfortunately I never got used to the deployment process.
+</p>
+
+<p>The <em>intended</em> way of deployment is a classic FTP/SFTP/SCP upload. You simply copy and overwrite everything on the remote server with the new data from your local machine. Sounds easy and is easy. But what if&hellip;</p>
+
+<ul>
+<li>the website does have a few big resources (pictures, files, &hellip;), which may take some time? <br />
+You might pick only the new files by yourself, what I consider as very annoying. <br />
+Same for big structural changes. You can&rsquo;t pick in this case, you need to delete everything on the server and upload everything completely new.</li>
+<li>you&rsquo;re behind a firewall/proxy which blocks all non HTTP/HTTPS traffic? <br />
+This might happen within your work-placke or public WiFi spots.</li>
+<li>you don&rsquo;t have your RSA key for server authentication with you and don&rsquo;t have a simple FTP server running, which is insecure anyway? <br />
+It is possible to run an SFTP server with username/password authentication, but that&rsquo;s too much of a security concern in my oppition.</li>
+</ul>
+
+<h2 id="the-solution-requires-shell-access">The Solution (Requires Shell Access)</h2>
+
+<p>Since another rule in my life is: <em>&ldquo;Put everything into <a href="https://en.wikipedia.org/wiki/Version_control">VC</a> repository&rdquo;</em> and a few searches on the Internet results with nearly the same idea, it should be the right way to go to put my website into a Git repository and directly deploy from it. Most solutions on the Internet suggest to use a single repository with a <em>generated</em> branch, but I don&rsquo;t like the idea to have the generated website filling up my source repository with redundant data. That&rsquo;s why I decided to use two repositories and one Cron-Job. In addition, this gives me the possibility to keep the source- private and the <em>generated</em>-repository public.</p>
+
+<p>Here a small overview with real data of this website:</p>
+
+<ul>
+<li><strong>Source Repository</strong>: <a href="https://github.com/mfreiholz/mfreiholz.de.git">https://github.com/mfreiholz/mfreiholz.de.git</a> <br />
+This is the primary source repository. All work happens in this repository.</li>
+<li><strong>Output Repository</strong>: <a href="https://github.com/mfreiholz/mfreiholz.de-rendered.git">https://github.com/mfreiholz/mfreiholz.de-rendered.git</a> <br />
+This repository contains the latest generated version of the website.
+After editing and validating the contents of the website, I generate everything into this repository and push them to the remote server.</li>
+<li><strong>Cron-Job</strong> (<em>/etc/crontab</em>): <br />
+<code>*/5 * * * * root cd /var/www/mfreiholz.de &amp;&amp; git pull</code> <br />
+This job pulls the newest version of the <em>generated</em> repository every 5 minutes.</li>
+</ul>
+
+<p><strong>Note:</strong> You can host your repositories on your on server and don&rsquo;t have to use GitHub, of course.</p>
+
+<p>In the next step I will show you, how to setup the environment step-by-step. You might stop reading now, if you already know how to setup the above scenario.</p>
+
+<h2 id="how-to-setup">How To Setup</h2>
+
+<p>I&rsquo;m not going to show you, how to create the Git repositories. You should already know that and have a place to store them. I will use the above mentioned URLs for this example.</p>
+
+<h3 id="server-side">Server Side</h3>
+
+<p>In the first setup, we need to checkout the repository to the configured virtual-host DocumentRoot of your Apache/NGINX server.</p>
+
+<pre><code class="language-bash">mkdir /var/www/mfreiholz.de
+cd /var/www/mfreiholz.de
+git clone https://github.com/mfreiholz/mfreiholz.de.git
+</code></pre>
+
+<p>Now setup cron-job for auto update every 5 minutes. Open your <code>/etc/crontab</code> and add the following line:</p>
+
+<pre><code class="language-bash">*/5 * * * * root cd /var/www/mfreiholz.de &amp;&amp; git pull
+</code></pre>
+
+<p>Restart cron with <code>service cron restart</code> and you&rsquo;re done. That&rsquo;s all you have to do on your server. Everything else happens on client side.</p>
+
+<h3 id="client-side">Client Side</h3>
+
+<p>I use to checkout everything flat into my main <em>source</em> directory, e.g.: <code>C:\Source</code> on Windows:</p>
+
+<pre><code class="language-bash">cd C:\Source
+git clone https://github.com/mfreiholz/mfreiholz.de.git
+git clone https://github.com/mfreiholz/mfreiholz.de-rendered.git
+</code></pre>
+
+<p>You do all your work in the first repository and as soon as you&rsquo;re done with your changes, validated and committed them in the first repository you can generate your website into the second repository with:</p>
+
+<pre><code class="language-bash">cd C:\Source\mfreiholz.de
+hugo --cleanDestinationDir --destination ..\mfreiholz.de-rendered
+</code></pre>
+
+<p>Next you can publish your page with a simple Git <code>commit</code> and <code>push</code> command.</p>
+
+<pre><code>cd C:\Source\mfreiholz.de-rendered
+git add -A
+git commit -m &quot;changes...&quot;
+git push 
+</code></pre>
+
+<p>That&rsquo;s all. Your server will automatically pull the changes from the <em>rendered</em> repository and make them public. Based on the cron-job setup this may take a minute.</p></div>
+	<div class="post-info">
+		
+			<a href="/tags/administration">Administration</a> /
+		
+			<a href="/tags/tutorial">Tutorial</a> /
+		
+		Nov 24
+	</div>
+	<div class="post-comments"></div>
+</div>
+
+    <div class="post-comments"> 
+        <div id="disqus_thread"></div>
+<script>
+	
+
+
+	
+
+	
+
+	(function() {  
+		if (window.location.hostname == "localhost" ||
+			window.location.hostname == "127.0.0.1")
+			return;
+
+		var d = document, s = d.createElement('script');
+		s.src = '//mfreiholz.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div>
+
+</div>
+
+
+<div class="container">
+	<div id="site-footer">
+
+		<div class="row">
+			<div class="col-md-4">
+				<ul class="links">
+					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
+					<li>info (at) mfreiholz (dot) de</li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				Made with &#9825; mfreiholz.de
+			</div>
+			<div class="col-md-4">
+				Support Me<br>
+				<a href="/donate">Donate / Spenden</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/markdown.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+	(function (i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date(); a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-67699481-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+
+</html>

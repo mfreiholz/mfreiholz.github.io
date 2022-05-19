@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords" content="programming c++ go golang php projects books">
+
+	<title>Documentation Index | M. Freiholz Software Development</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
+</head>
+
+<body>
+
+	<div id="site-header" class="container">
+		<div class="title">M. Freiholz</div>
+		<div class="subtitle">Software Development</div>
+	</div>
+
+	<div id="site-navigation" class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/work/">Products</a></li>
+					<li><a href="/donate/">Support Me</a></li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<div class="right">
+					<div class="social">
+						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
+						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+
+	</div>
+	
+
+<div class="site-sub-nav container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul>
+                <li><a href="/ts3video/"><img src="/images/ts3video-logo-20x20.png"><strong>TS3VIDEO:</strong></a></li>
+                <li><a href="/ts3video/docs/">Documentation</a></li>
+                <li><a href="/ts3video/downloads/" class="downloads-link">Downloads</a></li>
+            </ul>
+        </div>
+    </div>
+    
+
+</div>
+
+
+<div id="site-content" class="container md">
+
+    
+
+<ul>
+<li><strong><a href="./latest">Latest</a></strong> (0.6 / 0.7 / 0.8 / 0.10 / 0.11 / 0.12 / 0.13 / 0.14)</li>
+<li><a href="./0.5">Version 0.5</a></li>
+</ul>
+
+<h2 id="note-for-updaters-linux">Note for Updaters (Linux)</h2>
+
+<p>It is NOT recommended to overwrite your old installation with the newest one.
+You should always create a new directory.
+The project is still in BETA state and a lot of things can change, which may require a clean environment.</p>
+
+<p>Example directory structure:</p>
+
+<pre><code class="language-plain">/opt/ts3video/
+    server-0.4/
+        default.ini
+        videoserver
+        ...
+    server-0.5/
+        default.ini
+        videoserver
+        ...
+    server-0.6/
+        default.ini
+        videoserver
+        ...
+</code></pre>
+
+<h1 id="faq-troubleshooting">FAQ / Troubleshooting</h1>
+
+<h4 id="the-program-can-t-start-because-api-ms-win-crt-runtime-l1-1-0-dll-is-missing">The program can&rsquo;t start because api-ms-win-crt-runtime-l1-1-0.dll is missing</h4>
+
+<p><img src="/images/missing-dll-api-ms-win-crt.png" alt="missing dll api ms win crt screenshot" /></p>
+
+<p>The problem is that the <a href="https://support.microsoft.com/en-us/kb/2999226">KB2999226</a>
+(Universal CRT) which is part of the Visual C++ Redistributable for Visual Studio 2015 failed to install.</p>
+
+<p><strong>Solution</strong></p>
+
+<ul>
+<li>Install Windows Updates</li>
+<li>Restart your computer</li>
+<li>Reinstall TS3VIDEO (Conference Client)</li>
+</ul>
+
+<h4 id="the-program-can-t-start-because-msvcp140-dll-is-missing">The program can&rsquo;t start because MSVCP140.dll is missing</h4>
+
+<p>The problem is that your computer is missing the Visual C++ Redistributable for Visual Studio 2015.</p>
+
+<p><strong>Solution</strong></p>
+
+<ul>
+<li>Download and install vcredist_x86.exe and vcredist_x64.exe from the
+<a href="https://www.microsoft.com/en-us/download/details.aspx?id=48145">Microsoft Download Center</a></li>
+</ul>
+
+
+</div>
+
+
+<div class="container">
+	<div id="site-footer">
+
+		<div class="row">
+			<div class="col-md-4">
+				<ul class="links">
+					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
+					<li>info (at) mfreiholz (dot) de</li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+				Made with &#9825; mfreiholz.de
+			</div>
+			<div class="col-md-4">
+				Support Me<br>
+				<a href="/donate">Donate / Spenden</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/markdown.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+	(function (i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date(); a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-67699481-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+
+</html>
