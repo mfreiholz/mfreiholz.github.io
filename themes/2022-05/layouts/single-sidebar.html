@@ -1,0 +1,11 @@
+{{ define "main" }}
+	<div class="two-column-content">
+		<div class="col1">
+			<pre>_default/single-sidebar.html</pre>
+			{{ .Content }}
+		</div>
+		<div class="col2">
+			{{ partial "sidebar.html" . }}
+		</div>
+	</div>
+{{ end }}

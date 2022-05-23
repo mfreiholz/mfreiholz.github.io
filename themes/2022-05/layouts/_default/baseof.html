@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords"
+		content="programming c++ go golang rust php javascript typescript projects books blog network">
+
+	<title>{{ .Title }} | mfreiholz.de</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}" />
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="container">
+			<div class="title">
+				<span>#</span> mfreiholz.de
+			</div>
+			<nav>
+				<a href="/">Home</a>
+				<a href="/posts">Blog</a>
+				<a href="/work">Projects</a>
+			</nav>
+		</div>
+	</header>
+
+	{{ block "main" . }}
+		Default "main"-block content.
+	{{ end }}
+
+	<div class="site-footer">
+		<section>
+			<div><a href="/impressum/">Disclaimer / Impressum</a></div>
+		</section>
+		<section>
+			Made with &#9825; mfreiholz.de
+		</section>
+		<section>
+			<div>&#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;</div>
+		</section>
+	</div>
+
+	{{ $options := (dict "enableSourceMap" true) }}
+	{{ $scss := resources.Get "style.scss" }}
+	{{ $style := $scss | resources.ToCSS $options }}
+	<link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+
+	<!-- <link rel="stylesheet" type="text/css" href="/style.scss"> -->
+	<link rel="stylesheet" type="text/css" href="/markdown.css">
+
+	<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css"> -->
+	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script> -->
+	<!-- <script>hljs.initHighlightingOnLoad();</script> -->
+
+</body>
+
+</html>

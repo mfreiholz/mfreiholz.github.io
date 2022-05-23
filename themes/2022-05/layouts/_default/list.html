@@ -1,0 +1,9 @@
+{{ define "main" }}
+	<div class="container">
+		<ul class="default-page-list">
+		{{ range .Pages }}
+			<li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+		{{ end }}
+		</ul>
+	</div>
+{{ end }}

@@ -1,7 +1,10 @@
-baseurl = "https://mfreiholz.de"
+#baseURL = "https://mfreiholz.de"
+#baseURL = "http://localhost:1337"
 languageCode = "en-us"
 title = "mfreiholz.de"
-theme = "mf002"
+theme = "2022-05"
+#relativeURLs = false
+#disableLiveReload = true
 
 [taxonomies]
 tag = "tags"
