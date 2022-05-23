@@ -1,0 +1,17 @@
+{{ define "main" }}
+	<div class="container work-list">
+	{{ range .Pages }}
+		<div class="project">
+			<div class="title">{{ .Title }}</div>
+			<div class="homepage"><a href="{{ .Params.homepage }}" target="_blank">{{ .Params.homepage }}</a></div>
+			<div class="summary">{{ .Summary }}</div>
+			<div class="tags">
+				{{ range .Params.labels }}
+					{{ . }} /
+				{{ end }}
+				Since {{ .Date.Format "2006" }}
+			</div>
+		</div>
+	{{ end }}
+	</div>
+{{ end }}

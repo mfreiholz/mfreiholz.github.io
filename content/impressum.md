@@ -3,8 +3,6 @@ date = "2016-07-18T08:38:48+02:00"
 title = "Impressum"
 +++
 
-# Impressum
-
 ## Verantwortlich
 
 M. Freiholz Software Development \
@@ -12,8 +10,7 @@ Manuel Freiholz \
 Proviantbachstraße 18 \
 86153 Augsburg
 
-E-Mail: info (at) mfreiholz (dot) de \
-Telefon: +49 (0) 162 3038036 (Mo. - So.: 17:00 - 21:00) + WhatsApp
+E-Mail: &#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;
 
 ## Unternehmensinformationen
 

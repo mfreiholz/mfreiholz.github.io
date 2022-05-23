@@ -311,6 +311,26 @@ header.site-header {
 	Work
 **********************************************************************/
 
+.container.work-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 0.8rem;
+
+	div.project {
+		flex: 1 1 33%;
+		border: 1px solid $border-color;
+		border-radius: 3px;
+		padding: 1rem;
+
+		.title {
+			font-weight: normal;
+			font-size: 1.2rem;
+		}
+	}
+}
+
 .work {
 	padding: 0.8rem;
 	margin-bottom: 1.0rem;
