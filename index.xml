@@ -6,7 +6,7 @@
     <description>Recent content in Welcome on mfreiholz.de</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Dec 2019 08:35:14 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 23 May 2022 13:37:42 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Block Dach</title>
       <link>https://mfreiholz.de/work/block-dach/</link>
@@ -50,16 +50,6 @@
       
       <guid>https://mfreiholz.de/work/ts3video/</guid>
       <description>&lt;p&gt;A free and easy to use video conferencing plugin for Teamspeak 3.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>TS3VIDEO</title>
-      <link>https://mfreiholz.de/ts3video/</link>
-      <pubDate>Mon, 23 May 2022 13:37:42 +0200</pubDate>
-      
-      <guid>https://mfreiholz.de/ts3video/</guid>
-      <description>The project has been moved to GitHub:
- Sources Release Downloads Documentation (Wiki)  </description>
     </item>
     
     <item>
@@ -157,6 +147,28 @@ I already migrated most of my websites to be statically generated with &lt;a hre
     </item>
     
     <item>
+      <title>Home-Features</title>
+      <link>https://mfreiholz.de/ts3video/home-features/</link>
+      <pubDate>Fri, 13 May 2016 21:36:08 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/ts3video/home-features/</guid>
+      <description>Features  Real time video chat Easy to install Low bandwidth usage (especially for gamers) Integrates into TeamSpeak as plugin Keeps using TeamSpeak for voice chat No self hosted server required  Use public available servers (&amp;ldquo;Join via public server&amp;rdquo;) Resolution restricted to 720p   Host your own server (optional)  Custom resolution (up to 1080p) Links with TeamSpeak-Server Query-Console for user authorization (self hosted only, optional)    </description>
+    </item>
+    
+    <item>
+      <title>Home-Feedback</title>
+      <link>https://mfreiholz.de/ts3video/home-feedback/</link>
+      <pubDate>Fri, 13 May 2016 10:53:04 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/ts3video/home-feedback/</guid>
+      <description>Feedback &amp;amp; Help TS3VIDEO is developed by Manuel Freiholz from Germany.
+Feel free to write a review, comparison, benchmark or submit bugs and features to the public repository on GitHub.
+Contributors Special thanks to special people who helped me with development, testing or anything else.
+Michael Stein, Germany, GitHub Profile
+Christian Galeone, Italy, LinkedIn Profile</description>
+    </item>
+    
+    <item>
       <title>TS3VIDEO release 0.7, 0.8</title>
       <link>https://mfreiholz.de/posts/ts3video-release-0-7-0-8/</link>
       <pubDate>Fri, 06 May 2016 13:12:18 +0200</pubDate>
@@ -169,12 +181,43 @@ but there is one new great feature: &lt;strong&gt;Streaming in a resolution of y
     </item>
     
     <item>
+      <title>Documentation Index</title>
+      <link>https://mfreiholz.de/ts3video/docs/</link>
+      <pubDate>Tue, 26 Apr 2016 06:37:32 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/ts3video/docs/</guid>
+      <description>Latest (0.6 / 0.7 / 0.8 / 0.10 / 0.11 / 0.12 / 0.13 / 0.14) Version 0.5  Note for Updaters (Linux) It is NOT recommended to overwrite your old installation with the newest one. You should always create a new directory. The project is still in BETA state and a lot of things can change, which may require a clean environment.
+Example directory structure:
+/opt/ts3video/  server-0.4/  default.</description>
+    </item>
+    
+    <item>
       <title>TS3VIDEO release 0.6</title>
       <link>https://mfreiholz.de/posts/ts3video-release-0-6/</link>
       <pubDate>Sun, 07 Feb 2016 13:11:39 +0200</pubDate>
       
       <guid>https://mfreiholz.de/posts/ts3video-release-0-6/</guid>
       <description>&lt;p&gt;Yesterday I &lt;em&gt;tried&lt;/em&gt; to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Downloads</title>
+      <link>https://mfreiholz.de/ts3video/downloads/</link>
+      <pubDate>Sat, 05 Sep 2015 17:31:34 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/ts3video/downloads/</guid>
+      <description>Downloads Windows    File Mirrors     Client 0.14 (Compatible with &amp;gt;= v0.6) Installer   Server 0.8 (Compatible with &amp;gt;= v0.6) Installer    Build on Windows 10 with VC14.Linux    File Mirrors     Server 0.8 32 bit (TAR archive) TAR-Archive   Server 0.8 64 bit (TAR archive) TAR-Archive    Build on Ubuntu 14.04 LTS (Debian) with GCC 4.</description>
+    </item>
+    
+    <item>
+      <title>Home-News</title>
+      <link>https://mfreiholz.de/ts3video/home-news/</link>
+      <pubDate>Sat, 05 Sep 2015 17:29:04 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/ts3video/home-news/</guid>
+      <description>Latest updates 2019-06-27 Version 0.14 has been released. This release is still compatible with server v0.8 and Teamspeak 3.1 (Plugin API 23). Apologies for the long inactivity. Development will continue soon.
+2017-11-25 Version 0.12 has been released. This release is still compatible with server v0.8 and Teamspeak 3.1 (Plugin API 21).
+2017-01-13 Version 0.11 has been released. This release is compatible with the new plugin API of Teamspeak 3.1 (Plugin API 21) and does work with all previous server versions of TS3VIDEO.</description>
     </item>
     
   </channel>

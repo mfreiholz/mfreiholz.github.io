@@ -210,15 +210,6 @@ header.site-header {
 .post-content {
   line-height: 1.5rem; }
 
-.post-read-more {
-  /* text-align: center; */ }
-
-.post-read-more a {
-  /* background: rgb(142, 207, 255);
-	color: white;
-	padding: 0.4rem 0.8rem;
-	text-decoration: none; */ }
-
 .post-tags {
   margin-top: 0.8rem;
   text-align: center; }
@@ -253,5 +244,11 @@ header.site-header {
 
 .work-labels {
   color: #747474; }
+
+/**********************************************************************
+	Section: TS3VIDEO
+**********************************************************************/
+.ts3video.logo {
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

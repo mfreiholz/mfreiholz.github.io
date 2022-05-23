@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords"
+		content="programming c++ go golang rust php javascript typescript projects books blog network">
+
+	<title>Documentation Index | mfreiholz.de</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="container">
+			<div class="title">
+				<span>#</span> mfreiholz.de
+			</div>
+			<nav>
+				<a href="/">Home</a>
+				<a href="/posts">Blog</a>
+				<a href="/work">Projects</a>
+			</nav>
+		</div>
+	</header>
+
+	
+	<div class="container">
+		<h1>Documentation Index</h1>
+		<ul>
+<li><strong><a href="./latest">Latest</a></strong> (0.6 / 0.7 / 0.8 / 0.10 / 0.11 / 0.12 / 0.13 / 0.14)</li>
+<li><a href="./0.5">Version 0.5</a></li>
+</ul>
+<h2 id="note-for-updaters-linux">Note for Updaters (Linux)</h2>
+<p>It is NOT recommended to overwrite your old installation with the newest one.
+You should always create a new directory.
+The project is still in BETA state and a lot of things can change, which may require a clean environment.</p>
+<p>Example directory structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>/opt/ts3video/
+</span></span><span style="display:flex;"><span>    server-0.4/
+</span></span><span style="display:flex;"><span>        default.ini
+</span></span><span style="display:flex;"><span>        videoserver
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>    server-0.5/
+</span></span><span style="display:flex;"><span>        default.ini
+</span></span><span style="display:flex;"><span>        videoserver
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>    server-0.6/
+</span></span><span style="display:flex;"><span>        default.ini
+</span></span><span style="display:flex;"><span>        videoserver
+</span></span><span style="display:flex;"><span>        ...
+</span></span></code></pre></div><h1 id="faq--troubleshooting">FAQ / Troubleshooting</h1>
+<h4 id="the-program-cant-start-because-api-ms-win-crt-runtime-l1-1-0dll-is-missing">The program can&rsquo;t start because api-ms-win-crt-runtime-l1-1-0.dll is missing</h4>
+<p><img src="/images/missing-dll-api-ms-win-crt.png" alt="missing dll api ms win crt screenshot"></p>
+<p>The problem is that the <a href="https://support.microsoft.com/en-us/kb/2999226">KB2999226</a>
+(Universal CRT) which is part of the Visual C++ Redistributable for Visual Studio 2015 failed to install.</p>
+<p><strong>Solution</strong></p>
+<ul>
+<li>Install Windows Updates</li>
+<li>Restart your computer</li>
+<li>Reinstall TS3VIDEO (Conference Client)</li>
+</ul>
+<h4 id="the-program-cant-start-because-msvcp140dll-is-missing">The program can&rsquo;t start because MSVCP140.dll is missing</h4>
+<p>The problem is that your computer is missing the Visual C++ Redistributable for Visual Studio 2015.</p>
+<p><strong>Solution</strong></p>
+<ul>
+<li>Download and install vcredist_x86.exe and vcredist_x64.exe from the
+<a href="https://www.microsoft.com/en-us/download/details.aspx?id=48145">Microsoft Download Center</a></li>
+</ul>
+
+	</div>
+
+
+	<div class="site-footer">
+		<section>
+			<div><a href="/impressum/">Disclaimer / Impressum</a></div>
+		</section>
+		<section>
+			Made with &#9825; mfreiholz.de
+		</section>
+		<section>
+			<div>&#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;</div>
+			<div></div>
+		</section>
+	</div>
+
+	
+	
+	
+	<link rel="stylesheet" href="https://mfreiholz.de/style.css" integrity="">
+
+	
+	<link rel="stylesheet" type="text/css" href="/markdown.css">
+
+	
+	
+	
+
+</body>
+
+</html>
