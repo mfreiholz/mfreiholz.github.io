@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Development on mfreiholz.de</title>
@@ -6,19 +6,14 @@
     <description>Recent content in Development on mfreiholz.de</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 31 Aug 2017 18:03:14 +0200</lastBuildDate>
-    
-	<atom:link href="https://mfreiholz.de/tags/development/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 31 Aug 2017 18:03:14 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/tags/development/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Network Protocol Parsing with C&#43;&#43;</title>
       <link>https://mfreiholz.de/posts/network-protocol-parser/</link>
       <pubDate>Thu, 31 Aug 2017 18:03:14 +0200</pubDate>
       
       <guid>https://mfreiholz.de/posts/network-protocol-parser/</guid>
-      <description>&lt;p&gt;I&amp;rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&amp;rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;I&amp;rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&amp;rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -27,8 +22,7 @@
       <pubDate>Sun, 16 Oct 2016 11:25:14 +0200</pubDate>
       
       <guid>https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/</guid>
-      <description>&lt;p&gt;You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -38,12 +32,9 @@
       
       <guid>https://mfreiholz.de/posts/ts3video-release-0-7-0-8/</guid>
       <description>&lt;p&gt;The new v0.6 is out and available for download.&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;Download here:&lt;/strong&gt; &lt;a href=&#34;https://mfreiholz.de/ts3video/&#34;&gt;https://mfreiholz.de/ts3video/&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;Most changes are internal and don’t change the user experience,
-but there is one new great feature: &lt;strong&gt;Streaming in a resolution of your choice (HD!)&lt;/strong&gt;
-&lt;/p&gt;</description>
+but there is one new great feature: &lt;strong&gt;Streaming in a resolution of your choice (HD!)&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -52,8 +43,7 @@ but there is one new great feature: &lt;strong&gt;Streaming in a resolution of y
       <pubDate>Sun, 07 Feb 2016 13:11:39 +0200</pubDate>
       
       <guid>https://mfreiholz.de/posts/ts3video-release-0-6/</guid>
-      <description>&lt;p&gt;Yesterday I &lt;em&gt;tried&lt;/em&gt; to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Yesterday I &lt;em&gt;tried&lt;/em&gt; to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.&lt;/p&gt;</description>
     </item>
     
   </channel>

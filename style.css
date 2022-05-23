@@ -1,0 +1,257 @@
+/**********************************************************************
+	Theme Variables
+**********************************************************************/
+/**********************************************************************
+	Globals
+**********************************************************************/
+html,
+body {
+  background: #292a2d;
+  color: #c2c2c7;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0; }
+
+a,
+a:visited,
+a:active {
+  color: #dfffa2;
+  text-decoration: none; }
+  a:hover,
+  a:visited:hover,
+  a:active:hover {
+    text-decoration: underline; }
+
+.container {
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1024px; }
+
+ul.default-page-list {
+  list-style-type: square; }
+  ul.default-page-list li {
+    line-height: 2rem; }
+
+/**********************************************************************
+	Site Header
+**********************************************************************/
+header.site-header {
+  background: #252627; }
+  header.site-header .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+    header.site-header .container div.title {
+      flex: 1 1 auto;
+      font-size: 1.3rem;
+      font-weight: bold; }
+      header.site-header .container div.title span {
+        color: #dfffa2; }
+    header.site-header .container nav {
+      flex: 0 0 auto;
+      display: flex;
+      flex-wrap: nowrap; }
+      header.site-header .container nav a {
+        color: #c2c2c7;
+        font-size: 1.2rem;
+        padding: 1.5rem 2rem; }
+
+/**********************************************************************
+	Site Footer
+**********************************************************************/
+.site-footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 1024px;
+  margin: 0.8rem auto 0 auto;
+  padding: 1.6rem 0 1.6rem 0;
+  border-color: #4a4b50;
+  border-style: solid;
+  border-width: 1px 0 0 0; }
+
+.site-footer section {
+  flex-grow: 1;
+  text-align: center; }
+
+/**********************************************************************
+	Content Layout - Single Column
+**********************************************************************/
+/**********************************************************************
+	Content Layout - Two Columns
+**********************************************************************/
+.two-column-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 1rem auto 0 auto;
+  width: 90%;
+  max-width: 1024px;
+  /* border: 1px solid blue; */ }
+
+.col1 {
+  width: 70%; }
+
+.col2 {
+  width: 30%; }
+
+/**********************************************************************
+	Sidebar (Right column)
+**********************************************************************/
+.sidebar {
+  border-color: #f0f0f0;
+  border-style: solid;
+  border-width: 0 0 0 1px;
+  margin-left: 0.8rem;
+  padding-left: 0.8rem; }
+
+.sidebar-section {
+  padding: 0.8rem;
+  /* -webkit-box-shadow: 0px 0px 1px 0px rgba(181,181,181,1);
+	-moz-box-shadow: 0px 0px 1px 0px rgba(181,181,181,1);
+	box-shadow: 0px 0px 1px 0px rgba(181,181,181,1); */ }
+
+.sidebar-section header {
+  /* background: rgb(240, 240, 240); */
+  /* background: rgb(222, 240, 253); */
+  color: #8ecfff;
+  padding: 0.4rem;
+  text-transform: uppercase;
+  width: 100%;
+  /* text-align: center; */
+  font-size: 1.3rem;
+  /* border: 1px solid rgb(142, 207, 255);
+	border-left-width: 3px;
+	border-bottom-width: 1px; */ }
+
+.sidebar-section section p {
+  line-height: 1.5rem;
+  margin: 0;
+  padding: 0.8rem 0.4rem; }
+
+/**********************************************************************
+	Sidebar: Search
+**********************************************************************/
+.search-form input {
+  border: 1px solid gainsboro;
+  font-size: 1.5rem;
+  padding: 0.4rem;
+  width: 100%; }
+
+/**********************************************************************
+	Sidebar: About Me
+**********************************************************************/
+.aboutme .profile-picture {
+  background-image: url("profile.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* border-radius: 15% 5%; */
+  border-radius: 5%;
+  height: 15rem;
+  width: 100%; }
+
+/**********************************************************************
+	Sidebar: Follow Me
+**********************************************************************/
+.followme section {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around; }
+
+.followme section a {
+  flex-grow: 1;
+  flex-basis: 35%;
+  border: 1px solid gainsboro;
+  color: #969696;
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 0.25rem;
+  margin: 0.1rem;
+  padding: 0.3rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase; }
+
+.followme section a:hover {
+  background: #f0f0f0;
+  border-color: #8ecfff;
+  color: #8ecfff; }
+
+/**********************************************************************
+	Sidebar: Newsletter Form
+**********************************************************************/
+.newsletter-form input {
+  border: 1px solid gainsboro;
+  font-size: 1.5rem;
+  padding: 0.4rem;
+  width: 100%; }
+
+.newsletter-form button {
+  width: 100%; }
+
+/**********************************************************************
+	Posts
+**********************************************************************/
+.post {
+  padding: 0.8rem;
+  margin-bottom: 1.0rem;
+  /* -webkit-box-shadow: 0px 0px 1px 0px rgba(181,181,181,1);
+	-moz-box-shadow: 0px 0px 1px 0px rgba(181,181,181,1);
+	box-shadow: 0px 0px 1px 0px rgba(181,181,181,1); */ }
+
+.post-title {
+  font-size: 2rem; }
+
+.post-title a {
+  text-decoration: none; }
+
+.post-content {
+  line-height: 1.5rem; }
+
+.post-read-more {
+  /* text-align: center; */ }
+
+.post-read-more a {
+  /* background: rgb(142, 207, 255);
+	color: white;
+	padding: 0.4rem 0.8rem;
+	text-decoration: none; */ }
+
+.post-tags {
+  margin-top: 0.8rem;
+  text-align: center; }
+
+/**********************************************************************
+	Work
+**********************************************************************/
+.container.work-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.8rem; }
+  .container.work-list div.project {
+    flex: 1 1 33%;
+    border: 1px solid #4a4b50;
+    border-radius: 3px;
+    padding: 1rem; }
+    .container.work-list div.project .title {
+      font-weight: normal;
+      font-size: 1.2rem; }
+
+.work {
+  padding: 0.8rem;
+  margin-bottom: 1.0rem;
+  /* -webkit-box-shadow: 0px 0px 1px 0px rgba(181,181,181,1);
+	-moz-box-shadow: 0px 0px 1px 0px rgba(181,181,181,1);
+	box-shadow: 0px 0px 1px 0px rgba(181,181,181,1); */ }
+
+.work-title {
+  font-size: 2rem; }
+
+.work-labels {
+  color: #747474; }
+
+/*# sourceMappingURL=style.css.map */

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Works on mfreiholz.de</title>
@@ -6,29 +6,14 @@
     <description>Recent content in Works on mfreiholz.de</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2016 13:37:00 +0200</lastBuildDate>
-    
-	<atom:link href="https://mfreiholz.de/work/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 01 Jan 2016 13:37:00 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/work/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Block Dach</title>
       <link>https://mfreiholz.de/work/block-dach/</link>
       <pubDate>Fri, 01 Jan 2016 13:37:00 +0200</pubDate>
       
       <guid>https://mfreiholz.de/work/block-dach/</guid>
-      <description>&lt;p&gt;A website for a roof-worker.
-&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Vegan Nadine</title>
-      <link>https://mfreiholz.de/work/vegan-nadine/</link>
-      <pubDate>Fri, 01 Jan 2016 13:37:00 +0200</pubDate>
-      
-      <guid>https://mfreiholz.de/work/vegan-nadine/</guid>
-      <description>&lt;p&gt;The website and blog of a german vegan blogger.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;A website for a roof-worker.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -37,8 +22,7 @@
       <pubDate>Wed, 01 Jan 2014 13:37:00 +0200</pubDate>
       
       <guid>https://mfreiholz.de/work/humblelogging/</guid>
-      <description>&lt;p&gt;HumbleLogging is a lightweight C++ logging framework. It aims to be extendible, easy to understand and as fast as possible.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;HumbleLogging is a lightweight C++ logging framework. It aims to be extendible, easy to understand and as fast as possible.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -47,8 +31,7 @@
       <pubDate>Fri, 01 Jan 2016 13:37:00 +0200</pubDate>
       
       <guid>https://mfreiholz.de/work/qt-advanced-docking-system/</guid>
-      <description>&lt;p&gt;Manages content widgets more like Visual Studio or similar programs.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Manages content widgets more like Visual Studio or similar programs.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -57,8 +40,7 @@
       <pubDate>Sun, 01 Jan 2012 13:37:00 +0200</pubDate>
       
       <guid>https://mfreiholz.de/work/ifsvnadmin/</guid>
-      <description>&lt;p&gt;Web-based GUI to manage Subversion repositories and User/Group permissions (+LDAP support).
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Web-based GUI to manage Subversion repositories and User/Group permissions (+LDAP support).&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -67,8 +49,7 @@
       <pubDate>Thu, 01 Jan 2015 13:37:00 +0200</pubDate>
       
       <guid>https://mfreiholz.de/work/ts3video/</guid>
-      <description>&lt;p&gt;A free and easy to use video conferencing plugin for Teamspeak 3.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;A free and easy to use video conferencing plugin for Teamspeak 3.&lt;/p&gt;</description>
     </item>
     
   </channel>

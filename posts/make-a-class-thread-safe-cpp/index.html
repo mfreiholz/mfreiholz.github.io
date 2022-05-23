@@ -5,9 +5,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Manuel Freiholz">
-	<meta name="keywords" content="programming c++ go golang php projects books">
+	<meta name="keywords"
+		content="programming c++ go golang rust php javascript typescript projects books blog network">
 
-	<title>Make a class thread safe C&#43;&#43; | M. Freiholz Software Development</title>
+	<title>Make a class thread safe C&#43;&#43; | mfreiholz.de</title>
 
 	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
 	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
@@ -15,165 +16,123 @@
 
 <body>
 
-	<div id="site-header" class="container">
-		<div class="title">M. Freiholz</div>
-		<div class="subtitle">Software Development</div>
-	</div>
-
-	<div id="site-navigation" class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/work/">Products</a></li>
-					<li><a href="/donate/">Support Me</a></li>
-				</ul>
+	<header class="site-header">
+		<div class="container">
+			<div class="title">
+				<span>#</span> mfreiholz.de
 			</div>
-			<div class="col-md-4">
-				<div class="right">
-					<div class="social">
-						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
-						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
-					</div>
-				</div>
-			</div>
-
+			<nav>
+				<a href="/">Home</a>
+				<a href="/posts">Blog</a>
+				<a href="/work">Projects</a>
+			</nav>
 		</div>
-		
+	</header>
 
-	</div>
 	
-
-
-<div id="site-content" class="container md">
-
-    <div class="post">
-	<h2 class="post-title"><a href="/posts/make-a-class-thread-safe-cpp/">Make a class thread safe C&#43;&#43;</a></h2>
-	<div class="post-content"><p>You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
-</p>
-
-<pre><code class="language-cpp">void MyClass::set(T val)
-{
-    mutex.lock();
-    _val = val;
-    mutex.unlock();
-}
-</code></pre>
-
-<p>In a lot of cases this will work well and you don’t have to worry about parallel access on class members. But there are some scenarios, where this simple approach does not help, instead it might critically crash your program.</p>
-
+	<div class="container">
+		<div class="post">
+	<div class="post-title"><a href="/posts/make-a-class-thread-safe-cpp/">Make a class thread safe C&#43;&#43;</a></div>
+	<div class="post-content md"><p>You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> MyClass<span style="color:#f92672">::</span>set(T val)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	mutex.lock();
+</span></span><span style="display:flex;"><span>	_val <span style="color:#f92672">=</span> val;
+</span></span><span style="display:flex;"><span>	mutex.unlock();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In a lot of cases this will work well and you don’t have to worry about parallel access on class members. But there are some scenarios, where this simple approach does not help, instead it might critically crash your program.</p>
 <p>I will show you a use-case with a simple <em>Cache</em> class.</p>
-
-<h2 id="single-threaded-non-b-locking">Single threaded, non-(b)locking</h2>
-
+<h2 id="single-threaded-non-blocking">Single threaded, non-(b)locking</h2>
 <p>First I will show the basic implementation from where we start. A simple <code>Cache1</code> class, which is meant to be used from one thread and does not use any mutex- or spin-locks.</p>
-
-<pre><code class="language-cpp">class Cache1
-{
-    std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt; _map;
-
-public:
-    bool contains(int key) const
-    {
-        return _map.find(key) != _map.end();
-    }
-
-    std::shared_ptr&lt;CacheData&gt; get(int key) const
-    {
-        return _map.at(key);
-    }
-
-    void insert(int key, std::shared_ptr&lt;CacheData&gt; value)
-    {
-        _map.insert(std::make_pair(key, value));
-    }
-};
-</code></pre>
-
-<p>In addition to the class here is a small code sample, which shows the way the cache is beeing used.</p>
-
-<pre><code class="language-cpp">int main(int argc, char** argv)
-{
-    // fill cache
-    Cache1 cache;
-    cache.insert(1, std::make_shared&lt;CacheData&gt;(1024));
-    cache.insert(2, std::make_shared&lt;CacheData&gt;(2048));
-
-    // get objects from cache and access methods of them
-    if (cache.contains(1))
-    {
-        assert(cache.get(1)-&gt;size() == 1024);
-    }
-    if (cache.contains(2))
-    {
-        assert(cache.get(2)-&gt;size() == 2048);
-    }
-}
-</code></pre>
-
-<p>Here you can see, that the <code>main()</code> implementation uses two steps to retrieve the cached value. First it checks whether it is available with <code>contains()</code> and then retrieves the value with <code>get()</code>. In an environment where the <code>Cache1</code> is only accessed by a single thread everything works just fine.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cache1</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	std<span style="color:#f92672">::</span>map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&gt;</span> _map;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">bool</span> contains(<span style="color:#66d9ef">int</span> key) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> _map.find(key) <span style="color:#f92672">!=</span> _map.end();
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> get(<span style="color:#66d9ef">int</span> key) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> _map.at(key);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insert</span>(<span style="color:#66d9ef">int</span> key, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> value)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		_map.insert(std<span style="color:#f92672">::</span>make_pair(key, value));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>In addition to the class here is a small code sample, which shows the way the cache is beeing used.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">**</span> argv)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// fill cache
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Cache1 cache;
+</span></span><span style="display:flex;"><span>	cache.insert(<span style="color:#ae81ff">1</span>, std<span style="color:#f92672">::</span>make_shared<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1024</span>));
+</span></span><span style="display:flex;"><span>	cache.insert(<span style="color:#ae81ff">2</span>, std<span style="color:#f92672">::</span>make_shared<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">2048</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// get objects from cache and access methods of them
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> (cache.contains(<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		assert(cache.get(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1024</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (cache.contains(<span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		assert(cache.get(<span style="color:#ae81ff">2</span>)<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2048</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here you can see, that the <code>main()</code> implementation uses two steps to retrieve the cached value. First it checks whether it is available with <code>contains()</code> and then retrieves the value with <code>get()</code>. In an environment where the <code>Cache1</code> is only accessed by a single thread everything works just fine.</p>
 <p><em>There might be some missing validation checks and capacity regulations in the <code>Cache1</code> class, but that is not the topic of this article.</em></p>
-
 <h2 id="thread-safe-but-not-atomic">Thread-safe, but not atomic</h2>
-
 <p>Lets see how it looks, when we apply the above mentioned simple way to make the class thread-safe.</p>
-
-<pre><code class="language-cpp">class Cache2
-{
-    mutable std::mutex _mtx;
-    std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt; _map;
-
-public:
-    bool contains(int key) const
-    {
-        std::lock_guard&lt;std::mutex&gt; l(_mtx);
-        bool b = _map.find(key) != _map.end();
-        return b;
-    }
-
-    std::shared_ptr&lt;CacheData&gt; get(int key) const
-    {
-        std::lock_guard&lt;std::mutex&gt; l(_mtx);
-        std::shared_ptr&lt;CacheData&gt; val = _map.at(key); // can throw an std::exception
-        return val;
-    }
-
-    void insert(int key, std::shared_ptr&lt;CacheData&gt; value)
-    {
-        std::lock_guard&lt;std::mutex&gt; l(_mtx);
-        _map.insert(std::make_pair(key, value));
-    }
-};
-</code></pre>
-
-<p>I only added a new <a href="http://www.cplusplus.com/reference/mutex/mutex/"><code>std::mutex</code></a> as class member and wrapped each method implementation with <code>_mtx.lock()</code> and <code>_mtx.unlock()</code>. This does make all access on the internal <a href="http://www.cplusplus.com/reference/map/map/"><code>std::map</code></a> absolutely thread-safe. The <code>Cache2</code> itself is now no longer the problem. The problem comes with the way the class is being used, because it still uses the same <code>main()</code> implementation:</p>
-
-<pre><code class="language-cpp">int main(int argc, char** argv)
-{
-    // fill cache
-    Cache2 cache;
-    cache.insert(1, std::make_shared&lt;CacheData&gt;(1024));
-    cache.insert(2, std::make_shared&lt;CacheData&gt;(2048));
-
-    // get objects from cache and access methods of them
-    if (cache.contains(1))
-    {
-        assert(cache.get(1)-&gt;size() == 1024);
-    }
-    if (cache.contains(2))
-    {
-        assert(cache.get(2)-&gt;size() == 2048);
-    }
-}
-</code></pre>
-
-<p>You might wonder, what could go wrong, even if two classes access the <code>Cache2</code> at the same time, the class is thread-safe though.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cache2</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">mutable</span> std<span style="color:#f92672">::</span>mutex _mtx;
+</span></span><span style="display:flex;"><span>	std<span style="color:#f92672">::</span>map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&gt;</span> _map;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">bool</span> contains(<span style="color:#66d9ef">int</span> key) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>lock_guard<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>mutex<span style="color:#f92672">&gt;</span> l(_mtx);
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">bool</span> b <span style="color:#f92672">=</span> _map.find(key) <span style="color:#f92672">!=</span> _map.end();
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> b;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> get(<span style="color:#66d9ef">int</span> key) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>lock_guard<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>mutex<span style="color:#f92672">&gt;</span> l(_mtx);
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> val <span style="color:#f92672">=</span> _map.at(key); <span style="color:#75715e">// can throw an std::exception
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">return</span> val;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insert</span>(<span style="color:#66d9ef">int</span> key, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> value)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>lock_guard<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>mutex<span style="color:#f92672">&gt;</span> l(_mtx);
+</span></span><span style="display:flex;"><span>		_map.insert(std<span style="color:#f92672">::</span>make_pair(key, value));
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>I only added a new <a href="http://www.cplusplus.com/reference/mutex/mutex/"><code>std::mutex</code></a> as class member and wrapped each method implementation with <code>_mtx.lock()</code> and <code>_mtx.unlock()</code>. This does make all access on the internal <a href="http://www.cplusplus.com/reference/map/map/"><code>std::map</code></a> absolutely thread-safe. The <code>Cache2</code> itself is now no longer the problem. The problem comes with the way the class is being used, because it still uses the same <code>main()</code> implementation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">**</span> argv)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// fill cache
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Cache2 cache;
+</span></span><span style="display:flex;"><span>	cache.insert(<span style="color:#ae81ff">1</span>, std<span style="color:#f92672">::</span>make_shared<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1024</span>));
+</span></span><span style="display:flex;"><span>	cache.insert(<span style="color:#ae81ff">2</span>, std<span style="color:#f92672">::</span>make_shared<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">2048</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// get objects from cache and access methods of them
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> (cache.contains(<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		assert(cache.get(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1024</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (cache.contains(<span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		assert(cache.get(<span style="color:#ae81ff">2</span>)<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2048</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You might wonder, what could go wrong, even if two classes access the <code>Cache2</code> at the same time, the class is thread-safe though.</p>
 <p>Even this is right, but looking closer in consideration of the <code>main()</code> implementation the code unveils some nasty behavior, which will crash the program under certain conditions. So whats the deal?</p>
-
 <p>Lets imaging you have two threads: One inserts and reads (<code>get()</code>) values and the second thread removes values from cache. Now the following order may happen:</p>
-
 <ul>
 <li>Thread #1: Insert &ldquo;1&rdquo;</li>
 <li>Thread #1: Insert &ldquo;2&rdquo;</li>
@@ -181,93 +140,77 @@ public:
 <li>Thread #2: Removes &ldquo;1&rdquo;</li>
 <li>Thread #1: Gets object &ldquo;1&rdquo; from cache and calls a method on tries to access an attribute; <strong>Crash!!!</strong></li>
 </ul>
-
 <p>Here is the problematic piece of code again:</p>
-
-<pre><code class="language-cpp">    if (cache.contains(1))
-    {
-        // -&gt; here thread #2 removes value &quot;1&quot;
-        // -&gt; this is possible because the `Cache2::_mtx` is no longer locked
-    
-        // now thread #1 directly accesses the no longer existing object and crashes
-        assert(cache.get(1)-&gt;size() == 1024);
-    }
-</code></pre>
-
-<p>As you can see, because the two calls to <code>contains()</code> and <code>get()</code> are not atomic is why this <code>Cache2</code> implementation is not really thread-safe.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (cache.contains(<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// -&gt; here thread #2 removes value &#34;1&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// -&gt; this is possible because the `Cache2::_mtx` is no longer locked
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// now thread #1 directly accesses the no longer existing object and crashes
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		assert(cache.get(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1024</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></div><p>As you can see, because the two calls to <code>contains()</code> and <code>get()</code> are not atomic is why this <code>Cache2</code> implementation is not really thread-safe.</p>
 <blockquote>
 <p><strong>Side node:</strong> In reality the crash would already happen inside <code>Cache2::get()</code>, because <a href="http://www.cplusplus.com/reference/map/map/at/"><code>std::map::at()</code></a> method throws an exception, if the key is not available.</p>
 </blockquote>
-
 <h2 id="thread-safe-locking-the-right-way">Thread-safe locking, the right way</h2>
-
 <p>Now we take a look at an implementation, which is not only thread-safe but also atomic with all of its methods.</p>
-
-<pre><code class="language-cpp">class Cache3
-{
-    mutable std::mutex _mtx;
-    std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt; _map;
-
-public:
-    std::shared_ptr&lt;CacheData&gt; get(int key) const
-    {
-        std::lock_guard&lt;std::mutex&gt; l(_mtx);
-        std::map&lt;int, std::shared_ptr&lt;CacheData&gt; &gt;::const_iterator it;
-        if ((it = _map.find(key)) != _map.end())
-        {
-            auto val = it-&gt;second;
-            return val;
-        }
-        return std::shared_ptr&lt;CacheData&gt;();
-    } // auto unlock (lock_guard, RAII)
-
-    void insert(int key, std::shared_ptr&lt;CacheData&gt; value)
-    {
-        std::lock_guard&lt;std::mutex&gt; l(_mtx);
-        _map.insert(std::make_pair(key, value));
-    } // auto unlock (lock_guard, RAII)
-};
-</code></pre>
-
-<p>The important change here is, that the check whether a value is in cache, is within the same LOCK as the method to retrieve the cached value. But not only the class changes, also the implementation of the <code>main()</code> needs to be different now.</p>
-
-<pre><code class="language-cpp">int main(int argc, char** argv)
-{
-    // fill cache
-    Cache3 cache;
-    cache.insert(1, std::make_shared&lt;CacheData&gt;(1024));
-    cache.insert(2, std::make_shared&lt;CacheData&gt;(2048));
-
-    // get objects from cache and access methods of them
-    std::shared_ptr&lt;CacheData&gt; val;
-
-    val = cache.get(1);
-    if (val)
-    {
-        assert(val-&gt;size() == 1024);
-    }
-
-    val = cache.get(2);
-    if (val)
-    {
-        assert(val-&gt;size() == 2048);
-    }
-}
-</code></pre>
-
-<p>Instead of calling two methods of <code>Cache3</code>, you only need to call <code>get()</code>. The return value will be valid, if it is cached or invalid if it is not in cache. You can add an <code>contains()</code> method again, of course, but never expect that <code>get()</code> returns a valid value as next statement.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cache3</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">mutable</span> std<span style="color:#f92672">::</span>mutex _mtx;
+</span></span><span style="display:flex;"><span>	std<span style="color:#f92672">::</span>map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&gt;</span> _map;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> get(<span style="color:#66d9ef">int</span> key) <span style="color:#66d9ef">const</span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>lock_guard<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>mutex<span style="color:#f92672">&gt;</span> l(_mtx);
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&gt;::</span>const_iterator it;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> ((it <span style="color:#f92672">=</span> _map.find(key)) <span style="color:#f92672">!=</span> _map.end())
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">auto</span> val <span style="color:#f92672">=</span> it<span style="color:#f92672">-&gt;</span>second;
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> val;
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>	} <span style="color:#75715e">// auto unlock (lock_guard, RAII)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insert</span>(<span style="color:#66d9ef">int</span> key, std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> value)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		std<span style="color:#f92672">::</span>lock_guard<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>mutex<span style="color:#f92672">&gt;</span> l(_mtx);
+</span></span><span style="display:flex;"><span>		_map.insert(std<span style="color:#f92672">::</span>make_pair(key, value));
+</span></span><span style="display:flex;"><span>	} <span style="color:#75715e">// auto unlock (lock_guard, RAII)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><p>The important change here is, that the check whether a value is in cache, is within the same LOCK as the method to retrieve the cached value. But not only the class changes, also the implementation of the <code>main()</code> needs to be different now.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">**</span> argv)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// fill cache
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Cache3 cache;
+</span></span><span style="display:flex;"><span>	cache.insert(<span style="color:#ae81ff">1</span>, std<span style="color:#f92672">::</span>make_shared<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1024</span>));
+</span></span><span style="display:flex;"><span>	cache.insert(<span style="color:#ae81ff">2</span>, std<span style="color:#f92672">::</span>make_shared<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">2048</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// get objects from cache and access methods of them
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	std<span style="color:#f92672">::</span>shared_ptr<span style="color:#f92672">&lt;</span>CacheData<span style="color:#f92672">&gt;</span> val;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	val <span style="color:#f92672">=</span> cache.get(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (val)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		assert(val<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1024</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	val <span style="color:#f92672">=</span> cache.get(<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (val)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		assert(val<span style="color:#f92672">-&gt;</span>size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2048</span>);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Instead of calling two methods of <code>Cache3</code>, you only need to call <code>get()</code>. The return value will be valid, if it is cached or invalid if it is not in cache. You can add an <code>contains()</code> method again, of course, but never expect that <code>get()</code> returns a valid value as next statement.</p>
 <p>This was only a small example to show what can go wrong with thread-safe programming, but I hope it could help a bit.</p>
-
 <p>Sources on GitHub: <a href="https://github.com/mfreiholz/post-threadsafeclass">https://github.com/mfreiholz/post-threadsafeclass</a></p>
-
 <h1 id="update-notes">Update notes</h1>
-
 <ul>
 <li>Because of some feedback, I decided to use <code>std::lock_guard</code> for safe RAII based mutex locking. I didn&rsquo;t use it in the first place, because I thought it could be more transparent for presentation purpose to use basic <code>std::mutex::lock()</code> and <code>std::mutex::unlock()</code> calls. <em>Bret Kuns</em> made it clear to me, that a reader have to understand RAII and it&rsquo;s better to let the user google for it before showing it the wrong way.</li>
 </ul></div>
-	<div class="post-info">
+	
+	<div class="post-tags">
 		
 			<a href="/tags/development">Development</a> /
 		
@@ -275,25 +218,26 @@ public:
 		
 			<a href="/tags/c&#43;&#43;">C&#43;&#43;</a> /
 		
-		Oct 16
+		Oct 16 2016
 	</div>
-	<div class="post-comments"></div>
 </div>
 
-    <div class="post-comments"> 
-        <div id="disqus_thread"></div>
+		<div class="post-comments"> 
+			<div id="disqus_thread"></div>
 <script>
 	
 
 
 	
 
-	
-
+	var disqus_config = function () {
+		this.page.url = 'https://mfreiholz.de\/posts\/make-a-class-thread-safe-cpp\/';  
+		
+	};
 	(function() {  
-		if (window.location.hostname == "localhost" ||
-			window.location.hostname == "127.0.0.1")
-			return;
+		
+		
+		
 
 		var d = document, s = d.createElement('script');
 		s.src = '//mfreiholz.disqus.com/embed.js';
@@ -302,53 +246,35 @@ public:
 	})();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-    </div>
 
-</div>
-
-
-<div class="container">
-	<div id="site-footer">
-
-		<div class="row">
-			<div class="col-md-4">
-				<ul class="links">
-					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
-					<li>info (at) mfreiholz (dot) de</li>
-				</ul>
-			</div>
-			<div class="col-md-4">
-				Made with &#9825; mfreiholz.de
-			</div>
-			<div class="col-md-4">
-				Support Me<br>
-				<a href="/donate">Donate / Spenden</a>
-			</div>
 		</div>
-
 	</div>
-</div>
-
-<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
-<link rel="stylesheet" type="text/css" href="/css/style.css">
-<link rel="stylesheet" type="text/css" href="/css/markdown.css">
-
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
-<script>
-	(function (i, s, o, g, r, a, m) {
-	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-		(i[r].q = i[r].q || []).push(arguments)
-	}, i[r].l = 1 * new Date(); a = s.createElement(o),
-		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-	ga('create', 'UA-67699481-1', 'auto');
-	ga('send', 'pageview');
-</script>
+	<div class="site-footer">
+		<section>
+			<div><a href="/impressum/">Disclaimer / Impressum</a></div>
+		</section>
+		<section>
+			Made with &#9825; mfreiholz.de
+		</section>
+		<section>
+			<div>&#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;</div>
+			<div></div>
+		</section>
+	</div>
+
+	
+	
+	
+	<link rel="stylesheet" href="https://mfreiholz.de/style.css" integrity="">
+
+	
+	<link rel="stylesheet" type="text/css" href="/markdown.css">
+
+	
+	
+	
 
 </body>
 

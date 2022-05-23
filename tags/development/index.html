@@ -5,9 +5,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Manuel Freiholz">
-	<meta name="keywords" content="programming c++ go golang php projects books">
+	<meta name="keywords"
+		content="programming c++ go golang rust php javascript typescript projects books blog network">
 
-	<title>Development | M. Freiholz Software Development</title>
+	<title>Development | mfreiholz.de</title>
 
 	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
 	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
@@ -15,154 +16,59 @@
 
 <body>
 
-	<div id="site-header" class="container">
-		<div class="title">M. Freiholz</div>
-		<div class="subtitle">Software Development</div>
-	</div>
-
-	<div id="site-navigation" class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/work/">Products</a></li>
-					<li><a href="/donate/">Support Me</a></li>
-				</ul>
+	<header class="site-header">
+		<div class="container">
+			<div class="title">
+				<span>#</span> mfreiholz.de
 			</div>
-			<div class="col-md-4">
-				<div class="right">
-					<div class="social">
-						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
-						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
-					</div>
-				</div>
-			</div>
-
+			<nav>
+				<a href="/">Home</a>
+				<a href="/posts">Blog</a>
+				<a href="/work">Projects</a>
+			</nav>
 		</div>
-		
-
-	</div>
-	
-
-
-<div id="site-content" class="container md">
+	</header>
 
 	
-		<div class="post">
-	<h2 class="post-title"><a href="/posts/network-protocol-parser/">Network Protocol Parsing with C&#43;&#43;</a></h2>
-	<div class="post-content"><p>I&rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
-</p></div>
-	<div class="post-info">
+	<div class="container">
+		<ul class="default-page-list">
 		
-			<a href="/tags/development">Development</a> /
+			<li><a href="https://mfreiholz.de/posts/network-protocol-parser/">Network Protocol Parsing with C&#43;&#43;</a></li>
 		
-			<a href="/tags/tutorial">Tutorial</a> /
+			<li><a href="https://mfreiholz.de/posts/make-a-class-thread-safe-cpp/">Make a class thread safe C&#43;&#43;</a></li>
 		
-			<a href="/tags/c&#43;&#43;">C&#43;&#43;</a> /
+			<li><a href="https://mfreiholz.de/posts/ts3video-release-0-7-0-8/">TS3VIDEO release 0.7, 0.8</a></li>
 		
-		Aug 31
+			<li><a href="https://mfreiholz.de/posts/ts3video-release-0-6/">TS3VIDEO release 0.6</a></li>
+		
+		</ul>
 	</div>
-	<div class="post-comments"></div>
-</div>
+
+
+	<div class="site-footer">
+		<section>
+			<div><a href="/impressum/">Disclaimer / Impressum</a></div>
+		</section>
+		<section>
+			Made with &#9825; mfreiholz.de
+		</section>
+		<section>
+			<div>&#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;</div>
+			<div></div>
+		</section>
+	</div>
+
 	
-		<div class="post">
-	<h2 class="post-title"><a href="/posts/make-a-class-thread-safe-cpp/">Make a class thread safe C&#43;&#43;</a></h2>
-	<div class="post-content"><p>You might have come across the case, that you had a simple class which got the new requirement to be thread-safe for upcoming use-cases. I have seen developers who simple wrapped all methods with a locked mutex, like this:
-</p></div>
-	<div class="post-info">
-		
-			<a href="/tags/development">Development</a> /
-		
-			<a href="/tags/tutorial">Tutorial</a> /
-		
-			<a href="/tags/c&#43;&#43;">C&#43;&#43;</a> /
-		
-		Oct 16
-	</div>
-	<div class="post-comments"></div>
-</div>
 	
-		<div class="post">
-	<h2 class="post-title"><a href="/posts/ts3video-release-0-7-0-8/">TS3VIDEO release 0.7, 0.8</a></h2>
-	<div class="post-content"><p>The new v0.6 is out and available for download.</p>
-
-<p><strong>Download here:</strong> <a href="https://mfreiholz.de/ts3video/">https://mfreiholz.de/ts3video/</a></p>
-
-<p>Most changes are internal and don’t change the user experience,
-but there is one new great feature: <strong>Streaming in a resolution of your choice (HD!)</strong>
-</p></div>
-	<div class="post-info">
-		
-			<a href="/tags/development">Development</a> /
-		
-			<a href="/tags/ts3video">TS3VIDEO</a> /
-		
-		May 6
-	</div>
-	<div class="post-comments"></div>
-</div>
 	
-		<div class="post">
-	<h2 class="post-title"><a href="/posts/ts3video-release-0-6/">TS3VIDEO release 0.6</a></h2>
-	<div class="post-content"><p>Yesterday I <em>tried</em> to release version 0.6, which was a disaster in my opinion. Unfortunately a few users had problems and that’s why I decided to rollback to 0.5 within an hour of release before too many of you upgraded.
-</p></div>
-	<div class="post-info">
-		
-			<a href="/tags/development">Development</a> /
-		
-			<a href="/tags/ts3video">TS3VIDEO</a> /
-		
-		Feb 7
-	</div>
-	<div class="post-comments"></div>
-</div>
+	<link rel="stylesheet" href="https://mfreiholz.de/style.css" integrity="">
+
 	
+	<link rel="stylesheet" type="text/css" href="/markdown.css">
 
-</div>
-
-
-<div class="container">
-	<div id="site-footer">
-
-		<div class="row">
-			<div class="col-md-4">
-				<ul class="links">
-					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
-					<li>info (at) mfreiholz (dot) de</li>
-				</ul>
-			</div>
-			<div class="col-md-4">
-				Made with &#9825; mfreiholz.de
-			</div>
-			<div class="col-md-4">
-				Support Me<br>
-				<a href="/donate">Donate / Spenden</a>
-			</div>
-		</div>
-
-	</div>
-</div>
-
-<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
-<link rel="stylesheet" type="text/css" href="/css/style.css">
-<link rel="stylesheet" type="text/css" href="/css/markdown.css">
-
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-<script>
-	(function (i, s, o, g, r, a, m) {
-	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-		(i[r].q = i[r].q || []).push(arguments)
-	}, i[r].l = 1 * new Date(); a = s.createElement(o),
-		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-	ga('create', 'UA-67699481-1', 'auto');
-	ga('send', 'pageview');
-</script>
+	
+	
+	
 
 </body>
 

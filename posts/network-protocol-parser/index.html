@@ -5,9 +5,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Manuel Freiholz">
-	<meta name="keywords" content="programming c++ go golang php projects books">
+	<meta name="keywords"
+		content="programming c++ go golang rust php javascript typescript projects books blog network">
 
-	<title>Network Protocol Parsing with C&#43;&#43; | M. Freiholz Software Development</title>
+	<title>Network Protocol Parsing with C&#43;&#43; | mfreiholz.de</title>
 
 	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="mfreiholz.de" />
 	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="mfreiholz.de" />
@@ -15,335 +16,289 @@
 
 <body>
 
-	<div id="site-header" class="container">
-		<div class="title">M. Freiholz</div>
-		<div class="subtitle">Software Development</div>
-	</div>
-
-	<div id="site-navigation" class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<ul>
-					<li><a href="/">Home</a></li>
-					<li><a href="/work/">Products</a></li>
-					<li><a href="/donate/">Support Me</a></li>
-				</ul>
+	<header class="site-header">
+		<div class="container">
+			<div class="title">
+				<span>#</span> mfreiholz.de
 			</div>
-			<div class="col-md-4">
-				<div class="right">
-					<div class="social">
-						<a href="https://www.instagram.com/mfreiholz/" alt="Instagram" title="Me on Instagram"><img src="/images/instagram.png" height="32"></a>
-						<a href="https://twitter.com/mfreiholz/" alt="Twitter" title="Me on Twitter"><img src="/images/twitter-48-black.png" height="38"></a>
-					</div>
-				</div>
-			</div>
-
+			<nav>
+				<a href="/">Home</a>
+				<a href="/posts">Blog</a>
+				<a href="/work">Projects</a>
+			</nav>
 		</div>
-		
+	</header>
 
-	</div>
 	
-
-
-<div id="site-content" class="container md">
-
-    <div class="post">
-	<h2 class="post-title"><a href="/posts/network-protocol-parser/">Network Protocol Parsing with C&#43;&#43;</a></h2>
-	<div class="post-content"><p>I&rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.
-</p>
-
+	<div class="container">
+		<div class="post">
+	<div class="post-title"><a href="/posts/network-protocol-parser/">Network Protocol Parsing with C&#43;&#43;</a></div>
+	<div class="post-content md"><p>I&rsquo;ve implemented a lot of network protocols lately, for work and private projects. I&rsquo;d like to show you the basic implementation I mostly use and has been proven to be very resource friendly, fast and stable.</p>
 <h2 id="the-protocol">The Protocol</h2>
-
 <p>At the beginning there is the protocol definition. For this example I will use a simple single frame/packet based protocol to exchanges data between two endpoints (e.g.: client and server).</p>
-
 <h3 id="the-packet">The Packet</h3>
-
-<pre><code class="language-cpp">// packet.h
-#pragma once
-#include &lt;stdint.h&gt;
-#include &lt;vector&gt;
-
-#ifdef _WIN32
-#include &lt;WinSock2.h&gt;
-#else
-#include &lt;arpa/inet.h&gt;
-#endif
-
-class Packet
-{
-public:
-    Packet();
-    ~Packet();
-
-    /*
-        Serializes the packet for network transport.
-        Fields are written to `buf` in network byte order (big-endian).
-    */
-    void serialize(std::vector&lt;uint8_t&gt;&amp; buf);
-
-public:
-    uint8_t header = 0xAF; // Marks the begin of `Packet`
-    uint8_t flags = 0x00; // Custom bitmask flags.
-    uint16_t type = 0x0000; // Identifies the packet's type - what is it used for.
-    uint32_t size = 0x00000000; // Size of `data`.
-    std::vector&lt;uint8_t&gt; data; // Custom data.
-    uint8_t checksum = 0x00; // XOR checksum.
-};
-</code></pre>
-
-<p>As you can see the <code>Packet</code> is very basic. It doesn&rsquo;t distinguish between request or response, but it does have different sized data types to show the correct handling of them.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// packet.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma once
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifdef _WIN32
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;WinSock2.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;arpa/inet.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Packet</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	Packet();
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">~</span>Packet();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		Serializes the packet for network transport.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		Fields are written to `buf` in network byte order (big-endian).
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serialize</span>(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;&amp;</span> buf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">uint8_t</span> header <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xAF</span>; <span style="color:#75715e">// Marks the begin of `Packet`
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">uint8_t</span> flags <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00</span>; <span style="color:#75715e">// Custom bitmask flags.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">uint16_t</span> type <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000</span>; <span style="color:#75715e">// Identifies the packet&#39;s type - what is it used for.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">uint32_t</span> size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000000</span>; <span style="color:#75715e">// Size of `data`.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;</span> data; <span style="color:#75715e">// Custom data.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">uint8_t</span> checksum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00</span>; <span style="color:#75715e">// XOR checksum.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><p>As you can see the <code>Packet</code> is very basic. It doesn&rsquo;t distinguish between request or response, but it does have different sized data types to show the correct handling of them.</p>
 <p>It does have a <code>serialization()</code> method, which writes the bytes of the object into a buffer. You could write them directly to network instead, of course. The important part of the method is the conversion of fields to network-byte-order (big-endian). You should always do this whether you are developing platform independent or not. It is a convention to always send data types in big-edian byte order over network.</p>
-
-<pre><code class="language-cpp">//packet.cpp
-#include &quot;packet.h&quot;
-
-Packet::Packet()
-{}
-
-Packet::~Packet()
-{}
-
-void
-Packet::serialize(std::vector&lt;uint8_t&gt;&amp; buf)
-{
-    buf.push_back(header);
-    buf.push_back(flags);
-    buf.push_back(htons(type) &gt;&gt; 8);
-    buf.push_back(htons(type) &gt;&gt; 0);
-    buf.push_back(htonl(size) &gt;&gt; 24);
-    buf.push_back(htonl(size) &gt;&gt; 16);
-    buf.push_back(htonl(size) &gt;&gt; 8);
-    buf.push_back(htonl(size) &gt;&gt; 0);
-    for (auto b : data)
-        buf.push_back(b);
-    buf.push_back(checksum);
-}
-</code></pre>
-
-<h3 id="the-parser">The Parser</h3>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">//packet.cpp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;packet.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>Packet<span style="color:#f92672">::</span>Packet()
+</span></span><span style="display:flex;"><span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Packet<span style="color:#f92672">::~</span>Packet()
+</span></span><span style="display:flex;"><span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span>Packet<span style="color:#f92672">::</span>serialize(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;&amp;</span> buf)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	buf.push_back(header);
+</span></span><span style="display:flex;"><span>	buf.push_back(flags);
+</span></span><span style="display:flex;"><span>	buf.push_back(htons(type) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(htons(type) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(htonl(size) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">24</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(htonl(size) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">16</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(htonl(size) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(htonl(size) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> b : data)
+</span></span><span style="display:flex;"><span>		buf.push_back(b);
+</span></span><span style="display:flex;"><span>	buf.push_back(checksum);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="the-parser">The Parser</h3>
 <p>The <code>Parser</code> is also very simple and only needs a single method to work.</p>
-
-<pre><code class="language-cpp">// parser.h
-#pragma once
-#include &quot;packet.h&quot;
-
-class Parser
-{
-public:
-    /*
-        \param data
-            The buffer of data which the function parses.
-        \param len
-            The len of `data` buffer.
-        \param[in,out] bytesRead
-            Will contain the number of bytes read by `parse()`.
-            Note: It may be possible that the function returns
-            before all bytes of `data` have been parsed, because
-            the `packet` is complete.
-        \param[in,out] packet
-            Instance of `Packet` which will be filled from `data` by this  function.
-    */
-    bool parse(uint8_t* data, size_t len, size_t&amp; bytesRead, Packet&amp; packet);
-
-private:
-    int _step = 0;
-};
-</code></pre>
-
-<p>It is implemented as a single byte by byte parser.</p>
-
-<pre><code class="language-cpp">// parser.cpp
-#include &quot;parser.h&quot;
-
-#ifdef _WIN32
-#include &lt;WinSock2.h&gt;
-#else
-#include &lt;arpa/inet.h&gt;
-#endif
-
-bool
-Parser::parse(uint8_t* data, size_t len, size_t&amp; bytesRead, Packet&amp; packet)
-{
-    bytesRead = 0;
-    for (size_t i = 0; i &lt; len; ++i)
-    {
-        const auto b = data[i];
-        bytesRead++;
-
-        switch (_step)
-        {
-            // Header.
-            case 0:
-                if (b != 0xAF)
-                {
-                    _step = 0;
-                    continue;
-                }
-                packet.header = b;
-                _step++;
-                break;
-
-            // Flags.
-            case 1:
-                packet.flags = b;
-                _step++;
-                break;
-
-            // Type (2 bytes!).
-            case 2:
-                packet.type = uint16_t(b) &lt;&lt; 8;
-                _step++;
-                break;
-
-            case 3:
-                packet.type |= uint16_t(b) &lt;&lt; 0;
-                packet.type = ntohs(packet.type);
-                _step++;
-                break;
-
-            // Size (4 bytes!).
-            case 4:
-                packet.size = uint32_t(b) &lt;&lt; 24;
-                _step++;
-                break;
-
-            case 5:
-                packet.size |= uint32_t(b) &lt;&lt; 16;
-                _step++;
-                break;
-
-            case 6:
-                packet.size |= uint32_t(b) &lt;&lt; 8;
-                _step++;
-                break;
-
-            case 7:
-                packet.size |= uint32_t(b) &lt;&lt; 0;
-                packet.size = ntohl(packet.size);
-                _step++;
-
-                packet.data.clear();
-                if (packet.size &gt; 0)
-                {
-                    packet.data.reserve(packet.size);
-                }
-                else
-                {
-                    _step++; // Skip data step.
-                }
-                break;
-
-            // Data.
-            case 8:
-                packet.data.push_back(b);
-
-                if (packet.data.size() == packet.size)
-                    _step++;
-                break;
-
-            // Checksum.
-            case 9:
-                packet.checksum = b;
-                _step = 0;
-                return true;
-
-        }
-    }
-    return false;
-}
-</code></pre>
-
-<p>The parser works based on steps/positions. As soon as the first byte matches the fixed header value of <code>0xAF</code> (<code>step=0</code>), it continues to parse packet attributes step by step and <em>byte for byte.</em> Remember this, it is important when it comes to handling multi-byte data types.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// parser.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma once
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;packet.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Parser</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		\param data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			The buffer of data which the function parses.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		\param len
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			The len of `data` buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		\param[in,out] bytesRead
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Will contain the number of bytes read by `parse()`.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Note: It may be possible that the function returns
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			before all bytes of `data` have been parsed, because
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			the `packet` is complete.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		\param[in,out] packet
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			Instance of `Packet` which will be filled from `data` by this  function.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">bool</span> parse(<span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> data, size_t len, size_t<span style="color:#f92672">&amp;</span> bytesRead, Packet<span style="color:#f92672">&amp;</span> packet);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">int</span> _step <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>It is implemented as a single byte by byte parser.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// parser.cpp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;parser.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifdef _WIN32
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;WinSock2.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;arpa/inet.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span>
+</span></span><span style="display:flex;"><span>Parser<span style="color:#f92672">::</span>parse(<span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> data, size_t len, size_t<span style="color:#f92672">&amp;</span> bytesRead, Packet<span style="color:#f92672">&amp;</span> packet)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	bytesRead <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> (size_t i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> len; <span style="color:#f92672">++</span>i)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">auto</span> b <span style="color:#f92672">=</span> data[i];
+</span></span><span style="display:flex;"><span>		bytesRead<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">switch</span> (_step)
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Header.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> (b <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xAF</span>)
+</span></span><span style="display:flex;"><span>				{
+</span></span><span style="display:flex;"><span>					_step <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>					<span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>				packet.header <span style="color:#f92672">=</span> b;
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Flags.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.flags <span style="color:#f92672">=</span> b;
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Type (2 bytes!).
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.type <span style="color:#f92672">=</span> <span style="color:#66d9ef">uint16_t</span>(b) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span>;
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.type <span style="color:#f92672">|=</span> <span style="color:#66d9ef">uint16_t</span>(b) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>				packet.type <span style="color:#f92672">=</span> ntohs(packet.type);
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Size (4 bytes!).
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.size <span style="color:#f92672">=</span> <span style="color:#66d9ef">uint32_t</span>(b) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">24</span>;
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.size <span style="color:#f92672">|=</span> <span style="color:#66d9ef">uint32_t</span>(b) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">16</span>;
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">6</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.size <span style="color:#f92672">|=</span> <span style="color:#66d9ef">uint32_t</span>(b) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span>;
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">7</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.size <span style="color:#f92672">|=</span> <span style="color:#66d9ef">uint32_t</span>(b) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>				packet.size <span style="color:#f92672">=</span> ntohl(packet.size);
+</span></span><span style="display:flex;"><span>				_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				packet.data.clear();
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> (packet.size <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>				{
+</span></span><span style="display:flex;"><span>					packet.data.reserve(packet.size);
+</span></span><span style="display:flex;"><span>				}
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>				{
+</span></span><span style="display:flex;"><span>					_step<span style="color:#f92672">++</span>; <span style="color:#75715e">// Skip data step.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>				}
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Data.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.data.push_back(b);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> (packet.data.size() <span style="color:#f92672">==</span> packet.size)
+</span></span><span style="display:flex;"><span>					_step<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// Checksum.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">9</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>				packet.checksum <span style="color:#f92672">=</span> b;
+</span></span><span style="display:flex;"><span>				_step <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> false;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The parser works based on steps/positions. As soon as the first byte matches the fixed header value of <code>0xAF</code> (<code>step=0</code>), it continues to parse packet attributes step by step and <em>byte for byte.</em> Remember this, it is important when it comes to handling multi-byte data types.</p>
 <p><code>flags</code> (<code>step=1</code>) is a single-byte attribute, which can be assigned as it is.
 Single-byte types doesn&rsquo;t require any kind of bit/byte order conversion.</p>
-
 <p><code>type</code> (<code>step=2-3</code>) is a multi-byte data type and requires two bytes and an byte-order conversion to be complete. The Parser left-shifts the next two upcoming bytes into the <code>packet.type</code> attribute. After it is completely filled the Parser needs to convert the byte-order into the host-byte-order with <code>ntohs()</code>.</p>
-
 <p><code>size</code> (step=<code>4-7</code>) is a multi-byte data type and requires four bytes and an byte-order conversion with <code>htohl()</code> to be complete. With step <code>7</code> it is complete and the <code>packet.data</code> attribute can be prepared by clearing all previous bytes and reserving enough space for the new data bytes.</p>
-
 <p><code>data</code> (<code>step=8</code>) will be filled up until it contains <code>packet.size</code> number of bytes. It may required special handling of internal fields, based on the packet&rsquo;s type.</p>
-
 <p><code>checksum</code> (<code>step=9</code>) is a single-byte data type. In best case scenario a checksum calculation and validation would run here. I skip it for this example.</p>
-
 <p>Thats it. Based on your own packet format there would be more or less steps but the core functionality is always the same.</p>
-
 <h3 id="using-it-testing">Using it, Testing</h3>
-
 <p>Here is a small example. It serializes two packets into a buffer, which would be the network stack and parses it with <code>Parser</code>. Read the inline code comments for details.</p>
-
-<pre><code class="language-cpp">// main.cpp
-#include &quot;packet.h&quot;
-#include &quot;parser.h&quot;
-
-int main(int argc, char** argv)
-{
-    // Network buffer.
-    std::vector&lt;uint8_t&gt; buf;
-
-    // CLIENT SIDE
-    // Serialize and send packets.
-    // Instead of sending we simply write them to a buffer `buf`.
-
-    // 1st packet.
-    Packet pkt1;
-    pkt1.header = 0xAF;
-    pkt1.flags = 0x00;
-    pkt1.type = 0x0001;
-    pkt1.size = 3;
-    pkt1.data = { 0x11, 0x22, 0x33 };
-    pkt1.checksum = 0xFF;
-    pkt1.serialize(buf);
-
-    // Add some random invalid bytes to network buffer.
-    buf.push_back(0x87);
-    buf.push_back(0x09);
-    buf.push_back(0x43);
-
-    // 2nd packet.
-    Packet pkt2;
-    pkt2.header = 0xAF;
-    pkt2.flags = 0x80;
-    pkt2.type = 0x0002;
-    pkt2.size = 1;
-    pkt2.data = { 0x88 };
-    pkt2.checksum = 0xEE;
-    pkt2.serialize(buf);
-
-    // Add some random invalid bytes to network buffer.
-    buf.push_back(0x11);
-    buf.push_back(0x22);
-    buf.push_back(0x33);
-
-    // SERVER SIDE
-    // Parse packets from network/buffer `buf`.
-
-    // Parsing.
-    Parser parser;
-    Packet packet;
-    uint8_t* p = buf.data();
-    size_t plen = buf.size();
-    while (plen &gt; 0)
-    {
-        size_t bytesRead = 0;
-        if (parser.parse(p, plen, bytesRead, packet))
-        {
-            // At this point the `packet` is complete.
-            printf(&quot;INFO new packet! type=%d; size=%d\n&quot;, packet.type, packet.size);
-        }
-        p += bytesRead;
-        plen -= bytesRead;
-    }
-    return 0;
-}
-</code></pre>
-
-<p>You may want to read and debug the <code>main()</code> implementation very careful to fully understand how it works.</p>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// main.cpp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;packet.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;parser.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">**</span> argv)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Network buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;</span> buf;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// CLIENT SIDE
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Serialize and send packets.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Instead of sending we simply write them to a buffer `buf`.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 1st packet.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Packet pkt1;
+</span></span><span style="display:flex;"><span>	pkt1.header <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xAF</span>;
+</span></span><span style="display:flex;"><span>	pkt1.flags <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00</span>;
+</span></span><span style="display:flex;"><span>	pkt1.type <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0001</span>;
+</span></span><span style="display:flex;"><span>	pkt1.size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>	pkt1.data <span style="color:#f92672">=</span> { <span style="color:#ae81ff">0x11</span>, <span style="color:#ae81ff">0x22</span>, <span style="color:#ae81ff">0x33</span> };
+</span></span><span style="display:flex;"><span>	pkt1.checksum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xFF</span>;
+</span></span><span style="display:flex;"><span>	pkt1.serialize(buf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Add some random invalid bytes to network buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	buf.push_back(<span style="color:#ae81ff">0x87</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(<span style="color:#ae81ff">0x09</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(<span style="color:#ae81ff">0x43</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 2nd packet.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Packet pkt2;
+</span></span><span style="display:flex;"><span>	pkt2.header <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xAF</span>;
+</span></span><span style="display:flex;"><span>	pkt2.flags <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x80</span>;
+</span></span><span style="display:flex;"><span>	pkt2.type <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0002</span>;
+</span></span><span style="display:flex;"><span>	pkt2.size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>	pkt2.data <span style="color:#f92672">=</span> { <span style="color:#ae81ff">0x88</span> };
+</span></span><span style="display:flex;"><span>	pkt2.checksum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xEE</span>;
+</span></span><span style="display:flex;"><span>	pkt2.serialize(buf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Add some random invalid bytes to network buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	buf.push_back(<span style="color:#ae81ff">0x11</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(<span style="color:#ae81ff">0x22</span>);
+</span></span><span style="display:flex;"><span>	buf.push_back(<span style="color:#ae81ff">0x33</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// SERVER SIDE
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// Parse packets from network/buffer `buf`.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Parsing.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	Parser parser;
+</span></span><span style="display:flex;"><span>	Packet packet;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> buf.data();
+</span></span><span style="display:flex;"><span>	size_t plen <span style="color:#f92672">=</span> buf.size();
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">while</span> (plen <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		size_t bytesRead <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (parser.parse(p, plen, bytesRead, packet))
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">// At this point the `packet` is complete.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			printf(<span style="color:#e6db74">&#34;INFO new packet! type=%d; size=%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, packet.type, packet.size);
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		p <span style="color:#f92672">+=</span> bytesRead;
+</span></span><span style="display:flex;"><span>		plen <span style="color:#f92672">-=</span> bytesRead;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You may want to read and debug the <code>main()</code> implementation very careful to fully understand how it works.</p>
 <p>The sources are available on GitHub: <a href="https://github.com/mfreiholz/blog-article-sources/tree/master/network-protocol-parsing">https://github.com/mfreiholz/blog-article-sources/tree/master/network-protocol-parsing</a></p></div>
-	<div class="post-info">
+	
+	<div class="post-tags">
 		
 			<a href="/tags/development">Development</a> /
 		
@@ -351,25 +306,26 @@ int main(int argc, char** argv)
 		
 			<a href="/tags/c&#43;&#43;">C&#43;&#43;</a> /
 		
-		Aug 31
+		Aug 31 2017
 	</div>
-	<div class="post-comments"></div>
 </div>
 
-    <div class="post-comments"> 
-        <div id="disqus_thread"></div>
+		<div class="post-comments"> 
+			<div id="disqus_thread"></div>
 <script>
 	
 
 
 	
 
-	
-
+	var disqus_config = function () {
+		this.page.url = 'https://mfreiholz.de\/posts\/network-protocol-parser\/';  
+		
+	};
 	(function() {  
-		if (window.location.hostname == "localhost" ||
-			window.location.hostname == "127.0.0.1")
-			return;
+		
+		
+		
 
 		var d = document, s = d.createElement('script');
 		s.src = '//mfreiholz.disqus.com/embed.js';
@@ -378,53 +334,35 @@ int main(int argc, char** argv)
 	})();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-    </div>
 
-</div>
-
-
-<div class="container">
-	<div id="site-footer">
-
-		<div class="row">
-			<div class="col-md-4">
-				<ul class="links">
-					<li><a href="/impressum/">Disclaimer / Impressum</a></li>
-					<li>info (at) mfreiholz (dot) de</li>
-				</ul>
-			</div>
-			<div class="col-md-4">
-				Made with &#9825; mfreiholz.de
-			</div>
-			<div class="col-md-4">
-				Support Me<br>
-				<a href="/donate">Donate / Spenden</a>
-			</div>
 		</div>
-
 	</div>
-</div>
-
-<link rel="stylesheet" type="text/css" href="/thirdparty/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Julius+Sans+One|Lora">
-<link rel="stylesheet" type="text/css" href="/css/style.css">
-<link rel="stylesheet" type="text/css" href="/css/markdown.css">
-
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
 
-<script>
-	(function (i, s, o, g, r, a, m) {
-	i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-		(i[r].q = i[r].q || []).push(arguments)
-	}, i[r].l = 1 * new Date(); a = s.createElement(o),
-		m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-	ga('create', 'UA-67699481-1', 'auto');
-	ga('send', 'pageview');
-</script>
+	<div class="site-footer">
+		<section>
+			<div><a href="/impressum/">Disclaimer / Impressum</a></div>
+		</section>
+		<section>
+			Made with &#9825; mfreiholz.de
+		</section>
+		<section>
+			<div>&#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;</div>
+			<div></div>
+		</section>
+	</div>
+
+	
+	
+	
+	<link rel="stylesheet" href="https://mfreiholz.de/style.css" integrity="">
+
+	
+	<link rel="stylesheet" type="text/css" href="/markdown.css">
+
+	
+	
+	
 
 </body>
 

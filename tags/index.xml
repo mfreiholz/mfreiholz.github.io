@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on mfreiholz.de</title>
@@ -6,26 +6,13 @@
     <description>Recent content in Tags on mfreiholz.de</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Dec 2019 08:35:14 +0200</lastBuildDate>
-    
-	<atom:link href="https://mfreiholz.de/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 19 Dec 2019 08:35:14 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title></title>
-      <link>https://mfreiholz.de/tags/</link>
+      <title>Troubleshooting</title>
+      <link>https://mfreiholz.de/tags/troubleshooting/</link>
       <pubDate>Thu, 19 Dec 2019 08:35:14 +0200</pubDate>
       
-      <guid>https://mfreiholz.de/tags/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Administration</title>
-      <link>https://mfreiholz.de/tags/administration/</link>
-      <pubDate>Tue, 17 Jan 2017 19:29:32 +0100</pubDate>
-      
-      <guid>https://mfreiholz.de/tags/administration/</guid>
+      <guid>https://mfreiholz.de/tags/troubleshooting/</guid>
       <description></description>
     </item>
     
@@ -48,6 +35,24 @@
     </item>
     
     <item>
+      <title>Tutorial</title>
+      <link>https://mfreiholz.de/tags/tutorial/</link>
+      <pubDate>Thu, 31 Aug 2017 18:03:14 +0200</pubDate>
+      
+      <guid>https://mfreiholz.de/tags/tutorial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Administration</title>
+      <link>https://mfreiholz.de/tags/administration/</link>
+      <pubDate>Tue, 17 Jan 2017 19:29:32 +0100</pubDate>
+      
+      <guid>https://mfreiholz.de/tags/administration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Life</title>
       <link>https://mfreiholz.de/tags/life/</link>
       <pubDate>Sun, 24 Jul 2016 20:40:02 +0200</pubDate>
@@ -57,29 +62,11 @@
     </item>
     
     <item>
-      <title>Troubleshooting</title>
-      <link>https://mfreiholz.de/tags/troubleshooting/</link>
-      <pubDate>Thu, 19 Dec 2019 08:35:14 +0200</pubDate>
-      
-      <guid>https://mfreiholz.de/tags/troubleshooting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ts3video</title>
+      <title>TS3VIDEO</title>
       <link>https://mfreiholz.de/tags/ts3video/</link>
       <pubDate>Fri, 06 May 2016 13:12:18 +0200</pubDate>
       
       <guid>https://mfreiholz.de/tags/ts3video/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tutorial</title>
-      <link>https://mfreiholz.de/tags/tutorial/</link>
-      <pubDate>Thu, 31 Aug 2017 18:03:14 +0200</pubDate>
-      
-      <guid>https://mfreiholz.de/tags/tutorial/</guid>
       <description></description>
     </item>
     
