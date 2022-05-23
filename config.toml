@@ -1,4 +1,4 @@
-#baseURL = "https://mfreiholz.de"
+baseURL = "https://mfreiholz.de"
 #baseURL = "http://localhost:1337"
 languageCode = "en-us"
 title = "mfreiholz.de"
