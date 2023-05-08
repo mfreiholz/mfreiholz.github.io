@@ -1,10 +1,28 @@
-baseURL = "https://mfreiholz.de"
-#baseURL = "http://localhost:1337"
+#baseURL = "https://mfreiholz.de"
+baseURL = "http://localhost:1337"
 languageCode = "en-us"
-title = "mfreiholz.de"
-theme = "2022-05"
+title = "M. Freiholz Software Development"
+theme = "2023-05-freelancer"
 #relativeURLs = false
 #disableLiveReload = true
 
 [taxonomies]
 tag = "tags"
+
+[menu]
+[[menu.main]]
+	name = 'Profile'
+	pageRef = '/'
+	weight = 10
+# [[menu.main]]
+# 	name = 'Projects'
+# 	pageRef = '/work'
+# 	weight = 20
+[[menu.main]]
+	name = 'Blog'
+	pageRef = '/posts'
+	weight = 30
+[[menu.main]]
+	name = 'Legal'
+	pageRef = '/impressum'
+	weight = 40

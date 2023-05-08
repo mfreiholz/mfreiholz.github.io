@@ -2,3 +2,4 @@ public/
 resources/
 *.log
 .hugo_build.lock
+hugo.exe

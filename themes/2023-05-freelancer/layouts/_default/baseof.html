@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Manuel Freiholz">
+	<meta name="keywords" content="freelancer freiberuflich programming c++ go golang rust php javascript typescript projects books blog network">
+
+	<title>{{ .Title }} | M. Freiholz Software Development</title>
+
+	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}" />
+
+	<!-- Styles -->
+	{{ $options := (dict "enableSourceMap" true) }}
+	{{ $scss := resources.Get "main.scss" }}
+	{{ $style := $scss | resources.ToCSS $options }}
+	<link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+
+	<!-- Scripting -->
+	{{ $jsOptions := (dict "minify" false "target" "es2015") }}
+	{{ $js := resources.Get "main.js" | js.Build $jsOptions }}
+	<script src="{{ $js.RelPermalink }}" defer></script>
+
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+
+<body id="site-body" class="theme-default">
+
+	<header class="site site-width">
+		<ul>
+			{{- range .Site.Menus.main }}
+			<li><a href="{{ .URL }}">{{ .Name }}</a></li>
+			<li class="sep">//</li>
+			{{- end }}
+		</ul>
+	</header>
+
+	<div class="site-content site-width">
+		{{ block "main" . }}
+		Default "main"-block content.
+		{{ end }}
+	</div>
+
+	<div class="pagetop">
+		<button id="scrolltop" class="goup">
+			<img src="/circle-up.svg" />
+			Page Top
+		</button>
+	</div>
+
+	<footer class="site site-width">
+		<div class="c0">
+			<div class="content sitemap">
+				<h1>Sitemap</h1>
+				<ul>
+					{{- range .Site.Menus.main }}
+					<li><a href="{{ .URL }}">{{ .Name }}</a></li>
+					{{- end }}
+				</ul>
+			</div>
+		</div>
+		<div class="c1">
+			<div class="content attrib">
+				<h1>Attributions</h1>
+				<dl>
+					<dt>Background Image</dt>
+					<dd><a href="https://www.freepik.com/free-vector/green-binary-code-technology-digital-background-design_8289985.htm#query=binary%20background&position=38&from_view=keyword&track=robertav1_2_sidr" target="_blank">Image by starline</a> on Freepik</dd>
+					<dt>Sidebar Image</dt>
+					<dd><a href="https://www.freepik.com/free-vector/software-engineering-background_1528600.htm#query=code&position=14&from_view=search&track=robertav1_2_sidr" target="_blank">Image by macrovector</a> on Freepik</dd>
+					<dt>Material Icons</dt>
+					<dd>Apache License Version 2.0 - <a href="https://developers.google.com/fonts/docs/material_icons#licensing" target="_blank">Google</a></dd>
+					<dt>Google Fonts</dt>
+					<dd>Self hosted, no tracking</dd>
+				</dl>
+			</div>
+		</div>
+		<div class="c2">
+			<div class="content">
+				<h1>Copyright</h1>
+				<div>&copy; 2023 Manuel Freiholz</div>
+			</div>
+		</div>
+	</footer>
+
+</body>
+
+</html>
