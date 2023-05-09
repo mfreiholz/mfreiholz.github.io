@@ -549,6 +549,21 @@ footer.site {
 	}
 }
 
+#ts3video-page {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+
+	div.screenshot {
+		display: flex;
+		justify-content: center;
+
+		img {
+			flex: 1;
+		}
+	}
+}
+
 div.layout-default {
 	margin: 0;
 	padding: calc(2 * var(--gap));

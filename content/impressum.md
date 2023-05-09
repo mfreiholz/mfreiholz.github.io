@@ -10,8 +10,6 @@ Manuel Freiholz \
 Proviantbachstraße 18 \
 86153 Augsburg
 
-E-Mail: &#105;&#110;&#102;&#111;&#064;&#109;&#102;&#114;&#101;&#105;&#104;&#111;&#108;&#122;&#046;&#100;&#101;
-
 ## Unternehmensinformationen
 
 Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.

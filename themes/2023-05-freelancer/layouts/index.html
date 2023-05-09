@@ -13,23 +13,23 @@
 				<img src="profile.jpg" width="100%" border="0" />
 			</div>
 			<div class="row">
-				<a href="https://www.linkedin.com/in/manuel-freiholz/"><img src="linkedin.png" height="34" title="LinkedIn" /></a>
-				<a href="https://github.com/mfreiholz"><img src="github.svg" height="34" title="GitHub" /></a>
-				<a href="https://www.instagram.com/mfreiholz/"><img src="instagram.svg" height="34" title="Instagram" /></a>
+				<a href="https://www.linkedin.com/in/manuel-freiholz/" target="_blank"><img src="linkedin.png" height="34" title="LinkedIn" /></a>
+				<a href="https://github.com/mfreiholz" target="_blank"><img src="github.svg" height="34" title="GitHub" /></a>
+				<a href="https://www.instagram.com/mfreiholz/" target="_blank"><img src="instagram.svg" height="34" title="Instagram" /></a>
 			</div>
 			<div class="row">
-				<button>Hire Me!</button>
+				<button id="hire-me-btn">Hire Me!</button>
 			</div>
 		</div>
 
 		<address class="contact-info">
 			<dl>
 				<dt><img src="email.svg" height="32" /></dt>
-				<dd class="email">info@mfreiholz.de</dd>
+				<dd class="email">PLACEHOLDER</dd>
 			</dl>
 			<dl>
 				<dt><img src="phone.svg" height="32" /></dt>
-				<dd class="phone">+49 (0) 176 82070576</dd>
+				<dd class="phone">PLACEHOLDER</dd>
 			</dl>
 		</address>
 
@@ -45,7 +45,7 @@
 				<b>Hi!</b> I'm Manuel, Software Developer from <b>Augsburg in Germany.</b>
 			</p>
 			<p>
-				I develop backend-, mobile- and desktop-software based on my loved principle:
+				I develop backend-, web- and desktop-software based on my loved principle:
 			</p>
 			<p class="slogan">
 				Keep it simple.
@@ -180,21 +180,22 @@
 			</ul>
 		</section>
 
-		<section class="contact">
+<!--
+		<section class="contact" id="contact-form-section">
 			<h1>Contact</h1>
-			<form id="contact-form" type="post">
+			<form id="contact-form" method="post" action="http://localhost:3000/submit">
 				<input type="text" name="name" placeholder="Your Name *" />
 				<input type="text" name="email" placeholder="Your E-Mail *" />
 				<input type="text" name="phone" placeholder="Your Phone" />
 				<textarea name="message" placeholder="Your Message... *"></textarea>
-				<input type="hidden" name="humancheck" value="0" />
+				<input type="hidden" name="humancheck" value="0" id="human-verification-code-input" />
 				<div class="actions">
-					<button class="human">I'm a human!</button>
-					<button class="color-2">Send</button>
+					<button type="button" class="human" id="human-verification-button">I'm a human!</button>
+					<button type="submit" class="color-2">Send</button>
 				</div>
-
 			</form>
 		</section>
+-->
 
 	</div>
 

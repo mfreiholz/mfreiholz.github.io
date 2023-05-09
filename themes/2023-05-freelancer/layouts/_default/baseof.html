@@ -12,6 +12,9 @@
 	<link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
 	<link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}" />
 
+	<!-- ThirdParty Libraries -->
+	<script src="/jquery-3.6.4.min.js"></script>
+
 	<!-- Styles -->
 	{{ $options := (dict "enableSourceMap" true) }}
 	{{ $scss := resources.Get "main.scss" }}
@@ -61,6 +64,7 @@
 					{{- range .Site.Menus.main }}
 					<li><a href="{{ .URL }}">{{ .Name }}</a></li>
 					{{- end }}
+					<li><a href="/ts3video">TS3VIDEO</a></li>
 				</ul>
 			</div>
 		</div>
