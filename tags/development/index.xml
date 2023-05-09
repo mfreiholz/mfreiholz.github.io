@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Development on mfreiholz.de</title>
+    <title>Development on Manuel Freiholz</title>
     <link>https://mfreiholz.de/tags/development/</link>
-    <description>Recent content in Development on mfreiholz.de</description>
+    <description>Recent content in Development on Manuel Freiholz</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 31 Aug 2017 18:03:14 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/tags/development/index.xml" rel="self" type="application/rss+xml" />

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Welcome on mfreiholz.de</title>
+    <title>Welcome on Manuel Freiholz</title>
     <link>https://mfreiholz.de/</link>
-    <description>Recent content in Welcome on mfreiholz.de</description>
+    <description>Recent content in Welcome on Manuel Freiholz</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 23 May 2022 13:37:42 +0200</lastBuildDate><atom:link href="https://mfreiholz.de/index.xml" rel="self" type="application/rss+xml" />
@@ -78,10 +78,10 @@
       <guid>https://mfreiholz.de/donate/</guid>
       <description>English You like my stuff and would like to support me?
 What will I do with your support?
- Finance public servers Hardware and software improvements Probably also some private fun stuff xD  Thank you.
- German Dir gefällt was ich mache und möchtest mich unterstützen?
+Finance public servers Hardware and software improvements Probably also some private fun stuff xD Thank you.
+German Dir gefällt was ich mache und möchtest mich unterstützen?
 Was ich mit deiner Unterstützung anstelle?
- Finanzierung von öffentlichen Servern Hardware und Software verbesserungen Vermutlich auch das eine oder andere private an dem ich Spaß habe xD  Vielen Dank</description>
+Finanzierung von öffentlichen Servern Hardware und Software verbesserungen Vermutlich auch das eine oder andere private an dem ich Spaß habe xD Vielen Dank</description>
     </item>
     
     <item>
@@ -129,7 +129,6 @@ See you later :P</description>
       
       <guid>https://mfreiholz.de/impressum/</guid>
       <description>Verantwortlich M. Freiholz Software Development Manuel Freiholz Proviantbachstraße 18 86153 Augsburg
-E-Mail: info@mfreiholz.de
 Unternehmensinformationen Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.
 Steuernummer: 103/218/10271
 Datenschutzerklärung Datenschutz Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.
@@ -152,7 +151,7 @@ I already migrated most of my websites to be statically generated with &lt;a hre
       <pubDate>Fri, 13 May 2016 21:36:08 +0200</pubDate>
       
       <guid>https://mfreiholz.de/ts3video/home-features/</guid>
-      <description>Features  Real time video chat Easy to install Low bandwidth usage (especially for gamers) Integrates into TeamSpeak as plugin Keeps using TeamSpeak for voice chat No self hosted server required  Use public available servers (&amp;ldquo;Join via public server&amp;rdquo;) Resolution restricted to 720p   Host your own server (optional)  Custom resolution (up to 1080p) Links with TeamSpeak-Server Query-Console for user authorization (self hosted only, optional)    </description>
+      <description>Features Real time video chat Easy to install Low bandwidth usage (especially for gamers) Integrates into TeamSpeak as plugin Keeps using TeamSpeak for voice chat No self hosted server required Use public available servers (&amp;ldquo;Join via public server&amp;rdquo;) Resolution restricted to 720p Host your own server (optional) Custom resolution (up to 1080p) Links with TeamSpeak-Server Query-Console for user authorization (self hosted only, optional) </description>
     </item>
     
     <item>
@@ -186,9 +185,9 @@ but there is one new great feature: &lt;strong&gt;Streaming in a resolution of y
       <pubDate>Tue, 26 Apr 2016 06:37:32 +0200</pubDate>
       
       <guid>https://mfreiholz.de/ts3video/docs/</guid>
-      <description>Latest (0.6 / 0.7 / 0.8 / 0.10 / 0.11 / 0.12 / 0.13 / 0.14) Version 0.5  Note for Updaters (Linux) It is NOT recommended to overwrite your old installation with the newest one. You should always create a new directory. The project is still in BETA state and a lot of things can change, which may require a clean environment.
+      <description>Latest (0.6 / 0.7 / 0.8 / 0.10 / 0.11 / 0.12 / 0.13 / 0.14) Version 0.5 Note for Updaters (Linux) It is NOT recommended to overwrite your old installation with the newest one. You should always create a new directory. The project is still in BETA state and a lot of things can change, which may require a clean environment.
 Example directory structure:
-/opt/ts3video/  server-0.4/  default.</description>
+/opt/ts3video/ server-0.4/ default.ini videoserver .</description>
     </item>
     
     <item>
@@ -206,7 +205,9 @@ Example directory structure:
       <pubDate>Sat, 05 Sep 2015 17:31:34 +0200</pubDate>
       
       <guid>https://mfreiholz.de/ts3video/downloads/</guid>
-      <description>Downloads Windows    File Mirrors     Client 0.14 (Compatible with &amp;gt;= v0.6) Installer   Server 0.8 (Compatible with &amp;gt;= v0.6) Installer    Build on Windows 10 with VC14.Linux    File Mirrors     Server 0.8 32 bit (TAR archive) TAR-Archive   Server 0.8 64 bit (TAR archive) TAR-Archive    Build on Ubuntu 14.04 LTS (Debian) with GCC 4.</description>
+      <description>Downloads Windows File Mirrors Client 0.14 (Compatible with &amp;gt;= v0.6) Installer Server 0.8 (Compatible with &amp;gt;= v0.6) Installer Build on Windows 10 with VC14.
+Linux File Mirrors Server 0.8 32 bit (TAR archive) TAR-Archive Server 0.8 64 bit (TAR archive) TAR-Archive Build on Ubuntu 14.04 LTS (Debian) with GCC 4.8.4.
+Previous builds You can get previous releases from the archive.</description>
     </item>
     
     <item>
