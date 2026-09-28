@@ -1,6 +1,0 @@
-public/
-resources/
-node_modules/
-*.log
-.hugo_build.lock
-hugo.exe

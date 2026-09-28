@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warp Status: OVERLOAD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #03030c;
+            --terminal-bg: #070714;
+            --text-color: #00ffcc;
+            --warn-color: #ff3333;
+            --accent-color: #ff9900;
+            --blue-color: #0099ff;
+            --font-tech: 'Share Tech Mono', monospace;
+            --font-sci: 'Orbitron', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-tech);
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Scanlines and CRT effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* Starfield background */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: warpMove 60s linear infinite;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        @keyframes warpMove {
+            from { background-position: 0 0, 40px 60px, 130px 270px; }
+            to { background-position: 550px 550px, 390px 410px, 380px 820px; }
+        }
+
+        .terminal-container {
+            width: 90%;
+            max-width: 800px;
+            background: var(--terminal-bg);
+            border: 2px solid var(--text-color);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            padding: 30px;
+            border-radius: 5px;
+            z-index: 2;
+            position: relative;
+            animation: glow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 15px rgba(0, 255, 204, 0.2), inset 0 0 10px rgba(0, 255, 204, 0.1); }
+            100% { box-shadow: 0 0 25px rgba(0, 255, 204, 0.4), inset 0 0 15px rgba(0, 255, 204, 0.2); }
+        }
+
+        .header {
+            border-bottom: 2px solid var(--text-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-sci);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: var(--blue-color);
+        }
+
+        .header .status {
+            color: var(--warn-color);
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .warp-core {
+            display: flex;
+            justify-content: space-between;
+            height: 80px;
+            margin-bottom: 25px;
+            gap: 5px;
+        }
+
+        .power-bar {
+            flex-grow: 1;
+            background: #111;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 3px;
+        }
+
+        .power-segment {
+            background-color: var(--blue-color);
+            margin: 1px 0;
+            height: 10%;
+        }
+
+        .power-segment.high {
+            background-color: var(--accent-color);
+        }
+
+        .power-segment.max {
+            background-color: var(--warn-color);
+            animation: overload-pulse 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes overload-pulse {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.8); }
+        }
+
+        .message-box {
+            background: rgba(255, 51, 51, 0.08);
+            border-left: 5px solid var(--warn-color);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 0 5px 5px 0;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+        }
+
+        .message-title {
+            font-family: var(--font-sci);
+            color: var(--warn-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .message-content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #fff;
+        }
+
+        .system-logs {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #222;
+            padding: 15px;
+            font-size: 0.85rem;
+            color: #888;
+            max-height: 150px;
+            overflow-y: auto;
+            border-radius: 3px;
+        }
+
+        .log-line {
+            margin-bottom: 5px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .log-time {
+            color: var(--blue-color);
+        }
+
+        .log-tag {
+            font-weight: bold;
+        }
+
+        .log-tag.err { color: var(--warn-color); }
+        .log-tag.warn { color: var(--accent-color); }
+        .log-tag.info { color: var(--text-color); }
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            font-family: var(--font-sci);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 10px var(--text-color);
+        }
+
+        .btn.danger {
+            border-color: var(--warn-color);
+            color: var(--warn-color);
+        }
+
+        .btn.danger:hover {
+            background: var(--warn-color);
+            color: #fff;
+            box-shadow: 0 0 10px var(--warn-color);
+        }
+
+        /* Screen flash for alert mode */
+        .red-alert-flash {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 0, 0, 0.15);
+            z-index: 5;
+            pointer-events: none;
+            display: none;
+            animation: alert-flash 1s infinite;
+        }
+
+        @keyframes alert-flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .klaxon-text {
+            position: absolute;
+            top: 5%;
+            font-family: var(--font-sci);
+            font-size: 2.5rem;
+            color: var(--warn-color);
+            letter-spacing: 5px;
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--warn-color);
+            animation: blink 0.5s step-end infinite;
+            display: none;
+            z-index: 4;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="klaxon-text" id="klaxon">RED ALERT</div>
+    <div class="red-alert-flash" id="alert-overlay"></div>
+
+    <div class="terminal-container">
+        <div class="header">
+            <span>SYS_ID: USS-ENTERPRISE-NCC-1701-D</span>
+            <span class="status" id="sys-status">SYS_STATUS: CRITICAL OVERLOAD</span>
+        </div>
+
+        <!-- Warp drive power bars representing critical power usage -->
+        <div class="warp-core">
+            <div class="power-bar">
+                <div class="power-segment max"></div>
+                <div class="power-segment max"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+            </div>
+            <div class="power-bar">
+                <div class="power-segment max"></div>
+                <div class="power-segment max"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+            </div>
+            <div class="power-bar" style="flex-grow: 1.5;">
+                <div class="power-segment max" style="animation-delay: 0.1s;"></div>
+                <div class="power-segment max" style="animation-delay: 0.1s;"></div>
+                <div class="power-segment max" style="animation-delay: 0.1s;"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+            </div>
+            <div class="power-bar">
+                <div class="power-segment max"></div>
+                <div class="power-segment max"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+            </div>
+            <div class="power-bar">
+                <div class="power-segment max"></div>
+                <div class="power-segment max"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment high"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+                <div class="power-segment"></div>
+            </div>
+        </div>
+
+        <div class="message-box">
+            <div class="message-title" id="msg-title">ENGINE OVERLOAD WARNING</div>
+            <div class="message-content">
+                "Maximum Warp Achieved: We don't have the power for any more projects Captain!"
+            </div>
+        </div>
+
+        <div class="system-logs" id="logs-container">
+            <div class="log-line">
+                <span class="log-time">[04:12:09]</span>
+                <span class="log-tag info">INFO</span>
+                <span>Initializing secondary EPS grid bypass...</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[04:12:12]</span>
+                <span class="log-tag info">INFO</span>
+                <span>Deploying warp field stabilizer coils.</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[04:12:18]</span>
+                <span class="log-tag warn">WARN</span>
+                <span>Dilithium matrix vibration threshold exceeded (104%).</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[04:12:22]</span>
+                <span class="log-tag info">INFO</span>
+                <span>Attempting to initialize project "New Enterprise Directory Layout"...</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[04:12:23]</span>
+                <span class="log-tag err">ERR</span>
+                <span>FATAL: Resource allocation failed. Warp core power limits reached.</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="btn-diagnostics" onclick="runDiagnostics()">Run Diagnostics</button>
+            <button class="btn danger" id="btn-alert" onclick="toggleRedAlert()">Red Alert</button>
+        </div>
+    </div>
+
+    <script>
+        const logsContainer = document.getElementById('logs-container');
+        const alertOverlay = document.getElementById('alert-overlay');
+        const klaxon = document.getElementById('klaxon');
+        const sysStatus = document.getElementById('sys-status');
+        const btnAlert = document.getElementById('btn-alert');
+        let alertActive = false;
+
+        const extraLogs = [
+            { type: 'err', msg: 'Plasma injectors venting into auxiliary plasma conduits!' },
+            { type: 'warn', msg: 'Structural integrity field failing on Deck 14.' },
+            { type: 'info', msg: 'Redirecting life support from Cargo Bays 1-4 to engineering.' },
+            { type: 'err', msg: 'Antimatter containment field at 11% - CRITICAL.' },
+            { type: 'info', msg: 'Self-destruct sequence paused (waiting for Captain confirmation).' },
+            { type: 'warn', msg: 'Replicator patterns corrupted. Earl Grey tea unavailable.' },
+            { type: 'err', msg: 'Dilithium crystal fracture probability: 98.7%.' }
+        ];
+
+        function getTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            return `[${h}:${m}:${s}]`;
+        }
+
+        function appendLog(type, msg) {
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line';
+            
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'log-time';
+            timeSpan.textContent = getTimestamp();
+            
+            const tagSpan = document.createElement('span');
+            tagSpan.className = `log-tag ${type}`;
+            tagSpan.textContent = type.toUpperCase();
+            
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = msg;
+            
+            logLine.appendChild(timeSpan);
+            logLine.appendChild(tagSpan);
+            logLine.appendChild(msgSpan);
+            
+            logsContainer.appendChild(logLine);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        // Random log generator to make it dynamic and high-tech
+        setInterval(() => {
+            if (Math.random() > 0.6) {
+                const log = extraLogs[Math.floor(Math.random() * extraLogs.length)];
+                appendLog(log.type, log.msg);
+            }
+        }, 4000);
+
+        function runDiagnostics() {
+            appendLog('info', 'Executing diagnostic cycle 47-B...');
+            setTimeout(() => {
+                appendLog('warn', 'Diagnostics complete. Dilithium alignment: FAILED.');
+                appendLog('err', 'Recommendation: Eject warp core or halt additional project loads.');
+            }, 1000);
+        }
+
+        function toggleRedAlert() {
+            alertActive = !alertActive;
+            if (alertActive) {
+                alertOverlay.style.display = 'block';
+                klaxon.style.display = 'block';
+                sysStatus.textContent = 'SYS_STATUS: RED ALERT';
+                sysStatus.style.color = '#ff3333';
+                btnAlert.textContent = 'Stand Down';
+                appendLog('err', 'RED ALERT ACTIVATED. All hands to battle stations!');
+                
+                // Audio synthesis for classic sci-fi klaxon sound (optional/fun web audio api)
+                try {
+                    window.audioCtx = window.audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                    if (window.audioCtx) {
+                        window.klaxonInterval = setInterval(() => {
+                            if (!alertActive) return;
+                            const osc = window.audioCtx.createOscillator();
+                            const gain = window.audioCtx.createGain();
+                            osc.type = 'sawtooth';
+                            
+                            // Classic warp/alert swoop frequency
+                            osc.frequency.setValueAtTime(400, window.audioCtx.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(800, window.audioCtx.currentTime + 0.4);
+                            
+                            gain.gain.setValueAtTime(0.05, window.audioCtx.currentTime);
+                            gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.5);
+                            
+                            osc.connect(gain);
+                            gain.connect(window.audioCtx.destination);
+                            osc.start();
+                            osc.stop(window.audioCtx.currentTime + 0.5);
+                        }, 1000);
+                    }
+                } catch (e) {
+                    console.log("Audio not supported or blocked by user gesture");
+                }
+            } else {
+                alertOverlay.style.display = 'none';
+                klaxon.style.display = 'none';
+                sysStatus.textContent = 'SYS_STATUS: CRITICAL OVERLOAD';
+                sysStatus.style.color = '#ff3333';
+                btnAlert.textContent = 'Red Alert';
+                appendLog('info', 'Standing down red alert. Secondary systems holding.');
+                if (window.klaxonInterval) {
+                    clearInterval(window.klaxonInterval);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
